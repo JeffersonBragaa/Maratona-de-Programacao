@@ -1,0 +1,1 @@
+/* memset(nome do vetor, oque eu quero escrever, sizeof(viral))*/

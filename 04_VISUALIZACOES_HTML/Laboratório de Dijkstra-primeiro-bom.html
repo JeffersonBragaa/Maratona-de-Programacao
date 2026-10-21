@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)file:///home/j-braga/Downloads/laboratorio-dijkstra.html -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Laboratório de Dijkstra</title>
+<style>
+:root{--ink:#17233c;--mut:#5d6b85;--bg:#eef2f7;--card:#fff;--line:#c9d3e2;--cur:#e8a100;--dis:#0b8f8c;--done:#3b3fa8;--path:#d6336c}
+@media(prefers-color-scheme:dark){:root{--ink:#e6ecf7;--mut:#9fb0cc;--bg:#101828;--card:#182235;--line:#2d3b57;--cur:#ffc233;--dis:#3cc9c4;--done:#8c92ff;--path:#ff6b9d}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,sans-serif}
+h1,h2,h3{font-family:Georgia,serif;margin:.2em 0}h1{font-size:1.6rem}h2{font-size:1.15rem}
+header{padding:14px 18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;border-bottom:2px solid var(--ink)}
+button,select{font:inherit;color:var(--ink);background:var(--card);border:1.5px solid var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+button:hover:not(:disabled){background:var(--ink);color:var(--card)}button:disabled{opacity:.4;cursor:default}
+button.on{background:var(--ink);color:var(--card)}:focus-visible{outline:3px solid var(--cur);outline-offset:2px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 18px}
+.trail{display:flex;flex-wrap:wrap;gap:4px;padding:0 18px 6px;font-size:12px}
+.trail span{padding:2px 8px;border:1px solid var(--line);border-radius:99px;color:var(--mut)}.trail .act{background:var(--ink);color:var(--card);border-color:var(--ink)}
+main{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,1fr);gap:14px;padding:0 18px 18px}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+.card{background:var(--card);border:1.5px solid var(--ink);border-radius:10px;padding:12px}
+.gp{background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:24px 24px}
+svg{width:100%;height:auto;display:block}
+.col{display:flex;flex-direction:column;gap:14px}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:3px 6px;border-bottom:1px solid var(--line);text-align:left}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+tr.s2{background:color-mix(in srgb,var(--cur) 25%,transparent);font-weight:700}tr.s3{color:var(--done)}tr.s0{color:var(--mut)}
+.chg{animation:fl .9s}@keyframes fl{from{background:var(--cur)}}
+.chg s{opacity:.6}
+.q{display:flex;flex-direction:column;gap:3px;min-height:40px}
+.qe{display:flex;justify-content:space-between;border:1.5px solid var(--ink);border-radius:6px;padding:2px 8px;font-variant-numeric:tabular-nums}
+.qe.top{background:color-mix(in srgb,var(--cur) 30%,transparent);font-weight:700}.qe.old{border-style:dashed;color:var(--mut);text-decoration:line-through}
+.hist{max-height:190px;overflow:auto;font-size:13px;padding-left:0;list-style:none;margin:0}.hist li{padding:1px 0}.hist li:last-child{font-weight:700}
+.rule{font-family:ui-monospace,Consolas,monospace;background:var(--bg);border-left:4px solid var(--cur);padding:4px 8px;margin:6px 0;border-radius:4px}
+.tag{font-size:11px;border:1px solid var(--mut);color:var(--mut);border-radius:4px;padding:0 5px}
+.big{font-size:1.1rem}.verd{animation:fl .9s}
+pre{background:#10172a;color:#d7e3ff;padding:8px;border-radius:6px;overflow:auto;font-size:13px;margin:6px 0}
+pre b{background:#5b4a00;color:#ffe07a;font-weight:400;display:block}
+body.concept .cpp{display:none}
+details{border-top:1px solid var(--line);padding:4px 0}summary{cursor:pointer;font-weight:600}
+.sec{margin:0 18px 14px}
+.nd{transition:.2s}.eg{stroke:var(--mut);stroke-width:2}.eg.ev{stroke:var(--cur);stroke-width:5;stroke-dasharray:9 5;animation:dash .6s linear infinite}
+.eg.tr{stroke:var(--dis);stroke-width:4}.eg.pa{stroke:var(--path);stroke-width:7}
+@keyframes dash{to{stroke-dashoffset:-14}}
+.pulse{animation:pu .7s}@keyframes pu{50%{transform:scale(1.35)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style></head><body class="">
+<header><div><h1>Laboratório de Dijkstra</h1><small>Baseado na Aula 8 (MP1) · só Dijkstra</small></div>
+<div><button id="mc" class="">👁 Modo conceitual</button> <button id="mp" class="on">💻 Conectar com C++</button></div></header>
+<div class="bar">
+<button id="pv" disabled="">◀ Passo anterior</button><button id="nx">▶ Próximo passo</button><button id="au">▶ Executar automaticamente</button><button id="rs">↻ Reiniciar</button>
+<b id="ct">Passo 0 de 30</b>
+<label>Origem <select id="so"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select></label><label>Destino <select id="de"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select></label>
+</div>
+<div class="bar" style="padding-top:0;font-size:13px">
+<label><input type="checkbox" id="se" checked=""> Parar ao remover o destino (como no slide 59)</label>
+<label><input type="checkbox" id="ho"> Ocultar entradas obsoletas da fila (como nos slides)</label>
+<label>Empate na fila: <select id="ti"><option value="0">menor vértice primeiro (slides)</option><option value="1">maior vértice primeiro (C++ real)</option></select></label>
+</div>
+<div class="trail" id="tr"><span class="act">1 Grafo</span><span class="act">2 Problema</span><span class="act">3 Manual</span><span class="">4 Início</span><span class="">5 Origem</span><span class="">6 Vizinhos</span><span class="">7 Escolha</span><span class="">8 Repetição</span><span class="">9 Resultado</span><span class="">10 Estruturas</span><span class="">11 C++</span><span class="">12 Desafios</span></div>
+<main>
+<div class="col">
+<div class="card gp"><svg id="g" viewBox="0 0 760 420" role="img" aria-label="Grafo do exemplo"><defs></defs><line class="eg " x1="50" y1="210" x2="190" y2="70"></line><rect x="106" y="129" width="28" height="22" rx="6" fill="var(--card)" stroke="var(--line)"></rect><text x="120" y="145" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">4</text><line class="eg " x1="50" y1="210" x2="190" y2="350"></line><rect x="106" y="269" width="28" height="22" rx="6" fill="var(--card)" stroke="var(--line)"></rect><text x="120" y="285" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">7</text><line class="eg " x1="190" y1="70" x2="370" y2="70"></line><rect x="266" y="59" width="28" height="22" rx="6" fill="var(--card)" stroke="var(--line)"></rect><text x="280" y="75" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">9</text><line class="eg " x1="190" y1="70" x2="190" y2="350"></line><rect x="176" y="199" width="28" height="22" rx="6" fill="var(--card)" stroke="var(--line)"></rect><text x="190" y="215" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">11</text><line class="eg " x1="190" y1="70" x2="370" y2="350"></line><rect x="266" y="199" width="28" height="22" rx="6" fill="var(--card)" stroke="var(--line)"></rect><text x="280" y="215" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">20</text><line class="eg " x1="370" y1="70" x2="550" y2="70"></line><rect x="446" y="59" width="28" height="22" rx="6" fill="var(--card)" stroke="var(--line)"></rect><text x="460" y="75" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">6</text><line class="eg " x1="370" y1="70" x2="370" y2="210"></line><rect x="356" y="129" width="28" height="22" rx="6" fill="var(--card)" stroke="var(--line)"></rect><text x="370" y="145" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">2</text><line class="eg " x1="550" y1="70" x2="370" y2="210"></line><rect x="446" y="129" width="28" height="22" rx="6" fill="var(--card)" stroke="var(--line)"></rect><text x="460" y="145" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">10</text><line class="eg " x1="550" y1="70" x2="700" y2="210"></line><rect x="611" y="129" width="28" height="22" rx="6" fill="var(--card)" stroke="var(--line)"></rect><text x="625" y="145" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">5</text><line class="eg " x1="370" y1="210" x2="700" y2="210"></line><rect x="521" y="199" width="28" height="22" rx="6" fill="var(--card)" stroke="var(--line)"></rect><text x="535" y="215" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">15</text><line class="eg " x1="370" y1="210" x2="370" y2="350"></line><rect x="356" y="269" width="28" height="22" rx="6" fill="var(--card)" stroke="var(--line)"></rect><text x="370" y="285" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">1</text><line class="eg " x1="370" y1="210" x2="550" y2="350"></line><rect x="446" y="269" width="28" height="22" rx="6" fill="var(--card)" stroke="var(--line)"></rect><text x="460" y="285" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">5</text><line class="eg " x1="700" y1="210" x2="550" y2="350"></line><rect x="611" y="269" width="28" height="22" rx="6" fill="var(--card)" stroke="var(--line)"></rect><text x="625" y="285" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">12</text><line class="eg " x1="190" y1="350" x2="370" y2="350"></line><rect x="266" y="339" width="28" height="22" rx="6" fill="var(--card)" stroke="var(--line)"></rect><text x="280" y="355" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">1</text><line class="eg " x1="370" y1="350" x2="550" y2="350"></line><rect x="446" y="339" width="28" height="22" rx="6" fill="var(--card)" stroke="var(--line)"></rect><text x="460" y="355" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">3</text><g class="nd " style="transform-origin:50px 210px;cursor:pointer" data-v="0" tabindex="0" role="button" aria-label="Vértice 0, não visitado, distância ∞"><circle cx="50" cy="210" r="24" fill="var(--card)" stroke="var(--ink)" stroke-width="2.5"></circle><text x="50" y="216" text-anchor="middle" font-size="18" font-weight="700" fill="var(--ink)">0</text><text x="50" y="180" text-anchor="middle" font-size="12" fill="var(--ink)">○</text><text x="50" y="254" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">origem · d=∞</text></g><g class="nd " style="transform-origin:190px 70px;cursor:pointer" data-v="1" tabindex="0" role="button" aria-label="Vértice 1, não visitado, distância ∞"><circle cx="190" cy="70" r="24" fill="var(--card)" stroke="var(--ink)" stroke-width="2.5"></circle><text x="190" y="76" text-anchor="middle" font-size="18" font-weight="700" fill="var(--ink)">1</text><text x="190" y="40" text-anchor="middle" font-size="12" fill="var(--ink)">○</text><text x="190" y="114" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">d=∞</text></g><g class="nd " style="transform-origin:370px 70px;cursor:pointer" data-v="2" tabindex="0" role="button" aria-label="Vértice 2, não visitado, distância ∞"><circle cx="370" cy="70" r="24" fill="var(--card)" stroke="var(--ink)" stroke-width="2.5"></circle><text x="370" y="76" text-anchor="middle" font-size="18" font-weight="700" fill="var(--ink)">2</text><text x="370" y="40" text-anchor="middle" font-size="12" fill="var(--ink)">○</text><text x="370" y="114" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">d=∞</text></g><g class="nd " style="transform-origin:550px 70px;cursor:pointer" data-v="3" tabindex="0" role="button" aria-label="Vértice 3, não visitado, distância ∞"><circle cx="550" cy="70" r="24" fill="var(--card)" stroke="var(--ink)" stroke-width="2.5"></circle><text x="550" y="76" text-anchor="middle" font-size="18" font-weight="700" fill="var(--ink)">3</text><text x="550" y="40" text-anchor="middle" font-size="12" fill="var(--ink)">○</text><text x="550" y="114" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">d=∞</text></g><g class="nd " style="transform-origin:370px 210px;cursor:pointer" data-v="4" tabindex="0" role="button" aria-label="Vértice 4, não visitado, distância ∞"><circle cx="370" cy="210" r="24" fill="var(--card)" stroke="var(--ink)" stroke-width="2.5"></circle><text x="370" y="216" text-anchor="middle" font-size="18" font-weight="700" fill="var(--ink)">4</text><text x="370" y="180" text-anchor="middle" font-size="12" fill="var(--ink)">○</text><text x="370" y="254" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">d=∞</text></g><g class="nd " style="transform-origin:700px 210px;cursor:pointer" data-v="5" tabindex="0" role="button" aria-label="Vértice 5, não visitado, distância ∞"><circle cx="700" cy="210" r="24" fill="var(--card)" stroke="var(--ink)" stroke-width="2.5"></circle><text x="700" y="216" text-anchor="middle" font-size="18" font-weight="700" fill="var(--ink)">5</text><text x="700" y="180" text-anchor="middle" font-size="12" fill="var(--ink)">○</text><text x="700" y="254" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">d=∞</text></g><g class="nd " style="transform-origin:190px 350px;cursor:pointer" data-v="6" tabindex="0" role="button" aria-label="Vértice 6, não visitado, distância ∞"><circle cx="190" cy="350" r="24" fill="var(--card)" stroke="var(--ink)" stroke-width="2.5"></circle><text x="190" y="356" text-anchor="middle" font-size="18" font-weight="700" fill="var(--ink)">6</text><text x="190" y="320" text-anchor="middle" font-size="12" fill="var(--ink)">○</text><text x="190" y="394" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">d=∞</text></g><g class="nd " style="transform-origin:370px 350px;cursor:pointer" data-v="7" tabindex="0" role="button" aria-label="Vértice 7, não visitado, distância ∞"><circle cx="370" cy="350" r="24" fill="var(--card)" stroke="var(--ink)" stroke-width="2.5"></circle><text x="370" y="356" text-anchor="middle" font-size="18" font-weight="700" fill="var(--ink)">7</text><text x="370" y="320" text-anchor="middle" font-size="12" fill="var(--ink)">○</text><text x="370" y="394" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">d=∞</text></g><g class="nd " style="transform-origin:550px 350px;cursor:pointer" data-v="8" tabindex="0" role="button" aria-label="Vértice 8, não visitado, distância ∞"><circle cx="550" cy="350" r="24" fill="var(--card)" stroke="var(--ink)" stroke-width="2.5"></circle><text x="550" y="356" text-anchor="middle" font-size="18" font-weight="700" fill="var(--ink)">8</text><text x="550" y="320" text-anchor="middle" font-size="12" fill="var(--ink)">○</text><text x="550" y="394" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">d=∞</text></g></svg></div>
+<div class="card" id="ex"><h2>Etapas 1–3 · Conheça o grafo e tente você mesmo</h2><p><b>Vértice</b> = círculo (um lugar). <b>Aresta</b> = linha entre dois vértices (uma ligação). <b>Peso</b> = número na aresta (o custo para atravessá-la). Um <b>caminho</b> é uma sequência de arestas e seu custo é a soma dos pesos. O problema (slide 11): achar o caminho de S até T que nenhum outro supere em custo — aqui, o <b>menor caminho</b>.</p>
+<p><b>Tente manualmente:</b> clique em vértices vizinhos a partir da origem 0 até o destino 5 (clicar no último desfaz). Caminho: <b>0</b> · custo <b class="big">0</b></p></div>
+<div class="card cpp" id="cp"><h2>O que o código faria?</h2><p>Primeiro entenda o visual; o código aparece conforme os passos.</p></div>
+</div>
+<div class="col">
+<div class="card"><h2>Distâncias <span class="cpp"><code>dist[]</code> · <code>pred[]</code> · <code>visitado[]</code></span></h2><div id="tb"><table><tbody><tr><th>Vértice</th><th class="n">Dist</th><th class="n">Pred</th><th>Estado</th></tr><tr class="s0"><td>0</td><td class="n ">∞</td><td class="n ">—</td><td>○ não visitado</td></tr><tr class="s0"><td>1</td><td class="n ">∞</td><td class="n ">—</td><td>○ não visitado</td></tr><tr class="s0"><td>2</td><td class="n ">∞</td><td class="n ">—</td><td>○ não visitado</td></tr><tr class="s0"><td>3</td><td class="n ">∞</td><td class="n ">—</td><td>○ não visitado</td></tr><tr class="s0"><td>4</td><td class="n ">∞</td><td class="n ">—</td><td>○ não visitado</td></tr><tr class="s0"><td>5</td><td class="n ">∞</td><td class="n ">—</td><td>○ não visitado</td></tr><tr class="s0"><td>6</td><td class="n ">∞</td><td class="n ">—</td><td>○ não visitado</td></tr><tr class="s0"><td>7</td><td class="n ">∞</td><td class="n ">—</td><td>○ não visitado</td></tr><tr class="s0"><td>8</td><td class="n ">∞</td><td class="n ">—</td><td>○ não visitado</td></tr></tbody></table></div>
+<small>○ não visitado · ◐ descoberto · ★ atual · ✓ processado</small></div>
+<div class="card"><h2>Fila de prioridade <span class="cpp"><code>priority_queue</code></span></h2><div class="q" id="qu"><i>vazia</i></div><small id="qn"></small></div>
+<div class="card"><h2>Histórico</h2><ul class="hist" id="hi"><li>Aguardando o primeiro passo.</li></ul></div>
+</div></main>
+
+<section class="sec card" id="cuidado"><h2>Cuidado com estas ideias</h2>
+<details><summary>1 · “Vou seguir o caminho que parece mais curto”</summary>Na tela, 0→1 custa só 4, mas 0→6→7 chega ao 7 por 8 enquanto 0→1→7 custaria 24. Escolher pelo primeiro salto bonito não garante o total mínimo: Dijkstra compara somas acumuladas.</details>
+<details><summary>2 · “Distância encontrada nunca muda”</summary>Rode até o passo em que o 7 aparece: primeiro 24 (via 1), depois 8 (via 6) — veja <s>24</s> → 8 na tabela. Enquanto o vértice não sai da fila, a distância é provisória.</details>
+<details><summary>3 · “Qualquer fila funciona”</summary>Fila normal devolve quem entrou primeiro; fila de prioridade devolve o de menor distância. O PDF usa <code>priority_queue</code>, que devolve o <i>maior</i> elemento — por isso o código guarda <code>-dist</code> (slide 19).</details>
+<details><summary>4 · “Dijkstra serve para qualquer grafo”</summary>Segundo o PDF (slide 18), só vale para grafos ponderados com pesos <b>não negativos</b>; serve para direcionados e não direcionados. Sem pesos, uma BFS basta (slide 12).</details></section>
+
+<section class="sec card" id="desafios"><h2>Mini desafios</h2>
+<p><b>1.</b> Origem 0 já foi processada: dist[1]=4, dist[6]=7, fila {4:1, 7:6}. Qual vértice é o próximo?
+<span id="c1"><button data-c="1">1</button> <button data-c="6">6</button> <button data-c="2">2</button> <button data-c="7">7</button></span></p><div id="c1r"></div>
+<p><b>2.</b> dist[A]=3, peso(A,B)=4, dist[B]=10. Nova dist[B]? <input id="c2" type="number" style="width:70px"> <button id="c2b">Conferir</button></p><div id="c2r"></div></section>
+
+<section class="sec card" id="glossario"><h2>Glossário</h2>
+<details><summary>Vértice / Aresta / Peso</summary>Vértice: o círculo. Aresta: a linha entre dois. Peso: o custo de usar a aresta (ex.: 0–1 pesa 4). C++: <code>adj[a]</code> guarda pares <code>(vizinho, peso)</code>.</details>
+<details><summary>Caminho / Distância</summary>Caminho: sequência de arestas; seu custo é a soma dos pesos. Distância: custo do melhor caminho conhecido. C++: <code>dist[v]</code>.</details>
+<details><summary>Predecessor</summary>De qual vértice viemos pelo melhor caminho. C++: <code>pred[v]</code>; seguindo de trás para frente reconstruímos o caminho.</details>
+<details><summary>Relaxamento</summary><code>dist[v] = min(dist[v], dist[u] + w)</code> — testar se passar por u melhora v.</details>
+<details><summary>Fila / Fila de prioridade / priority_queue</summary>Fila normal: o primeiro a entrar sai primeiro. Prioridade: sai o de maior prioridade (aqui, menor distância). C++: <code>priority_queue&lt;pair&lt;int,int&gt;&gt;</code> devolve o maior → guarda-se <code>-dist</code>.</details>
+<details><summary>vector</summary>Vetor dinâmico: <code>vector&lt;int&gt; dist(N, INF)</code>, <code>pred(N,-1)</code>, <code>visitado(N,0)</code>.</details></section>
+
+<script>
+const N=9,INF=1e9,P=[[50,210],[190,70],[370,70],[550,70],[370,210],[700,210],[190,350],[370,350],[550,350]];
+const E=[[0,1,4],[0,6,7],[1,2,9],[1,6,11],[1,7,20],[2,3,6],[2,4,2],[3,4,10],[3,5,5],[4,5,15],[4,7,1],[4,8,5],[5,8,12],[6,7,1],[7,8,3]];
+const adj=Array.from({length:N},()=>[]);E.forEach(([a,b,w])=>{adj[a].push([b,w]);adj[b].push([a,w])});adj.forEach(l=>l.sort((x,y)=>x[0]-y[0]));
+const $=id=>document.getElementById(id),f=x=>x>=INF?'∞':x,IC=['○','◐','★','✓'],NM=['não visitado','descoberto','atual','processado'];
+const TERMS={dist:'💡 <b>Distância</b>: o menor custo que conhecemos até agora para chegar ao vértice. Começa em ∞ porque ainda não achamos caminho algum.',pred:'💡 <b>Predecessor</b>: o vértice de onde viemos no melhor caminho. −1 = ninguém.',fila:'💡 <b>Fila de prioridade</b>: guarda (distância, vértice) e sempre entrega primeiro a menor distância.',vis:'💡 <b>Visitado/processado</b>: vértice cuja distância já é definitiva.',rel:'💡 <b>Relaxamento</b>: testar se chegar em v passando por u é mais barato que o melhor caminho conhecido.'};
+function run(s,t,stop,tie){const dist=Array(N).fill(INF),pred=Array(N).fill(-1),st=Array(N).fill(0);let q=[],S=[],cur=-1,found=false;
+const add=(k,o={})=>S.push({k,...o,dist:[...dist],pred:[...pred],st:[...st],q:q.map(e=>({...e})),s,t});
+const cmp=(a,b)=>a.d-b.d||(tie?b.v-a.v:a.v-b.v);
+add('init',{term:['dist','pred']});dist[s]=0;st[s]=1;q.push({d:0,v:s});add('src',{pushed:{d:0,v:s},term:['fila']});
+while(q.length){q.sort(cmp);const before=q.map(e=>({...e})),e=q.shift();if(cur>=0){st[cur]=3;cur=-1}
+if(st[e.v]==3){add('skip',{popped:e,u:e.v});continue}
+cur=e.v;st[cur]=2;const vis=adj[cur].filter(x=>st[x[0]]==3).map(x=>x[0]);add('pop',{popped:e,u:cur,before,vis,term:['vis']});
+if(cur==t&&stop){st[cur]=3;cur=-1;add('stop',{u:t});found=true;break}
+for(const[b,w]of adj[e.v]){if(st[b]==3)continue;const c=dist[e.v]+w,old=dist[b];
+if(c<old){dist[b]=c;pred[b]=e.v;if(st[b]==0)st[b]=1;const ne={d:c,v:b};q.push(ne);add('edge',{u:e.v,b,w,c,old,upd:1,pushed:ne,term:['rel']})}
+else add('edge',{u:e.v,b,w,c,old,upd:0,term:['rel']})}}
+if(cur>=0){st[cur]=3;cur=-1}if(!found)add('done');
+if(dist[t]<INF){const p=[];for(let v=t;v!=-1;v=pred[v])p.push(v);add('path',{path:p.reverse()})}else add('nopath');return S}
+
+let S=[],i=-1,timer=null,man=[],seen=new Set();
+function setup(){const s=+$('so').value,t=+$('de').value;S=run(s,t,$('se').checked,+$('ti').value);i=-1;man=[s];stopAuto();draw()}
+function stopAuto(){clearInterval(timer);timer=null;$('au').textContent='▶ Executar automaticamente'}
+const lab=k=>({init:4,src:5,edge:6,pop:7,skip:8,done:9,stop:9,path:9,nopath:9})[k]||'1–3';
+const STG=['1 Grafo','2 Problema','3 Manual','4 Início','5 Origem','6 Vizinhos','7 Escolha','8 Repetição','9 Resultado','10 Estruturas','11 C++','12 Desafios'];
+function stageOf(){if(i<0)return[0,1,2];const k=S[i].k;return k=='init'?[3]:k=='src'?[4]:k=='edge'?[5]:k=='pop'?[6]:k=='skip'?[7]:[8,9,10]}
+function pathEdges(p){const o=new Set;for(let j=0;j+1<p.length;j++)o.add([p[j],p[j+1]].sort().join());return o}
+function drawGraph(){const c=i>=0?S[i]:{dist:Array(N).fill(INF),pred:Array(N).fill(-1),st:Array(N).fill(0),s:+$('so').value,t:+$('de').value};
+const pe=c.k=='path'?pathEdges(c.path):new Set,me=pathEdges(i<0?man:[]);let h='<defs></defs>';
+E.forEach(([a,b,w])=>{const key=[a,b].join(),ev=c.k=='edge'&&[c.u,c.b].sort().join()==key,tr=c.pred[a]==b||c.pred[b]==a;
+const cl=pe.has(key)?'pa':ev?'ev':tr?'tr':'';const mx=(P[a][0]+P[b][0])/2,my=(P[a][1]+P[b][1])/2;
+h+=`<line class="eg ${cl}" x1="${P[a][0]}" y1="${P[a][1]}" x2="${P[b][0]}" y2="${P[b][1]}" ${me.has(key)?'style="stroke:var(--path);stroke-width:6"':''}/><rect x="${mx-14}" y="${my-11}" width="28" height="22" rx="6" fill="var(--card)" stroke="${ev?'var(--cur)':'var(--line)'}"/><text x="${mx}" y="${my+5}" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">${w}</text>`});
+for(let v=0;v<N;v++){const s=c.st[v],[x,y]=P[v],pu=c.k=='edge'&&c.upd&&c.b==v;
+const fill=s==3?'var(--done)':s==2?'var(--cur)':'var(--card)',tc=s==3?'#fff':s==2?'#17233c':'var(--ink)';
+const stroke=s==1?'var(--dis)':s==2?'var(--cur)':'var(--ink)',dash=s==1?'stroke-dasharray="5 3"':'';
+h+=`<g class="nd ${pu?'pulse':''}" style="transform-origin:${x}px ${y}px;cursor:pointer" data-v="${v}" tabindex="0" role="button" aria-label="Vértice ${v}, ${NM[s]}, distância ${f(c.dist[v])}">${s==2?`<circle cx="${x}" cy="${y}" r="31" fill="none" stroke="var(--cur)" stroke-width="3"/>`:''}<circle cx="${x}" cy="${y}" r="24" fill="${fill}" stroke="${stroke}" stroke-width="${s==1?4:2.5}" ${dash}/><text x="${x}" y="${y+6}" text-anchor="middle" font-size="18" font-weight="700" fill="${tc}">${v}</text><text x="${x}" y="${y-30}" text-anchor="middle" font-size="12" fill="var(--ink)">${IC[s]}</text><text x="${x}" y="${y+44}" text-anchor="middle" font-size="14" font-weight="700" fill="${pu?'var(--cur)':'var(--ink)'}">${v==c.s?'origem · ':''}d=${f(c.dist[v])}</text></g>`}
+if(c.k=='path')h+=''; $('g').innerHTML=h;
+$('g').querySelectorAll('.nd').forEach(n=>{n.onclick=()=>pick(+n.dataset.v);n.onkeydown=e=>{if(e.key=='Enter')pick(+n.dataset.v)}})}
+function pick(v){if(i>=0)return;const l=man[man.length-1];if(v==l&&man.length>1)man.pop();else if(adj[l].some(x=>x[0]==v)&&!man.includes(v))man.push(v);else if(man.length==1&&v!=man[0]){man=[v]}drawGraph();exIntro()}
+function cost(p){let c=0;for(let j=0;j+1<p.length;j++)c+=adj[p[j]].find(x=>x[0]==p[j+1])[1];return c}
+function exIntro(){const t=+$('de').value;$('ex').innerHTML=`<h2>Etapas 1–3 · Conheça o grafo e tente você mesmo</h2><p><b>Vértice</b> = círculo (um lugar). <b>Aresta</b> = linha entre dois vértices (uma ligação). <b>Peso</b> = número na aresta (o custo para atravessá-la). Um <b>caminho</b> é uma sequência de arestas e seu custo é a soma dos pesos. O problema (slide 11): achar o caminho de S até T que nenhum outro supere em custo — aqui, o <b>menor caminho</b>.</p>
+<p><b>Tente manualmente:</b> clique em vértices vizinhos a partir da origem ${man[0]} até o destino ${t} (clicar no último desfaz). Caminho: <b>${man.join(' → ')}</b> · custo <b class="big">${cost(man)}</b>${man[man.length-1]==t?' — dá para fazer menos? Dijkstra garante o mínimo; clique em ▶ para ver como.':''}</p>`}
+function explain(c){const u=c.u,k=c.k;let w,y,r='';
+const d=x=>f(x);
+if(k=='init'){w='Preparação: ainda não sabemos chegar a lugar nenhum.';y='Por isso toda distância começa em <b>∞</b> e todo predecessor em <b>−1</b> (ninguém).';r='∀u: dist[u] = ∞ , pred[u] = −1'}
+else if(k=='src'){w=`Origem = ${c.s}. Marcamos dist[${c.s}] = 0 e inserimos (0:${c.s}) na fila.`;y='Ir da origem até ela mesma custa 0 — é a única certeza que temos. Os outros continuam ∞.';r='dist[s] = 0 ; q.push((0, s))'}
+else if(k=='pop'){const a=c.before.map(e=>`${e.v}→${e.d}`).join(' · ');w=`<b>${u}</b> é o vértice atual (distância ${c.dist[u]}).`;y=`Candidatos na fila: ${a}. Escolhemos a <b>menor distância conhecida</b>: ${u}→${c.popped.d}. Como nenhum peso é negativo, nenhum desvio por vértices ainda não processados chega em ${u} gastando menos: essa distância já é definitiva.${c.vis.length?` <span class="tag">Complemento</span> Vizinhos já visitados (${c.vis.join(', ')}) são ignorados — nos slides, e no código a condição falharia sozinha.`:''}`;r='retira o de menor distância → marca visitado → relaxa os vizinhos'}
+else if(k=='skip'){w=`Saiu (${c.popped.d}:${u}), mas ${u} já foi processado.`;y='É uma entrada <b>obsoleta</b>: sobrou de quando achamos um caminho pior. priority_queue não remove do meio, então descartamos ao sair. (Os slides mostram a fila já “limpa”.)';r='if(visitado[a]) continue;'}
+else if(k=='edge'){const sm=`${c.dist[u]} + ${c.w} = ${c.c}`;w=`Aresta ${u} → ${c.b} (peso ${c.w}): <span class="rule">dist[${u}] + peso = ${sm}<br>dist[${c.b}] atual = ${d(c.old)}</span>`;
+y=c.upd?`<span class="verd"><b>${c.c} &lt; ${d(c.old)}</b> → atualiza: <b>${d(c.old)} → ${c.c}</b>, pred[${c.b}] = ${u}, entra na fila (${c.c}:${c.b}).</span><br>${c.old>=INF?'Primeira vez que descobrimos um caminho até '+c.b+'.':'Achamos um caminho <b>melhor</b> passando por '+u+': a distância antiga era provisória.'}`:`<b>${c.c} não é menor que ${d(c.old)}</b> → nada muda. O caminho que já conhecíamos é melhor.`;r='dist[v] = min(dist[v], dist[u] + w)   ← relaxamento'}
+else if(k=='stop'){w=`Destino ${u} removido da fila.`;y='Sua distância é definitiva, então o algoritmo pode parar (slide 59).';r=''}
+else if(k=='done'){w='A fila esvaziou.';y='Todos os vértices alcançáveis têm distância final.';r='while(!q.empty())'}
+else if(k=='path'){const p=c.path;w=`Menor distância ${c.s} → ${c.t}: <b class="big">${c.dist[c.t]}</b>. Caminho: <b>${p.join(' → ')}</b>`;y='Reconstruímos de trás para frente seguindo os predecessores:<div>'+[...p].reverse().map(v=>`<b>${v}</b>`).join(' ← pred ← ')+'</div> e invertemos.';r=''}
+else{w='Destino inalcançável.';y='Dist continua ∞: não há caminho.';r=''}
+const tm=(c.term||[]).filter(x=>!seen.has(x));tm.forEach(x=>seen.add(x));
+return`<h2>Etapa ${lab(k)} · O que estamos fazendo agora?</h2><p>${w}</p><p><b>Por quê?</b> ${y}</p>${r?`<div class="rule">${r}</div>`:''}${tm.map(x=>`<p style="font-size:13px">${TERMS[x]}</p>`).join('')}`}
+const CODE={init:['vector<int> dist(N, INF);','vector<int> pred(N, -1);','vector<int> visitado(N, 0);'],src:['dist[s] = 0;','q.push( {0, s} );'],pop:['int a = q.top().second;','q.pop();','visitado[a] = 1;'],skip:['int a = q.top().second;','q.pop();','if(visitado[a]) continue;'],edge:['if(dist[a] + w < dist[b])','{','  dist[b] = dist[a] + w;','  pred[b] = a;','  q.push( {-dist[b], b} );','}'],path:['for(int v = t; v != -1; v = pred[v])','  caminho.push_back(v);']};
+function cppBox(c){const k=c.k,L=CODE[k]||['while(!q.empty()) { ... }'];let hl=k=='edge'?(c.upd?[0,2,3,4]:[0]):L.map((_,j)=>j),nt='';
+if(k=='edge')nt=c.upd?`Isto é a mudança vista no grafo: <b>${f(c.old)} → ${c.c}</b> em dist[${c.b}]. <code>dist[a]</code>=${c.dist[c.u]}, <code>w</code>=${c.w}, <code>dist[b]</code> antes=${f(c.old)}. A fila recebe <code>-${c.c}</code> porque priority_queue devolve o maior.`:`A condição ${c.c} &lt; ${f(c.old)} é falsa: nenhuma linha dentro do <code>if</code> executa.`;
+else if(k=='pop')nt=`Saiu (${c.popped.d}:${c.u}). No código a fila guarda <code>-${c.popped.d}</code>.`;
+else if(k=='skip')nt='Entrada obsoleta descartada por <code>visitado[a]</code>.';else if(k=='init')nt='Estes três vetores são a tabela ao lado (INF = ∞).';else if(k=='src')nt='Corresponde ao ★ da origem e à primeira entrada da fila.';else if(k=='path')nt='<span class="tag">Complemento</span> O PDF descreve a reconstrução em palavras (slide 61); este laço é uma forma de escrevê-la.';
+return`<h2>O que o código faria?</h2><pre>${L.map((l,j)=>hl.includes(j)?`<b>${l}</b>`:l).join('\n')}</pre><p>${nt}</p>`}
+function table(c){let h='<table><tr><th>Vértice</th><th class="n">Dist</th><th class="n">Pred</th><th>Estado</th></tr>';
+for(let v=0;v<N;v++){const ch=c.k=='edge'&&c.upd&&c.b==v;h+=`<tr class="s${c.st[v]}"><td>${v}</td><td class="n ${ch?'chg':''}">${ch?`<s>${f(c.old)}</s> → ${c.c}`:f(c.dist[v])}</td><td class="n ${ch?'chg':''}">${c.pred[v]<0?'—':c.pred[v]}</td><td>${IC[c.st[v]]} ${NM[c.st[v]]}</td></tr>`}return h+'</table>'}
+function hist(j){const c=S[j];return c.k=='init'?'✓ Distâncias iniciais: tudo ∞.':c.k=='src'?`✓ ${c.s} é a origem: dist = 0.`:c.k=='pop'?`✓ ${c.u} escolhido (menor distância: ${c.popped.d}).`:c.k=='skip'?`• Entrada obsoleta de ${c.u} descartada.`:c.k=='edge'?(c.upd?`✓ ${c.u}→${c.b}: dist[${c.b}] ${f(c.old)} → ${c.c}.`:`• ${c.u}→${c.b}: ${c.c} não melhora ${f(c.old)}.`):c.k=='stop'?`✓ Destino ${c.u} removido: fim.`:c.k=='done'?'✓ Fila vazia.':c.k=='path'?`✓ Caminho: ${c.path.join(' → ')} (custo ${c.dist[c.t]}).`:'• Sem caminho.'}
+function queue(c){const ho=$('ho').checked;let h='';const L=c.q.filter(e=>!(ho&&e.d>c.dist[e.v]));if(!L.length)h='<i>vazia</i>';
+L.forEach((e,j)=>{const old=e.d>c.dist[e.v];h+=`<div class="qe ${old?'old':''} ${j==0&&!old?'top':''}"><span>${e.d} : ${e.v}${old?' (obsoleta)':''}${j==0?' ← topo':''}</span><span class="cpp">guardado: ${-e.d}</span></div>`});
+$('qu').innerHTML=h;$('qn').innerHTML=(c.pushed?`<b>+ ${c.pushed.d} : ${c.pushed.v}</b> entrou. `:'')+(c.popped?`<b>− ${c.popped.d} : ${c.popped.v}</b> saiu.`:'')}
+function draw(){seen=new Set;for(let j=0;j<=i;j++)(S[j].term||[]).forEach(x=>seen.add(x));
+if(i>=0){const c=S[i];seen=new Set;for(let j=0;j<i;j++)(S[j].term||[]).forEach(x=>seen.add(x));$('ex').innerHTML=explain(c);$('cp').innerHTML=cppBox(c);$('tb').innerHTML=table(c);queue(c);
+$('hi').innerHTML=S.slice(0,i+1).map((_,j)=>`<li>${hist(j)}</li>`).join('');$('hi').scrollTop=1e5}
+else{exIntro();$('cp').innerHTML='<h2>O que o código faria?</h2><p>Primeiro entenda o visual; o código aparece conforme os passos.</p>';const z=S[0];$('tb').innerHTML=table({st:Array(N).fill(0),dist:Array(N).fill(INF),pred:Array(N).fill(-1),k:''});$('qu').innerHTML='<i>vazia</i>';$('qn').textContent='';$('hi').innerHTML='<li>Aguardando o primeiro passo.</li>'}
+drawGraph();$('ct').textContent=`Passo ${i+1} de ${S.length}`;$('pv').disabled=i<0;$('nx').disabled=i>=S.length-1;
+const a=stageOf();$('tr').innerHTML=STG.map((s,j)=>`<span class="${a.includes(j)?'act':''}">${s}</span>`).join('')}
+function go(d){i=Math.max(-1,Math.min(S.length-1,i+d));draw();if(i>=S.length-1)stopAuto()}
+$('nx').onclick=()=>go(1);$('pv').onclick=()=>go(-1);$('rs').onclick=()=>{stopAuto();i=-1;man=[+$('so').value];draw()};
+$('au').onclick=()=>{if(timer)return stopAuto();if(i>=S.length-1)i=-1;$('au').textContent='⏸ Pausar';go(1);timer=setInterval(()=>go(1),1500)};
+document.onkeydown=e=>{if(e.target.tagName=='INPUT'||e.target.tagName=='SELECT')return;if(e.key=='ArrowRight')go(1);if(e.key=='ArrowLeft')go(-1)};
+$('mc').onclick=()=>{document.body.className='concept';$('mc').className='on';$('mp').className=''};$('mp').onclick=()=>{document.body.className='';$('mp').className='on';$('mc').className=''};
+for(let v=0;v<N;v++){$('so').add(new Option(v,v));$('de').add(new Option(v,v))}$('so').value=0;$('de').value=5;
+['so','de','se','ti'].forEach(x=>$(x).onchange=setup);$('ho').onchange=()=>i>=0&&draw();
+// desafios
+$('c1').innerHTML=[1,6,2,7].map(v=>`<button data-c="${v}">${v}</button>`).join(' ');
+$('c1').onclick=e=>{const v=e.target.dataset.c;if(!v)return;$('c1r').innerHTML=v==1?'✅ <b>1</b>: tem a menor distância conhecida (4 &lt; 7). 2 e 7 ainda estão em ∞: nem entraram na fila.':`❌ Não é ${v}. ${v==6?'6 tem 7, mas 1 tem 4 — menor.':'Esse ainda está em ∞ e nem está na fila.'} Dijkstra escolhe a menor distância conhecida: <b>1</b>.`};
+$('c2b').onclick=()=>{const v=+$('c2').value;$('c2r').innerHTML=v==7?'✅ 3 + 4 = 7. Como 7 &lt; 10, atualizamos B para 7 (e pred[B] = A).':`❌ Faça dist[A] + peso = 3 + 4 = <b>7</b>. Como 7 &lt; 10, B passa a valer 7.`};
+setup();
+</script>
+</body></html>

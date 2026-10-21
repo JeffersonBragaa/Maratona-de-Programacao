@@ -1,0 +1,25 @@
+# Ambientes locais / editor
+.vscode/
+.idea/
+
+# Artefatos de compilação
+*.o
+*.obj
+a.out
+programa
+*.exe
+
+# Saídas e temporários de execução
+saida
+out.txt
+*.in
+!entrada.txt
+
+# Agente / ferramentas de IA e materiais internos de tutoria
+.mimocode/
+AGENTS.md
+ecox21/
+
+# Sistema
+.DS_Store
+Thumbs.db

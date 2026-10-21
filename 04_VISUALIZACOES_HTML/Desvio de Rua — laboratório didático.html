@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Desvio de Rua — laboratório didático</title>
+<style>
+:root{--bg:#fff;--card:#f5f4ee;--tx:#1f1e1c;--tx2:#5f5e5a;--bd:#d3d1c7;--acc:#185FA5;--accbg:#E6F1FB;--ok:#3B6D11;--okbg:#EAF3DE;--wa:#854F0B;--wabg:#FAEEDA;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1f1e1c;--card:#2c2c2a;--tx:#f1efe8;--tx2:#b4b2a9;--bd:#444441;--acc:#85B7EB;--accbg:#042C53;--ok:#97C459;--okbg:#27500A;--wa:#FAC775;--wabg:#633806}}
+:root[data-theme="dark"]{--bg:#1f1e1c;--card:#2c2c2a;--tx:#f1efe8;--tx2:#b4b2a9;--bd:#444441;--acc:#85B7EB;--accbg:#042C53;--ok:#97C459;--okbg:#27500A;--wa:#FAC775;--wabg:#633806}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+.w{max-width:1000px;margin:0 auto;padding:16px}
+h1{font-size:20px;font-weight:500;margin:0 0 4px}.sub{color:var(--tx2);margin:0 0 8px;font-size:14px}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0;align-items:center}
+.b{font:inherit;padding:6px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);cursor:pointer}
+.b.on{border-color:var(--acc);color:var(--acc)}.b:disabled{opacity:.4;cursor:default}
+.ph{font-size:12px;padding:2px 10px;border-radius:99px;border:1px solid var(--bd);color:var(--tx2)}
+.ph.on{background:var(--accbg);color:var(--acc);border-color:var(--acc)}.ph.off{opacity:.35}
+.g{display:grid;grid-template-columns:1fr;gap:12px}@media(min-width:760px){.g{grid-template-columns:1.1fr 1fr}}
+.p{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;min-width:0}
+.n{fill:var(--card);stroke:var(--tx2);stroke-width:1.5}.n.v{fill:var(--okbg);stroke:var(--ok)}.n.s{stroke:var(--wa);stroke-width:3}.n.c{fill:var(--accbg);stroke:var(--acc);stroke-width:3}
+svg text{fill:var(--tx);font:500 14px system-ui,sans-serif}svg .l{fill:var(--tx2);font-size:11px;font-weight:400}
+.ch i{display:inline-block;min-width:26px;text-align:center;border:1px solid var(--bd);border-radius:6px;margin:2px;padding:1px 6px;font-style:normal;background:var(--bg)}
+.cc{margin:0 0 8px;padding:8px 10px;border-radius:8px;background:var(--accbg);color:var(--tx);font-size:14px}
+.q{margin-top:8px;padding:8px 10px;border-radius:8px;background:var(--wabg);color:var(--wa);font-size:14px}
+.q button{margin-left:6px;font-size:12px;padding:1px 8px}
+.t{margin:8px 0;padding:8px 10px;border-radius:8px;background:var(--bg);border:1px solid var(--bd)}
+.ans{font-size:28px;font-weight:500;color:var(--acc)}
+table{border-collapse:collapse;width:100%;font-size:14px}td,th{border-bottom:1px solid var(--bd);padding:3px 6px;text-align:left}tr.c td{background:var(--accbg)}
+.code{position:relative;margin-top:8px;max-height:430px;overflow:auto;font:12.5px/1.55 ui-monospace,Menlo,Consolas,monospace;background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:6px 0}
+.cl{display:block;white-space:pre;padding:0 10px;min-width:max-content}.cl.h{background:var(--wabg);box-shadow:inset 3px 0 var(--wa)}
+.leg{font-size:12px;color:var(--tx2);margin-top:6px}
+</style></head><body><div class="w">
+<h1>Desvio de Rua — laboratório didático</h1>
+<p class="sub">Escolha um exemplo e avance (botão ou setas do teclado). As linhas laranja no código mostram exatamente o que está sendo executado em cada passo. Antes de cada fase, tente responder a pergunta.</p>
+<div class="row" id="exs"></div><div class="row" id="phs"></div>
+<div class="g">
+<div class="p"><svg id="svg" viewBox="0 0 360 280" width="100%" role="img" aria-label="Grafo da cidade"></svg>
+<div class="leg">Azul = vértice atual · borda laranja = na pilha · verde = visitado · aresta laranja = sendo analisada · azul = árvore DFS · vermelha = ponte</div></div>
+<div class="p"><div class="cc" id="cc"></div><div id="st"></div><div class="t" id="tx"></div><div class="q" id="qq" hidden></div></div>
+</div>
+<div class="row"><button class="b" id="pv">◀ Voltar</button><button class="b" id="nx">Avançar ▶</button><button class="b" id="rs">Reiniciar</button><button class="b" id="cb">Ocultar código</button><span id="ct" class="sub" style="margin:0"></span></div>
+<div class="p" id="cd"><b>Código C++ completo</b> <span class="sub">(variáveis no main, só as funções fora)</span><div class="code" id="code"></div></div>
+</div>
+<script>
+const RAW=String.raw`#include <bits/stdc++.h>
+using namespace std;
+
+// DFS com pilha (slide 47): retorna quantos cruzamentos alcanca a partir de s
+int dfs(int s, vector<vector<int>> &grafo, vector<int> &visitado, stack<int> &pilha)
+{
+    int u, c = 0;
+
+    fill(visitado.begin(), visitado.end(), 0);
+    pilha.push(s);/*#d0*/
+
+    while(!pilha.empty())
+    {
+        u = pilha.top();/*#pop*/
+        pilha.pop();/*#pop*/
+
+        if(!visitado[u])/*#chk*/
+        {
+            visitado[u] = 1;/*#vis*/
+            c++;/*#vis*/
+
+            for(auto v : grafo[u])/*#viz*/
+                if(!visitado[v])/*#viz*/
+                    pilha.push(v);/*#psh*/
+        }
+    }
+    return c;/*#ret*/
+}
+
+// DFS de pontes (parecida com o tarjan da aula): ponte quando low[v] > tin[u]
+void pontes(int u, int pai, vector<vector<pair<int, int>>> &AU, vector<int> &unica,
+            vector<int> &tin, vector<int> &low, int &tempo, bool &ponteUnica)
+{
+    tin[u] = low[u] = ++tempo;/*#disc*/
+
+    for(auto [v, id] : AU[u])
+    {
+        if(id == pai) continue;/*#pai*/
+
+        if(tin[v]) low[u] = min(low[u], tin[v]);/*#back*/
+        else
+        {
+            pontes(v, id, AU, unica, tin, low, tempo, ponteUnica);/*#tree*/
+            low[u] = min(low[u], low[v]);/*#lowup*/
+
+            if(low[v] > tin[u] && unica[id]) ponteUnica = true;/*#brg*/
+        }
+    }
+}
+
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+
+    int n, m, i, a, b, t, tempo;
+    bool ponteUnica;
+    vector<vector<int>> AL, ALR;           // original e reversa
+    vector<vector<pair<int, int>>> AU;     // sem direcao: (vizinho, id da rua)
+    vector<int> unica, visitado, tin, low;
+    stack<int> pilha;
+
+    while(cin >> n >> m)
+    {
+        AL.assign(n + 1, {});
+        ALR.assign(n + 1, {});
+        AU.assign(n + 1, {});
+        unica.assign(m + 1, 0);
+        visitado.assign(n + 1, 0);
+        tin.assign(n + 1, 0);
+        low.assign(n + 1, 0);
+        tempo = 0;
+        ponteUnica = false;
+
+        for(i = 1; i <= m; i++)
+        {
+            cin >> a >> b >> t;
+
+            if(i == 1) continue;/*#skip*/
+
+            unica[i] = (t == 1);/*#read*/
+            AU[a].push_back({b, i});/*#read*/
+            AU[b].push_back({a, i});/*#read*/
+            AL[a].push_back(b);/*#read*/
+            ALR[b].push_back(a);/*#read*/
+            if(t == 2) AL[b].push_back(a), ALR[a].push_back(b);/*#read*/
+        }
+
+        // 1) continua fortemente conexo?
+        if(dfs(1, AL, visitado, pilha) == n && dfs(1, ALR, visitado, pilha) == n)/*#t1*/
+        {
+            cout << "-\n";/*#t1*/
+            continue;
+        }
+
+        // 2) ignorando as maos, a cidade e conexa?
+        pontes(1, 0, AU, unica, tin, low, tempo, ponteUnica);/*#t2*/
+        if(tempo < n)/*#t2b*/
+        {
+            cout << "*\n";/*#t2b*/
+            continue;
+        }
+
+        // 3) tem ponte de mao unica?
+        cout << (ponteUnica ? "2\n" : "1\n");/*#t3*/
+    }
+
+    return 0;
+}`;
+const CL=[],KM={};RAW.split('\n').forEach((l,i)=>{const m=l.match(/\/\*#(\w+)\*\/$/);if(m){l=l.replace(m[0],'');(KM[m[1]]=KM[m[1]]||[]).push(i)}CL.push(l)});
+const EX=[
+{n:4,e:[[1,2,2],[2,3,1],[3,4,1],[4,1,1]],p:[0,[80,60],[280,60],[280,220],[80,220]]},
+{n:3,e:[[1,2,2],[2,3,2],[3,1,2]],p:[0,[70,200],[180,50],[290,200]]},
+{n:4,e:[[1,2,2],[2,3,2],[3,4,2]],p:[0,[60,140],[160,60],[160,220],[300,140]]},
+{n:4,e:[[3,1,1],[1,2,1],[2,3,1],[1,4,1],[4,3,1]],p:[0,[80,60],[280,60],[280,220],[80,220]]}];
+const PH=[['in','Entrada'],['f','DFS original'],['r','DFS reverso'],['br','Pontes'],['res','Resposta']];
+const CC={in:'Cada rua vira uma aresta. A rua 1 será interditada, então não entra em lista nenhuma. Guardamos 3 versões do mapa: AL (como está), ALR (setas invertidas) e AU (sem setas, guardando o número da rua).',
+f:'DFS com pilha: desempilha, marca como visitado e empilha os vizinhos novos. Ela responde: seguindo as setas a partir do 1, quem eu alcanço?',
+r:'A mesma dfs, mas no grafo reverso. Alcançar x a partir do 1 no reverso equivale a x conseguir voltar ao 1 no original. Se os dois testes alcançam todos, a cidade é fortemente conexa.',
+br:'Aqui ignoramos as setas. tin = quando o cruzamento foi descoberto. low = menor tin que se consegue alcançar descendo na árvore e usando uma aresta de retorno. Se low[v] > tin[u], v não tem caminho alternativo de volta: a rua u–v é ponte. O contador tempo serve de teste: se não chegou a n, sobrou cruzamento isolado.',
+res:'Ordem dos testes: primeiro “-” (nada a fazer), depois “*” (impossível), depois olhamos as pontes de mão única (“2”) e, se não houver, “1”. Cada teste só faz sentido se o anterior falhou.'};
+const Q={f:['Pense: seguindo só as setas a partir do 1, quem será alcançado?','Todos os cruzamentos para os quais existe um caminho respeitando as setas, saindo do 1. Pode ser todos ou só alguns.'],
+r:['Pense: por que olhar as setas invertidas diz se todos conseguem voltar ao 1?','No reverso, ir do 1 até x é o mesmo que ir de x até o 1 no original. Então a dfs reversa lista quem consegue voltar.'],
+br:['Pense: qual rua, se sumisse, separaria o grafo em dois pedaços?','A rua que não tem caminho alternativo: ao sumir, uma parte não alcança a outra. Na DFS isso aparece como low[v] > tin[u].']};
+let S=[],ex,k=0;const $=i=>document.getElementById(i);
+function adjOf(m){const A=Array.from({length:ex.n+1},()=>[]);ex.e.forEach(([a,b,t],i)=>{if(!i)return;const id=i+1;
+if(m=='u'){A[a].push({v:b,id});A[b].push({v:a,id})}
+else if(m=='f'){A[a].push({v:b,id});if(t==2)A[b].push({v:a,id})}
+else{A[b].push({v:a,id});if(t==2)A[a].push({v:b,id})}});return A}
+function reach(m,ph){const A=adjOf(m),vis=Array(ex.n+1).fill(0),st=[1],ord=[];let c=0;
+const sn=o=>S.push({ph,mode:m,st:[...st],vis:[...vis],ord:[...ord],c,...o});
+sn({L:['t1','d0'],t:'Chama dfs(1, ...): empilha o cruzamento 1.',q:Q[ph]});
+while(st.length){const u=st.pop();
+if(vis[u]){sn({cur:u,L:['pop','chk'],t:`Desempilha ${u}, mas ele já foi visitado: o if(!visitado[u]) é falso e nada acontece.`});continue}
+vis[u]=1;c++;ord.push(u);const hi=[],nw=[];
+for(const{v,id}of A[u]){hi.push(id);if(!vis[v]){st.push(v);nw.push(v)}}
+sn({cur:u,hi,L:['pop','chk','vis','viz',...(nw.length?['psh']:[])],t:`Desempilha ${u}, marca como visitado (c = ${c}). `+(nw.length?`Empilha os vizinhos ainda não visitados: ${nw.join(', ')}.`:'Nenhum vizinho novo para empilhar.')})}
+sn({L:['ret'],t:`Pilha vazia: a função retorna c = ${c}, ou seja, alcançou ${c} de ${ex.n} cruzamentos.`});return c}
+function bridges(){const A=adjOf('u'),n=ex.n,tin=Array(n+1).fill(0),low=Array(n+1).fill(0),tree=[],br=[];let T=0,uni=false,first=1;
+const sn=o=>{S.push({ph:'br',mode:'u',tin:[...tin],low:[...low],tree:[...tree],br:[...br],T,uni,...o,q:first?Q.br:0});first=0};
+sn({L:['t2'],t:'Chama pontes(1, 0, ...) a partir do cruzamento 1, ignorando as setas (usa AU).'});
+function d(u,p){tin[u]=low[u]=++T;sn({cur:u,L:['disc'],t:`Descobre ${u}: tin[${u}] = low[${u}] = tempo = ${T}.`});
+for(const{v,id}of A[u]){
+if(id==p){sn({cur:u,hi:[id],L:['pai'],t:`Rua ${id} é a rua por onde chegamos em ${u}: ignora. Comparamos pelo número da rua, não pelo vértice, assim ruas paralelas contam como caminhos diferentes.`});continue}
+if(tin[v]){const o=low[u];low[u]=Math.min(o,tin[v]);sn({cur:u,hi:[id],L:['back'],t:`Rua ${id} leva a ${v}, que já foi descoberto: aresta de retorno. low[${u}] = min(${o}, tin[${v}] = ${tin[v]}) = ${low[u]}.`})}
+else{tree.push(id);sn({cur:u,hi:[id],L:['tree'],t:`Rua ${id} leva a ${v}, ainda não descoberto: aresta da árvore. Chama pontes recursivamente para ${v}.`});d(v,id);
+const o=low[u];low[u]=Math.min(o,low[v]);let m=`Volta de ${v} para ${u}. low[${u}] = min(${o}, low[${v}] = ${low[v]}) = ${low[u]}. `;
+if(low[v]>tin[u]){br.push(id);const one=ex.e[id-1][2]==1;if(one)uni=true;m+=`Como low[${v}] = ${low[v]} > tin[${u}] = ${tin[u]}, a rua ${id} é ponte (${one?'mão única: ponteUnica = true':'mão dupla: não marca ponteUnica'}).`}
+else m+=`Como low[${v}] = ${low[v]} ≤ tin[${u}] = ${tin[u]}, a rua ${id} não é ponte.`;
+sn({cur:u,hi:[id],L:['lowup','brg'],t:m})}}}
+d(1,0);sn({L:['t2b'],t:`Fim da DFS. tempo = ${T}: ${T} de ${n} cruzamentos descobertos. Pontes: ${br.length?br.map(i=>'rua '+i).join(', '):'nenhuma'}. ponteUnica = ${uni}.`});return{uni,T}}
+function build(){S=[{ph:'in',mode:'f',L:['skip','read'],t:'A rua 1 (vermelha) é pulada pelo continue e nunca entra em AL, ALR nem AU. As outras ruas entram nas três listas, com o número da rua como id.'}];
+const n=ex.n,c1=reach('f','f');let a,m;
+if(c1==n){const c2=reach('r','r');if(c2==n){a='-';m='Os dois dfs alcançaram todos: continua fortemente conexo. Nada a alterar.'}}
+else S[S.length-1].t+=' Como c1 ≠ n, o && já é falso e a segunda dfs nem chega a rodar.';
+let L;if(a)L=['t1'];else{const r=bridges();L=['t2b'];
+if(r.T<n){a='*';m=`Mesmo ignorando as setas, a dfs só descobriu ${r.T} de ${n} cruzamentos. Nenhuma rua liga os outros ao resto, e mudar mão única para dupla não cria ruas: impossível.`}
+else{L=['t3'];if(r.uni){a='2';m='Existe ponte de mão única (ponteUnica = true): sem caminho alternativo, ela precisa virar mão dupla.'}else{a='1';m='Nenhuma ponte de mão única: tudo está em ciclos, então inverter mãos basta.'}}}
+const l=S[S.length-1];S.push({...l,ph:'res',cur:0,hi:0,q:0,L,ans:a,t:m})}
+function nz(x,y){const l=Math.hypot(x,y)||1;return[x/l,y/l]}
+function draw(){const s=S[k],mk={'#888780':0,'#378ADD':1,'#E24B4A':2,'#EF9F27':3},cnt={},idx=[];
+const key=(a,b)=>Math.min(a,b)+'-'+Math.max(a,b);
+ex.e.forEach(([a,b],i)=>{const q=key(a,b);cnt[q]=(cnt[q]||0)+1;idx[i]=cnt[q]-1});
+let h='<defs>'+['#888780','#378ADD','#E24B4A','#EF9F27'].map((c,i)=>`<marker id="m${i}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M1 1L9 5L1 9z" fill="${c}"/></marker>`).join('')+'</defs>';
+ex.e.forEach(([a,b,t],i)=>{const id=i+1,off=(idx[i]-(cnt[key(a,b)]-1)/2)*50,cl=i==0;
+let A=ex.p[a],B=ex.p[b],col='#888780',w=1.8,da='',dir=s.mode!='u',both=t==2,op=1;
+if(s.mode=='r'&&t==1)[A,B]=[B,A];
+if(cl){if(s.ph=='in'){col='#E24B4A';da='6 4';w=2.2}else{da='4 4';w=1.2;dir=false;both=false;op=.5}}
+else if(s.br&&s.br.includes(id)){col='#E24B4A';w=4}
+else if(s.hi&&s.hi.includes(id)){col='#EF9F27';w=3.5}
+else if(s.tree&&s.tree.includes(id)){col='#378ADD';w=2.5}
+const mx=(A[0]+B[0])/2,my=(A[1]+B[1])/2,dx=B[0]-A[0],dy=B[1]-A[1],L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L,Cc=[mx+nx*off,my+ny*off];
+const u1=nz(Cc[0]-A[0],Cc[1]-A[1]),u2=nz(B[0]-Cc[0],B[1]-Cc[1]),ps=both?21:19,pe=dir?21:19;
+const P=[A[0]+u1[0]*ps,A[1]+u1[1]*ps],Q2=[B[0]-u2[0]*pe,B[1]-u2[1]*pe],M=[(A[0]+2*Cc[0]+B[0])/4,(A[1]+2*Cc[1]+B[1])/4],sg=off<0?-1:1;
+h+=`<path d="M${P}Q${Cc} ${Q2}" fill="none" stroke="${col}" stroke-width="${w}" stroke-dasharray="${da}" opacity="${op}"${dir?` marker-end="url(#m${mk[col]})"`:''}${dir&&both?` marker-start="url(#m${mk[col]})"`:''}/>`;
+h+=`<text class="l" x="${M[0]+nx*11*sg}" y="${M[1]+ny*11*sg+4}" text-anchor="middle">${cl&&s.ph=='in'?'rua 1 (fecha)':'rua '+id}</text>`;
+if(cl&&s.ph!='in')h+=`<path d="M${M[0]-6} ${M[1]-6}l12 12m0-12l-12 12" stroke="#E24B4A" stroke-width="2" stroke-linecap="round"/>`});
+for(let u=1;u<=ex.n;u++){const[x,y]=ex.p[u];let c='n';
+if(s.vis&&s.vis[u]||s.tin&&s.tin[u])c+=' v';if(s.st&&s.st.includes(u))c+=' s';if(s.cur==u)c+=' c';
+h+=`<circle class="${c}" cx="${x}" cy="${y}" r="18"/><text x="${x}" y="${y+5}" text-anchor="middle">${u}</text>`;
+if(s.tin&&s.tin[u])h+=`<text class="l" x="${x}" y="${y+34}" text-anchor="middle">tin ${s.tin[u]} · low ${s.low[u]}</text>`}
+$('svg').innerHTML=h;
+let p='';const ch=a=>a.length?a.map(x=>`<i>${x}</i>`).join(''):'<em>vazia</em>';
+if(s.ph=='f'||s.ph=='r')p=`<b>pilha</b> (topo à direita)<div class="ch">${ch(s.st)}</div><b>Ordem de visita</b> · c = ${s.c}<div class="ch">${ch(s.ord)}</div>`;
+else if(s.ph=='br')p=`<table><tr><th>Vértice</th><th>tin</th><th>low</th></tr>${[...Array(ex.n).keys()].map(i=>i+1).map(u=>`<tr class="${s.cur==u?'c':''}"><td>${u}</td><td>${s.tin[u]||'–'}</td><td>${s.low[u]||'–'}</td></tr>`).join('')}</table><div class="sub">tempo = ${s.T} · ponteUnica = ${s.uni}</div>`;
+else if(s.ph=='in')p=`<table><tr><th>Rua (id)</th><th>Liga</th><th>unica[id]</th></tr>${ex.e.map(([a,b,t],i)=>`<tr><td>${i+1}${i?'':' ✕'}</td><td>${a} ${t==2?'↔':'→'} ${b}</td><td>${i?(t==1?1:0):'–'}</td></tr>`).join('')}</table>`;
+else p=`<div>Resposta:</div><div class="ans">${s.ans}</div>`;
+$('st').innerHTML=p;$('tx').textContent=s.t;$('cc').textContent=CC[s.ph];
+const qq=$('qq');qq.hidden=!s.q;if(s.q){qq.innerHTML='';qq.append(s.q[0]);const bt=document.createElement('button');bt.className='b';bt.textContent='Ver resposta';bt.onclick=()=>{bt.remove();qq.append(' '+s.q[1])};qq.append(bt)}
+const seen=S.map(x=>x.ph);$('phs').innerHTML=PH.map(([i,l])=>`<span class="ph ${i==s.ph?'on':seen.includes(i)?'':'off'}">${l}</span>`).join('');
+const hs=new Set((s.L||[]).flatMap(x=>KM[x]||[])),cd=$('code');
+cd.innerHTML=CL.map((l,i)=>`<span class="cl${hs.has(i)?' h':''}">${(l||' ').replace(/&/g,'&amp;').replace(/</g,'&lt;')}</span>`).join('');
+const f=cd.querySelector('.h');if(f)cd.scrollTop=Math.max(0,f.offsetTop-cd.clientHeight/3);
+$('pv').disabled=k==0;$('nx').disabled=k==S.length-1;$('ct').textContent=`Passo ${k+1} de ${S.length}`}
+function load(i){ex=EX[i];k=0;build();$('exs').innerHTML=EX.map((_,j)=>`<button class="b ${j==i?'on':''}" data-i="${j}">Exemplo ${'ABCD'[j]}</button>`).join('');draw()}
+$('exs').onclick=e=>{if(e.target.dataset.i!=null)load(+e.target.dataset.i)};
+$('pv').onclick=()=>{if(k>0){k--;draw()}};$('nx').onclick=()=>{if(k<S.length-1){k++;draw()}};$('rs').onclick=()=>{k=0;draw()};
+$('cb').onclick=()=>{const h=$('code').hidden=!$('code').hidden;$('cb').textContent=h?'Mostrar código':'Ocultar código'};
+document.onkeydown=e=>{if(e.key=='ArrowRight')$('nx').click();if(e.key=='ArrowLeft')$('pv').click()};
+load(0);
+</script></body></html>

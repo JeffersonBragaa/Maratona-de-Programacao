@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Laboratório de Tarjan</title>
+    <style>
+        :root {
+            --ink: #17233c;
+            --mut: #5d6b85;
+            --bg: #eef2f7;
+            --card: #fff;
+            --line: #c9d3e2;
+            --cur: #e8a100;
+            --dis: #0b8f8c;
+            --done: #3b3fa8
+        }
+
+        @media(prefers-color-scheme:dark) {
+            :root {
+                --ink: #e6ecf7;
+                --mut: #9fb0cc;
+                --bg: #101828;
+                --card: #182235;
+                --line: #2d3b57;
+                --cur: #ffc233;
+                --dis: #3cc9c4;
+                --done: #8c92ff
+            }
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 15px/1.5 system-ui, sans-serif
+        }
+
+        h1,
+        h2 {
+            font-family: Georgia, serif;
+            margin: .2em 0
+        }
+
+        h1 {
+            font-size: 1.6rem
+        }
+
+        h2 {
+            font-size: 1.15rem
+        }
+
+        header {
+            padding: 14px 18px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--ink)
+        }
+
+        button,
+        select {
+            font: inherit;
+            color: var(--ink);
+            background: var(--card);
+            border: 1.5px solid var(--ink);
+            border-radius: 8px;
+            padding: 6px 12px;
+            cursor: pointer
+        }
+
+        button:hover:not(:disabled) {
+            background: var(--ink);
+            color: var(--card)
+        }
+
+        button:disabled {
+            opacity: .4;
+            cursor: default
+        }
+
+        button.on {
+            background: var(--ink);
+            color: var(--card)
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--cur);
+            outline-offset: 2px
+        }
+
+        .bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            padding: 10px 18px
+        }
+
+        .trail {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 0 18px 6px;
+            font-size: 12px
+        }
+
+        .trail span {
+            padding: 2px 8px;
+            border: 1px solid var(--line);
+            border-radius: 99px;
+            color: var(--mut)
+        }
+
+        .trail .act {
+            background: var(--ink);
+            color: var(--card);
+            border-color: var(--ink)
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr);
+            gap: 14px;
+            padding: 0 18px 18px
+        }
+
+        @media(max-width:900px) {
+            main {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .card {
+            background: var(--card);
+            border: 1.5px solid var(--ink);
+            border-radius: 10px;
+            padding: 12px
+        }
+
+        .gp {
+            background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+            background-size: 24px 24px
+        }
+
+        svg {
+            width: 100%;
+            height: auto;
+            display: block
+        }
+
+        .col {
+            display: flex;
+            flex-direction: column;
+            gap: 14px
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 14px
+        }
+
+        th,
+        td {
+            padding: 3px 6px;
+            border-bottom: 1px solid var(--line);
+            text-align: left
+        }
+
+        th.n,
+        td.n {
+            text-align: right;
+            white-space: nowrap;
+            padding-right: 14px;
+            font-variant-numeric: tabular-nums
+        }
+
+        tr.s2 {
+            background: color-mix(in srgb, var(--cur) 25%, transparent);
+            font-weight: 700
+        }
+
+        tr.s3 {
+            color: var(--done)
+        }
+
+        tr.s0 {
+            color: var(--mut)
+        }
+
+        .chg {
+            animation: fl .9s
+        }
+
+        @keyframes fl {
+            from {
+                background: var(--cur)
+            }
+        }
+
+        .chg s {
+            opacity: .6
+        }
+
+        .q {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-height: 40px
+        }
+
+        .qe {
+            border: 1.5px solid var(--ink);
+            border-radius: 6px;
+            padding: 2px 8px;
+            text-align: center;
+            font-weight: 700
+        }
+
+        .qe.top {
+            background: color-mix(in srgb, var(--cur) 30%, transparent)
+        }
+
+        .hist {
+            max-height: 190px;
+            overflow: auto;
+            font-size: 13px;
+            padding-left: 0;
+            list-style: none;
+            margin: 0
+        }
+
+        .hist li {
+            padding: 1px 0
+        }
+
+        .hist li:last-child {
+            font-weight: 700
+        }
+
+        .rule {
+            font-family: ui-monospace, Consolas, monospace;
+            background: var(--bg);
+            border-left: 4px solid var(--cur);
+            padding: 4px 8px;
+            margin: 6px 0;
+            border-radius: 4px
+        }
+
+        .tag {
+            font-size: 11px;
+            border: 1px solid var(--mut);
+            color: var(--mut);
+            border-radius: 4px;
+            padding: 0 5px
+        }
+
+        .big {
+            font-size: 1.1rem
+        }
+
+        .verd {
+            animation: fl .9s
+        }
+
+        pre {
+            background: #10172a;
+            color: #d7e3ff;
+            padding: 8px;
+            border-radius: 6px;
+            overflow: auto;
+            font-size: 12.5px;
+            margin: 6px 0
+        }
+
+        pre .ln {
+            display: block;
+            min-height: 1.25em;
+            white-space: pre
+        }
+
+        pre .ln::before {
+            content: "  "
+        }
+
+        pre .h {
+            background: #5b4a00;
+            color: #ffe07a
+        }
+
+        pre .h::before {
+            content: "▶ "
+        }
+
+        #cp {
+            grid-column: 1/-1
+        }
+
+        @media(min-width:1250px) {
+            main {
+                grid-template-columns: minmax(0, 1.4fr) minmax(270px, .9fr) minmax(340px, 1fr)
+            }
+
+            #cp {
+                grid-column: auto;
+                position: sticky;
+                top: 8px;
+                align-self: start;
+                max-height: 96vh;
+                overflow: auto
+            }
+        }
+
+        body.concept .cpp {
+            display: none
+        }
+
+        details {
+            border-top: 1px solid var(--line);
+            padding: 4px 0
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        .sec {
+            margin: 0 18px 14px
+        }
+
+        .eg {
+            stroke: var(--mut);
+            stroke-width: 2.5
+        }
+
+        .eg.ev {
+            stroke: var(--cur);
+            stroke-width: 5;
+            stroke-dasharray: 9 5;
+            animation: dash .6s linear infinite
+        }
+
+        .eg.tr {
+            stroke: var(--dis);
+            stroke-width: 4
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -14
+            }
+        }
+
+        .pulse {
+            animation: pu .7s
+        }
+
+        @keyframes pu {
+            50% {
+                transform: scale(1.3)
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            * {
+                animation: none !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div>
+            <h1>Laboratório de Tarjan</h1><small>Baseado na Aula 8 (MP1) · só Tarjan · componentes fortemente conexas
+                (SCC)</small>
+        </div>
+        <div><button id="mc">👁 Modo conceitual</button> <button id="mp" class="on">💻 Conectar com C++</button></div>
+    </header>
+    <div class="bar">
+        <button id="pv">◀ Passo anterior</button><button id="nx">▶ Próximo passo</button><button id="au">▶ Executar
+            automaticamente</button><button id="rs">↻ Reiniciar</button>
+        <b id="ct">Passo 0 de 0</b>
+        <label>Começar a DFS por <select id="so">
+                <option value="0">0 (como o for do main)</option>
+                <option value="7">7 (como nos slides 75–85)</option>
+            </select></label>
+    </div>
+    <div class="trail" id="tr"></div>
+    <main>
+        <div class="col">
+            <div class="card gp"><svg id="g" viewBox="0 0 700 340" role="img"
+                    aria-label="Grafo direcionado do exemplo"></svg></div>
+            <div class="card" id="ex"></div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <h2>Estado dos vértices <span class="cpp"><code>dfs_num[]</code> · <code>dfs_low[]</code> ·
+                        <code>visited[]</code></span></h2>
+                <div id="tb"></div>
+                <small>○ não descoberto · ◐ na pilha · ★ atual · ✓ SCC concluída</small>
+                <div class="cpp"><small><b>AL</b> (lista de adjacência): AL[0]={1} AL[1]={3} AL[2]={1} AL[3]={2,4}
+                        AL[4]={5} AL[5]={7} AL[6]={4} AL[7]={6}</small></div>
+            </div>
+            <div class="card">
+                <h2>Pilha <span class="cpp"><code>stack&lt;int&gt; st</code></span></h2>
+                <div class="q" id="qu"></div><small id="qn"></small>
+                <div><small id="pa"></small></div>
+            </div>
+            <div class="card">
+                <h2>Histórico</h2>
+                <ul class="hist" id="hi"></ul>
+            </div>
+        </div>
+        <div class="card cpp" id="cp"></div>
+    </main>
+
+    <section class="sec card" id="cuidado">
+        <h2>Cuidado com estas ideias</h2>
+        <details>
+            <summary>1 · “Tarjan é só uma DFS”</summary>A DFS é o motor, mas Tarjan mantém também <code>num</code>,
+            <code>low</code> e uma pilha. É isso que permite saber quando uma SCC termina (slide 71).
+        </details>
+        <details>
+            <summary>2 · “low é a menor distância”</summary>Não há distância aqui. <code>low</code> começa igual a
+            <code>num</code> e vai diminuindo quando a DFS encontra, por um vértice que ainda está na pilha, um caminho
+            de volta a um vértice descoberto antes: é a “ligação mínima” que se propaga pelo ciclo.
+        </details>
+        <details>
+            <summary>3 · “Todo vértice descoberto sai logo da pilha”</summary>Só sai quando a raiz da SCC é identificada
+            (<code>num == low</code>). No exemplo, 2 e 3 ficam na pilha até o 1 fechar a componente.
+        </details>
+        <details>
+            <summary>4 · “Aresta entre dois vértices = mesma SCC”</summary>Existe 0 → 1, mas de 1 não dá para voltar a
+            0: o 0 forma uma SCC sozinho. SCC exige caminho nos dois sentidos (slide 68). Num grafo não direcionado a
+            DFS já acha as componentes; no direcionado nem sempre é trivial (slides 65–67).
+        </details>
+        <details>
+            <summary>5 · “Basta decorar o código”</summary>As 3 linhas centrais só fazem sentido vendo a pilha e o
+            <code>low</code> mudando. Por isso o laboratório mostra o estado de cada estrutura a cada passo.
+        </details>
+    </section>
+
+    <section class="sec card" id="desafios">
+        <h2>Mini desafios <small>(cenários do exemplo com a DFS começando em 7)</small></h2>
+        <div id="ch"></div>
+    </section>
+
+    <section class="sec card" id="glossario">
+        <h2>Glossário</h2>
+        <details>
+            <summary>Grafo direcionado / Aresta / Vértice</summary>Aresta u → v só pode ser atravessada de u para v.
+            C++: <code>AL[u]</code> guarda os vizinhos de u (<code>vector&lt;vector&lt;int&gt;&gt;</code>).
+        </details>
+        <details>
+            <summary>SCC (componente fortemente conexa)</summary>Conjunto em que, para qualquer par u, v, existe caminho
+            de u até v e de v até u (slide 68). No exemplo: {0}, {1,2,3} e {4,5,6,7}.
+        </details>
+        <details>
+            <summary>DFS</summary>Busca em profundidade: vai o mais fundo possível antes de voltar. C++: a recursão de
+            <code>tarjan(u)</code>.
+        </details>
+        <details>
+            <summary>num (dfs_num) · UNVISITED</summary>Ordem de descoberta, a partir de 0. −1 (UNVISITED) = ainda não
+            descoberto.
+        </details>
+        <details>
+            <summary>low (dfs_low) · low-link</summary>Valor mínimo de ligação: começa igual a num e é atualizado por
+            <code>min(low[u], low[v])</code> quando v está na pilha.
+        </details>
+        <details>
+            <summary>Pilha · visited</summary>Guarda os vértices descobertos cuja SCC ainda não fechou. C++:
+            <code>stack&lt;int&gt; st</code>; aqui <code>visited[v]=1</code> significa “está na pilha”.
+        </details>
+        <details>
+            <summary>Raiz da SCC</summary>O vértice com <code>low[u] == num[u]</code> ao fim de seus vizinhos: ele
+            inicia uma SCC (slide 71).
+        </details>
+    </section>
+
+    <script>
+        const N = 8, P = [[60, 110], [190, 110], [190, 260], [330, 110], [470, 110], [610, 110], [470, 260], [610, 260]];
+        const AL = [[1], [3], [1], [2, 4], [5], [7], [4], [6]], E = []; AL.forEach((l, u) => l.forEach(v => E.push([u, v])));
+        const $ = id => document.getElementById(id), PAL = ['#3b3fa8', '#0b8f8c', '#c2410c', '#7a3db8'], IC = ['○', '◐', '★', '✓'], NM = ['não descoberto', 'na pilha', 'atual', 'SCC concluída'];
+        const TERMS = { num: '💡 <b>num</b> (<code>dfs_num</code>): a ordem em que a DFS descobre os vértices, de 0 em diante. −1 = UNVISITED, ainda não descoberto.', low: '💡 <b>low</b> (low-link): o “menor valor de ligação” que o vértice consegue alcançar. Começa igual ao num.', pilha: '💡 <b>Pilha</b>: guarda os vértices descobertos cuja SCC ainda não foi fechada. O último a entrar é o primeiro a sair.', scc: '💡 <b>SCC</b>: grupo de vértices em que todos alcançam todos (e voltam).' };
+        const f = x => x < 0 ? '—' : x;
+        function run(start) {
+            const num = Array(N).fill(-1), low = Array(N).fill(0), vis = Array(N).fill(0), comp = Array(N).fill(-1); let st = [], path = [], te = [], cnt = 0, ns = 0, S = [];
+            const add = (k, o = {}) => S.push({ k, ...o, num: [...num], low: [...low], vis: [...vis], comp: [...comp], st: [...st], path: [...path], te: te.map(e => [...e]), cnt, ns });
+            const lowStep = (u, v, tree) => {
+                const on = vis[v], old = low[u], lv = low[v]; if (on) low[u] = Math.min(low[u], low[v]);
+                add(on ? 'low' : 'ign', { u, v, tree, old, lv, nw: low[u], cv: comp[v], ch: on && low[u] != old ? { v: u, low: [old, low[u]] } : null, term: ['low'] })
+            };
+            function tj(u) {
+                low[u] = num[u] = cnt; cnt++; st.push(u); vis[u] = 1; path.push(u); add('enter', { u, ch: { v: u, num: [-1, num[u]], low: [0, low[u]] }, pushed: u, term: ['num', 'pilha'] });
+                for (const v of AL[u]) { if (num[v] == -1) { te.push([u, v]); add('tree', { u, v }); tj(v); lowStep(u, v, true) } else lowStep(u, v, false) }
+                const root = low[u] == num[u]; add('check', { u, root });
+                if (root) { const m = []; ns++; while (1) { const v = st.pop(); vis[v] = 0; comp[v] = ns - 1; m.push(v); add('pop', { u, v, m: [...m], last: v == u, popped: v, term: ['scc'] }); if (v == u) break } }
+                path.pop()
+            }
+            add('init'); const first = [start]; for (let r = 0; r < N; r++)first.push(r); let k0 = 0;
+            for (const r of first) if (num[r] == -1) { add('root', { u: r, first: k0++ == 0 }); tj(r) }
+            add('end'); return S
+        }
+        let S = [], i = -1, timer = null, sel = [], seen = new Set;
+        const B = { k: '', num: Array(N).fill(-1), low: Array(N).fill(0), vis: Array(N).fill(0), comp: Array(N).fill(-1), st: [], path: [], te: [] };
+        function setup() { S = run(+$('so').value); i = -1; sel = []; stopAuto(); draw() }
+        function stopAuto() { clearInterval(timer); timer = null; $('au').textContent = '▶ Executar automaticamente' }
+        function reach(a, b) { const s = new Set([a]), q = [a]; while (q.length) { const x = q.pop(); for (const y of AL[x]) if (!s.has(y)) { s.add(y); q.push(y) } } return s.has(b) }
+        const stOf = (c, v) => c.comp[v] >= 0 ? 3 : (c.u === v && c.k != 'init' && c.k != 'root' && c.k != 'end' && c.path.includes(v) && c.path[c.path.length - 1] === v) ? 2 : c.num[v] >= 0 ? 1 : 0;
+        function drawGraph(c) {
+            let h = '<defs>' + ['#5d6b85', '#e8a100', '#0b8f8c'].map((col, j) => `<marker id="a${j}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="${col}"/></marker>`).join('') + '</defs>';
+            const cur = ['tree', 'low', 'ign'].includes(c.k) ? [c.u, c.v] : null;
+            E.forEach(([a, b]) => {
+                const ev = cur && cur[0] == a && cur[1] == b, tr = c.te.some(e => e[0] == a && e[1] == b), dx = P[b][0] - P[a][0], dy = P[b][1] - P[a][1], L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L, m = ev ? 1 : tr ? 2 : 0;
+                h += `<line class="eg ${ev ? 'ev' : tr ? 'tr' : ''}" x1="${P[a][0] + ux * 26}" y1="${P[a][1] + uy * 26}" x2="${P[b][0] - ux * 29}" y2="${P[b][1] - uy * 29}" marker-end="url(#a${m})"/>`;
+                if (ev) h += `<text x="${(P[a][0] + P[b][0]) / 2 + 8}" y="${(P[a][1] + P[b][1]) / 2 - 8}" font-size="13" font-weight="700" fill="var(--ink)">${c.k == 'tree' ? 'desce ↓' : c.k == 'ign' ? '✗ ignorada' : c.tree ? 'volta ↑ min' : 'min'}</text>`
+            });
+            for (let v = 0; v < N; v++) {
+                const s = stOf(c, v), [x, y] = P[v], pu = c.ch && c.ch.v == v;
+                const fill = s == 3 ? PAL[c.comp[v] % 4] : s == 2 ? 'var(--cur)' : 'var(--card)', tc = s == 3 ? '#fff' : s == 2 ? '#17233c' : 'var(--ink)', stroke = s == 1 ? 'var(--dis)' : s == 2 ? 'var(--cur)' : 'var(--ink)';
+                h += `<g class="${pu ? 'pulse' : ''}" style="transform-origin:${x}px ${y}px;cursor:pointer" data-v="${v}" tabindex="0" role="button" aria-label="Vértice ${v}, ${NM[s]}, num ${f(c.num[v])}, low ${c.num[v] < 0 ? 'indefinido' : c.low[v]}"><circle cx="${x}" cy="${y}" r="24" fill="${fill}" stroke="${stroke}" stroke-width="${s == 1 ? 4 : 2.5}" ${s == 1 ? 'stroke-dasharray="5 3"' : ''}/>${s == 2 ? `<circle cx="${x}" cy="${y}" r="31" fill="none" stroke="var(--cur)" stroke-width="3"/>` : ''}<text x="${x}" y="${y + 6}" text-anchor="middle" font-size="18" font-weight="700" fill="${tc}">${v}</text><text x="${x}" y="${y - 31}" text-anchor="middle" font-size="12" fill="var(--ink)">${IC[s]}${s == 3 ? ' C' + (c.comp[v] + 1) : ''}</text><text x="${x}" y="${y + 43}" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--ink)">num=${f(c.num[v])}</text><text x="${x}" y="${y + 57}" text-anchor="middle" font-size="12.5" font-weight="700" fill="${pu && c.ch.low ? 'var(--cur)' : 'var(--ink)'}">low=${c.num[v] < 0 ? '—' : c.low[v]}</text></g>`
+            }
+            $('g').innerHTML = h; $('g').querySelectorAll('g[data-v]').forEach(n => { n.onclick = () => pick(+n.dataset.v); n.onkeydown = e => { if (e.key == 'Enter') pick(+n.dataset.v) } })
+        }
+        function pick(v) { if (i >= 0) return; if (sel.length == 2) sel = []; if (!sel.includes(v)) sel.push(v); exIntro() }
+        function exIntro() {
+            let t = ''; if (sel.length == 2) { const [a, b] = sel, x = reach(a, b), y = reach(b, a); t = `<p><b>${a} alcança ${b}?</b> ${x ? 'sim' : 'não'} · <b>${b} alcança ${a}?</b> ${y ? 'sim' : 'não'}<br>${x && y ? '✅ Caminho nos dois sentidos: estão na mesma SCC.' : '❌ Falta caminho em algum sentido: <b>não</b> estão na mesma SCC.'}</p>` } else t = `<p>Clique em dois vértices para testar se um alcança o outro${sel.length == 1 ? ` (escolhido: ${sel[0]})` : ''}.</p>`;
+            $('ex').innerHTML = `<h2>Etapas 1–3 · Conheça o grafo e o problema</h2><p><b>Vértices</b> são os círculos; as <b>arestas</b> são setas: 0 → 1 só pode ser percorrida no sentido da seta. O problema (slides 64–68): achar as <b>componentes fortemente conexas (SCC)</b> — grupos em que, para quaisquer u e v, existe caminho de u até v <i>e</i> de v até u. Repare: a DFS a partir do 0 alcança todo mundo, mas isso <b>não</b> basta (slide 67).</p>${t}<p><small>Tente adivinhar as SCC antes de rodar. Depois clique em ▶ e veja como Tarjan chega nelas.</small></p>`
+        }
+        function explain(c) {
+            const u = c.u, v = c.v, k = c.k; let w = '', y = '', r = '';
+            if (k == 'init') { w = 'Preparação: nenhum vértice foi descoberto.'; y = 'Todos começam com <b>num = −1</b> (UNVISITED) e <b>low = 0</b>; a pilha está vazia e os contadores valem 0 (slide 73).'; r = 'dfs_num = UNVISITED ; dfs_low = 0 ; visited = 0 ; st vazia' }
+            else if (k == 'root') { w = `O <code>main</code> escolhe ${u} para iniciar a DFS.`; y = `num[${u}] ainda é −1, ou seja, ${u} nunca foi descoberto. ${c.first ? 'Nos slides a DFS começa em 7, mas qualquer vértice serve (slide 74).' : 'Quando uma DFS termina, o main procura outro vértice ainda não descoberto (slide 84).'}`; r = 'if(dfs_num[u] == UNVISITED) tarjan(u);' }
+            else if (k == 'enter') { w = `Entramos em <b>tarjan(${u})</b>: num[${u}] = ${c.num[u]} e low[${u}] = ${c.low[u]}; ${u} entra na pilha.`; y = `<b>num</b> é a ordem de descoberta: ${u} é o ${c.num[u] + 1}º vértice descoberto. O <b>low</b> começa igual ao num: por enquanto o menor valor alcançável é ele mesmo. Marcamos visited[${u}] = 1.`; r = 'low[u] = num[u] = contador ; contador++ ; st.push(u) ; visited[u] = 1' }
+            else if (k == 'tree') { w = `Aresta ${u} → ${v}: ${v} ainda não foi descoberto (num = −1).`; y = `Então a DFS <b>desce</b>: chama tarjan(${v}) e só volta a ${u} depois de explorar tudo que ${v} alcança.`; r = 'if(dfs_num[v] == UNVISITED) tarjan(v);' }
+            else if (k == 'low' || k == 'ign') {
+                w = c.tree ? `A DFS <b>voltou</b> de ${v} para ${u}.` : `Aresta ${u} → ${v}: ${v} já foi descoberto (num[${v}] = ${c.num[v]}), a DFS não desce.`;
+                if (k == 'low') { y = `${v} ainda está na pilha (visited[${v}] = 1), então ${u} pode herdar o menor low de ${v}: <span class="rule">min(low[${u}], low[${v}]) = min(${c.old}, ${c.lv}) = ${c.nw}</span><span class="verd">${c.nw < c.old ? `<b>low[${u}]: ${c.old} → ${c.nw}</b> — o low se propagou pelo ciclo.` : `<b>low[${u}] continua ${c.old}</b>: low[${v}] não é menor.`}</span>`; r = 'if(visited[v]) low[u] = min(low[u], low[v]);' }
+                else { y = `${v} já foi descoberto, mas <b>não está mais na pilha</b> (visited[${v}] = 0): ele já saiu junto com sua SCC (C${c.cv + 1}). <span class="tag">Complemento</span> Por isso a aresta é ignorada e o low de ${u} não muda.`; r = 'visited[v] == 0  →  a linha do min não executa' }
+            }
+            else if (k == 'check') { w = `${u} olhou todos os vizinhos. Compare: low[${u}] = ${c.low[u]} e num[${u}] = ${c.num[u]}.`; y = c.root ? `<span class="verd"><b>${c.low[u]} == ${c.num[u]}</b></span> → ${u} é a <b>raiz</b> de uma SCC: nenhum vizinho alcançável conseguiu voltar a um vértice descoberto antes dele. Todos os vértices acima de ${u} na pilha pertencem à mesma SCC (slide 71).` : `<b>${c.low[u]} &lt; ${c.num[u]}</b> → de ${u} dá para voltar a um vértice descoberto antes (num = ${c.low[u]}). ${u} <b>não</b> inicia SCC: continua na pilha e a DFS retorna ao chamador.`; r = 'if(dfs_low[u] == dfs_num[u])' }
+            else if (k == 'pop') { w = `Sai da pilha: <b>${v}</b> (visited[${v}] = 0).`; y = `Desempilhamos até alcançar ${u}. Retirados: ${c.m.join(', ')}.${c.last ? `<br><span class="verd"><b>SCC C${c.ns} concluída: {${[...c.m].sort((a, b) => a - b).join(', ')}}</b></span> — de qualquer um dá para chegar em qualquer outro e voltar (slide 68).` : ''}`; r = 'v = st.top(); st.pop(); visited[v] = 0; if(u == v) break;' }
+            else { w = `Fim: todos os vértices foram descobertos e <b>${c.ns} SCC</b> foram encontradas.`; y = `${[...Array(c.ns).keys()].map(j => `C${j + 1} = {${c.comp.map((x, z) => x == j ? z : -1).filter(z => z >= 0).join(', ')}}`).join(' · ')}. Neste exemplo os vértices de cada SCC terminam com o mesmo low (slide 85). <span class="tag">Complemento</span> Em outros grafos isso nem sempre vale: o que garante a SCC é a regra da raiz (num == low).` }
+            const tm = (c.term || []).filter(x => !seen.has(x)); tm.forEach(x => seen.add(x));
+            const ki = ({ init: 0, root: 34, enter: 10, tree: 17, low: 18, ign: 18, check: 21, pop: 26, end: 33 })[k];
+            return `<h2>Etapa ${({ init: 4, root: 4, enter: '5–6', tree: 4, low: 7, ign: 7, check: 9, pop: 9, end: 11 })[k]} · O que estamos fazendo agora?</h2><p>${w}</p><p><b>Por quê?</b> ${y}</p>${r ? `<div class="rule">${r}</div>` : ''}${ki != null ? `<div class="cpp"><small>💻 Linha em execução:</small> <code>${esc(SRC[ki].trim())}</code></div>` : ''}${tm.map(x => `<p style="font-size:13px">${TERMS[x]}</p>`).join('')}`
+        }
+        const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+        const SRC = ['#define UNVISITED -1', 'int dfsNumberCounter = 0, numSCC = 0;', 'vector<int> dfs_num(N, UNVISITED);', 'vector<int> dfs_low(N, 0);', 'vector<int> visited(N, 0);', 'stack<int> st;', 'vector<vector<int>> AL;', '', 'void tarjan(int u)', '{', '    dfs_low[u] = dfs_num[u] = dfsNumberCounter;', '    dfsNumberCounter++;', '    st.push(u);', '    visited[u] = 1;', '', '    for(auto v : AL[u])', '    {', '        if (dfs_num[v] == UNVISITED) tarjan(v);', '        if (visited[v]) dfs_low[u] = min(dfs_low[u], dfs_low[v]);', '    }', '', '    if(dfs_low[u] == dfs_num[u])', '    {', '        ++numSCC;', '        while(1)', '        {', '            int v = st.top(); st.pop(); visited[v] = 0;', '            if(u == v) break;', '        }', '    }', '}', '', '// no main:', 'for(int u = 0; u < N; u++)', '    if(dfs_num[u] == UNVISITED) tarjan(u);'];
+        function cppBox(c) {
+            const k = c.k; let h = [], vr = '', nt = '';
+            if (k == 'init') { h = [0, 1, 2, 3, 4, 5, 6]; nt = 'Estes vetores e a pilha são a tabela e a pilha ao lado. <code>AL</code> é o desenho das setas.' }
+            else if (k == 'root') { h = [33, 34]; vr = `u = ${c.u}`; nt = 'O laço do <code>main</code> só chama tarjan(u) se u ainda for UNVISITED.' }
+            else if (k == 'enter') { h = [10, 11, 12, 13]; vr = `u = ${c.u}`; nt = `<code>dfs_num[${c.u}]</code> e <code>dfs_low[${c.u}]</code> recebem ${c.num[c.u]}; o contador vai para ${c.cnt}; <code>st.push(${c.u})</code>.` }
+            else if (k == 'tree') { h = [15, 17]; vr = `u = ${c.u}, v = ${c.v}`; nt = `<code>dfs_num[${c.v}] == UNVISITED</code> é verdadeiro: chamada recursiva <code>tarjan(${c.v})</code>.` }
+            else if (k == 'low') { h = [15, 18]; if (!c.tree) h.push(17); vr = `u = ${c.u}, v = ${c.v} · dfs_low[u] = ${c.old}, dfs_low[v] = ${c.lv}`; nt = c.tree ? 'Voltamos da recursão: a linha seguinte ao <code>tarjan(v)</code> executa.' : 'A linha do <code>tarjan(v)</code> é pulada (v já tem num).' }
+            else if (k == 'ign') { h = [15, 18]; if (!c.tree) h.push(17); vr = `u = ${c.u}, v = ${c.v} · visited[v] = 0`; nt = '<code>visited[v]</code> é 0: o <code>if</code> dá falso e nada executa.' }
+            else if (k == 'check') { h = c.root ? [21, 23] : [21]; vr = `u = ${c.u} · dfs_low[u] = ${c.low[c.u]}, dfs_num[u] = ${c.num[c.u]}`; nt = c.root ? 'Condição verdadeira: <code>++numSCC</code> e começa a desempilhar.' : 'Condição falsa: o bloco é pulado e a função retorna.' }
+            else if (k == 'pop') { h = [24, 26, 27]; vr = `u = ${c.u}, v = ${c.v}`; nt = c.last ? '<code>u == v</code>: o <code>break</code> encerra a SCC.' : '<code>u != v</code>: o laço continua.' }
+            else nt = 'Fim do laço do <code>main</code>.';
+            return `<h2>Em que parte do código estamos?</h2><pre>${SRC.map((l, j) => `<span class="ln${h.includes(j) ? ' h' : ''}">${esc(l)}</span>`).join('')}</pre>${vr ? `<p><b>Variáveis agora:</b> <code>${vr}</code></p>` : ''}<p>${nt}</p><small>num = <code>dfs_num</code>, low = <code>dfs_low</code>, “na pilha” = <code>visited</code>.</small>`
+        }
+        function table(c) {
+            let h = '<table><tr><th>Nó</th><th class="n">num</th><th class="n">low</th><th class="cpp n">visited</th><th>Estado</th></tr>';
+            for (let v = 0; v < N; v++) {
+                const s = stOf(c, v), ch = c.ch && c.ch.v == v ? c.ch : null, cn = ch && ch.num ? `<s>${f(ch.num[0])}</s> → ${ch.num[1]}` : f(c.num[v]), cl = ch && ch.low ? `<s>${ch.low[0]}</s> → ${ch.low[1]}` : (c.num[v] < 0 ? '—' : c.low[v]);
+                h += `<tr class="s${s}"><td>${v}</td><td class="n ${ch && ch.num ? 'chg' : ''}">${cn}</td><td class="n ${ch && ch.low ? 'chg' : ''}">${cl}</td><td class="cpp n">${c.vis[v]}</td><td>${IC[s]} ${s == 3 ? 'SCC C' + (c.comp[v] + 1) : NM[s]}</td></tr>`
+            } return h + '</table>'
+        }
+        function hist(j) { const c = S[j], u = c.u, v = c.v; return ({ init: () => '✓ Início: num = −1, low = 0, pilha vazia.', root: () => `✓ main escolhe ${u} para iniciar a DFS.`, enter: () => `✓ ${u} descoberto: num = low = ${c.num[u]}; entrou na pilha.`, tree: () => `✓ ${u}→${v}: ${v} não descoberto, DFS desce.`, low: () => `${c.nw < c.old ? '✓' : '•'} ${u}→${v}: min(${c.old}, ${c.lv}) → low[${u}] ${c.nw < c.old ? c.old + ' → ' + c.nw : '= ' + c.old}.`, ign: () => `• ${u}→${v}: ${v} já está em SCC, ignorada.`, check: () => `${c.root ? '✓' : '•'} ${u}: low ${c.low[u]} ${c.root ? '==' : '<'} num ${c.num[u]} → ${c.root ? 'raiz de SCC' : 'não é raiz'}.`, pop: () => `✓ ${v} saiu da pilha${c.last ? ` — SCC C${c.ns} = {${[...c.m].sort((a, b) => a - b).join(', ')}}` : ''}.`, end: () => `✓ Fim: ${c.ns} SCC.` })[c.k]() }
+        function side(c) {
+            let h = '';[...c.st].reverse().forEach((v, j) => h += `<div class="qe ${j == 0 ? 'top' : ''}">${v}${j == 0 ? ' ← topo' : ''}</div>`); $('qu').innerHTML = h || '<i>vazia</i>';
+            $('qn').innerHTML = (c.pushed != null ? `<b>+ ${c.pushed}</b> entrou. ` : '') + (c.popped != null ? `<b>− ${c.popped}</b> saiu.` : '');
+            $('pa').innerHTML = c.path.length ? 'Recursão (DFS): ' + c.path.map(v => `tarjan(${v})`).join(' → ') : 'Recursão: nenhuma chamada ativa'
+        }
+        function draw() {
+            seen = new Set; for (let j = 0; j < i; j++)(S[j].term || []).forEach(x => seen.add(x)); const c = i >= 0 ? S[i] : B;
+            if (i >= 0) { $('ex').innerHTML = explain(c); $('cp').innerHTML = cppBox(c); $('hi').innerHTML = S.slice(0, i + 1).map((_, j) => `<li>${hist(j)}</li>`).join(''); $('hi').scrollTop = 1e5 }
+            else { exIntro(); $('cp').innerHTML = cppBox({ k: 'none' }); $('hi').innerHTML = '<li>Aguardando o primeiro passo.</li>' }
+            drawGraph(c); $('tb').innerHTML = table(c); side(c); $('ct').textContent = `Passo ${i + 1} de ${S.length}`; $('pv').disabled = i < 0; $('nx').disabled = i >= S.length - 1;
+            const k = i >= 0 ? S[i].k : '', a = i < 0 ? [0, 1, 2] : ({ init: [3], root: [3], tree: [3], enter: [3, 4, 5], low: [6], ign: [6], check: [7, 8], pop: [8], end: [10] })[k] || [];
+            $('tr').innerHTML = ['1 Grafo', '2 Problema', '3 Manual', '4 DFS', '5 Descoberta', '6 Pilha', '7 LOW', '8 Retorno', '9 Componente', '10 Repetição', '11 Resultado', '12 Estruturas', '13 C++', '14 Desafios'].map((s, j) => `<span class="${a.includes(j) ? 'act' : ''}">${s}</span>`).join('')
+        }
+        function go(d) { i = Math.max(-1, Math.min(S.length - 1, i + d)); draw(); if (i >= S.length - 1) stopAuto() }
+        $('nx').onclick = () => go(1); $('pv').onclick = () => go(-1); $('rs').onclick = () => { stopAuto(); i = -1; sel = []; draw() };
+        $('au').onclick = () => { if (timer) return stopAuto(); if (i >= S.length - 1) i = -1; $('au').textContent = '⏸ Pausar'; go(1); timer = setInterval(() => go(1), 1500) };
+        document.onkeydown = e => { if (['INPUT', 'SELECT'].includes(e.target.tagName)) return; if (e.key == 'ArrowRight') go(1); if (e.key == 'ArrowLeft') go(-1) };
+        $('mc').onclick = () => { document.body.className = 'concept'; $('mc').className = 'on'; $('mp').className = '' }; $('mp').onclick = () => { document.body.className = ''; $('mp').className = 'on'; $('mc').className = '' };
+        $('so').onchange = setup;
+        const CH = [{ q: 'A DFS está em <code>tarjan(3)</code> (AL[3] = {2, 4}) e acaba de voltar de 2. Qual vértice a DFS visita agora?', o: ['1', '2', '4', '5'], a: '4', w: 'O vizinho 2 já foi tratado; o próximo da lista é 4, que ainda é UNVISITED, então a DFS desce nele.' },
+        { q: 'O contador está em 4. Qual será o <b>num</b> do próximo vértice descoberto?', o: ['3', '4', '5'], a: '4', w: 'num recebe o valor atual do contador (4) e só depois o contador é incrementado para 5.' },
+        { q: 'low[2] = 7, aresta 2 → 1, num[1] = 5, low[1] = 5 e 1 está na pilha. Novo low[2]?', o: ['7', '5', '1'], a: '5', w: '1 está na pilha, então low[2] = min(low[2], low[1]) = min(7, 5) = 5.' },
+        { q: 'Pilha (base → topo): 0, 1, 3, 2. O vértice 1 termina seus vizinhos com low == num. Quem sai da pilha?', o: ['só o 1', '2, 3 e 1', '0, 1, 3 e 2', 'ninguém'], a: '2, 3 e 1', w: 'Desempilha-se do topo até alcançar o 1: saem 2, 3 e depois 1. O 0 fica.' },
+        { q: 'u = 3 acabou de voltar de 2: num[3] = 6 e low[3] = 5. Uma SCC foi identificada em 3 agora?', o: ['Sim', 'Não'], a: 'Não', w: '5 ≠ 6: de 3 dá para voltar ao vértice de num 5. 3 não é raiz; fica na pilha e a SCC fecha mais acima.' }];
+        $('ch').innerHTML = CH.map((c, j) => `<p><b>${j + 1}.</b> ${c.q}<br>${c.o.map(x => `<button data-j="${j}" data-v="${x}">${x}</button>`).join(' ')}</p><div id="r${j}"></div>`).join('');
+        $('ch').onclick = e => { const j = e.target.dataset.j; if (j == null) return; const c = CH[j], ok = e.target.dataset.v == c.a; $('r' + j).innerHTML = `${ok ? '✅' : '❌'} ${ok ? '' : `Resposta: <b>${c.a}</b>. `}${c.w}` };
+        setup();
+    </script>
+</body>
+
+</html>

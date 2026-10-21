@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Desvio de Rua — Tutorial Visual (Problema J)</title>
+<style>
+  :root {
+    --bg: #0f1419;
+    --panel: #1a2332;
+    --panel2: #243044;
+    --text: #e7ecf3;
+    --muted: #8b9bb4;
+    --accent: #3d8bfd;
+    --ok: #3dd68c;
+    --warn: #f5a623;
+    --err: #f07178;
+    --edge: #7aa2f7;
+    --node: #1e2a3a;
+    --hi: #ffcc66;
+    --code-bg: #0d1117;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Segoe UI", system-ui, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.5;
+  }
+  header {
+    padding: 1rem 1.25rem; border-bottom: 1px solid #2a3548;
+    background: linear-gradient(180deg, #162033, var(--bg));
+  }
+  header h1 { margin: 0; font-size: 1.35rem; font-weight: 650; }
+  header p { margin: .35rem 0 0; color: var(--muted); font-size: .92rem; }
+  .layout {
+    display: grid; grid-template-columns: 240px 1fr 340px;
+    min-height: calc(100vh - 88px);
+  }
+  @media (max-width: 1100px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+  nav {
+    background: var(--panel); padding: .75rem; border-right: 1px solid #2a3548;
+    overflow-y: auto;
+  }
+  nav button {
+    display: block; width: 100%; text-align: left; margin: .3rem 0;
+    padding: .55rem .7rem; border: 1px solid transparent; border-radius: 8px;
+    background: transparent; color: var(--text); cursor: pointer; font-size: .88rem;
+  }
+  nav button:hover { background: var(--panel2); }
+  nav button.active {
+    background: #1d3a66; border-color: var(--accent); color: #fff;
+  }
+  nav .nav-title {
+    font-size: .72rem; text-transform: uppercase; letter-spacing: .06em;
+    color: var(--muted); margin: .6rem .35rem .35rem;
+  }
+  main { padding: 1.1rem 1.25rem 2rem; overflow-y: auto; }
+  aside {
+    background: var(--panel); border-left: 1px solid #2a3548;
+    padding: 1rem; overflow-y: auto;
+  }
+  h2 { margin: 0 0 .6rem; font-size: 1.25rem; }
+  h3 { margin: 1.1rem 0 .45rem; font-size: 1.02rem; color: #c5d4f0; }
+  .lead { color: var(--muted); margin: 0 0 1rem; }
+  .card {
+    background: var(--panel); border: 1px solid #2a3548; border-radius: 12px;
+    padding: 1rem; margin: .85rem 0;
+  }
+  .card.tight { padding: .75rem; }
+  .row { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+  .btn {
+    background: var(--accent); color: #fff; border: 0; border-radius: 8px;
+    padding: .55rem .95rem; cursor: pointer; font-weight: 600; font-size: .9rem;
+  }
+  .btn.secondary { background: var(--panel2); color: var(--text); border: 1px solid #3a4a63; }
+  .btn.danger { background: #8b2e3a; }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .badge {
+    display: inline-block; padding: .15rem .55rem; border-radius: 999px;
+    font-size: .78rem; font-weight: 650;
+  }
+  .badge.ok { background: #1a3d2e; color: var(--ok); }
+  .badge.warn { background: #3d3018; color: var(--warn); }
+  .badge.err { background: #3d1c22; color: var(--err); }
+  .badge.info { background: #1a2d4d; color: var(--accent); }
+  table.state {
+    width: 100%; border-collapse: collapse; font-size: .88rem; margin: .5rem 0;
+  }
+  table.state th, table.state td {
+    border: 1px solid #2e3d55; padding: .38rem .55rem; text-align: left;
+  }
+  table.state th { background: var(--panel2); color: #c9d7ef; font-weight: 600; }
+  table.state td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .mono, pre, code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; }
+  pre.code {
+    background: var(--code-bg); border: 1px solid #2a3548; border-radius: 10px;
+    padding: .85rem; overflow-x: auto; font-size: .82rem; line-height: 1.45;
+    color: #d6deeb;
+  }
+  pre.code .cmt { color: #6a7a92; }
+  pre.code .kw { color: #c792ea; }
+  pre.code .fn { color: #82aaff; }
+  pre.code .num { color: #f78c6c; }
+  .hl { background: #3d3010; outline: 1px solid var(--hi); }
+  .svg-wrap {
+    background: #121a26; border: 1px solid #2a3548; border-radius: 12px;
+    padding: .6rem; margin: .6rem 0;
+  }
+  svg { width: 100%; height: auto; display: block; }
+  .legend { display: flex; flex-wrap: wrap; gap: .75rem; font-size: .82rem; color: var(--muted); }
+  .legend span::before {
+    content: ""; display: inline-block; width: 12px; height: 12px;
+    border-radius: 3px; margin-right: .35rem; vertical-align: -1px;
+  }
+  .legend .l-oneway::before { background: var(--edge); }
+  .legend .l-twoway::before { background: var(--ok); }
+  .legend .l-closed::before { background: var(--err); }
+  .legend .l-hi::before { background: var(--hi); }
+  .callout {
+    border-left: 4px solid var(--accent); background: #16243a;
+    padding: .75rem .9rem; border-radius: 0 10px 10px 0; margin: .75rem 0;
+  }
+  .callout.warn { border-left-color: var(--warn); background: #2a2214; }
+  .callout.ok { border-left-color: var(--ok); background: #142820; }
+  .callout.err { border-left-color: var(--err); background: #2a161a; }
+  .quiz {
+    background: #1a2433; border: 1px dashed #3a5070; border-radius: 10px;
+    padding: .85rem; margin: .85rem 0;
+  }
+  .quiz .q { font-weight: 600; margin-bottom: .45rem; }
+  .quiz .a { display: none; margin-top: .55rem; color: var(--ok); }
+  .quiz .a.show { display: block; }
+  .tag-list { display: flex; flex-wrap: wrap; gap: .4rem; margin: .4rem 0; }
+  .tag {
+    background: var(--panel2); border: 1px solid #3a4a63; border-radius: 6px;
+    padding: .2rem .55rem; font-size: .8rem;
+  }
+  .split {
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: .85rem;
+  }
+  @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
+  .stack-box {
+    background: var(--code-bg); border: 1px solid #2a3548; border-radius: 8px;
+    padding: .55rem; min-height: 2.6rem; font-family: ui-monospace, monospace;
+    font-size: .9rem;
+  }
+  .chip {
+    display: inline-block; background: #243b5c; color: #cfe2ff;
+    border-radius: 6px; padding: .18rem .5rem; margin: .15rem; font-size: .85rem;
+  }
+  .chip.hot { background: #6b4a12; color: var(--hi); }
+  .chip.done { background: #1a3d2e; color: var(--ok); }
+  .muted { color: var(--muted); }
+  .small { font-size: .84rem; }
+  .progress {
+    height: 6px; background: #243044; border-radius: 999px; overflow: hidden;
+    margin: .5rem 0 1rem;
+  }
+  .progress > i { display: block; height: 100%; background: var(--accent); width: 10%; }
+  footer {
+    padding: .8rem 1.25rem; color: var(--muted); font-size: .8rem;
+    border-top: 1px solid #2a3548;
+  }
+  .kpi {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: .55rem; margin: .75rem 0;
+  }
+  .kpi div {
+    background: var(--panel2); border-radius: 10px; padding: .65rem; text-align: center;
+  }
+  .kpi b { display: block; font-size: 1.25rem; }
+  .kpi span { font-size: .78rem; color: var(--muted); }
+  .hidden { display: none !important; }
+  .answer-box {
+    margin-top: .55rem; padding: .65rem; background: #101820;
+    border-radius: 8px; border: 1px solid #2a3548; display: none;
+  }
+  .answer-box.show { display: block; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Problema J — Desvio de Rua · Tutorial Visual</h1>
+  <p>Simulado Geral 2 · ECOX21 · um conceito por vez · avance só quando estiver seguro</p>
+  <div class="progress"><i id="progressBar"></i></div>
+</header>
+
+<div class="layout">
+  <nav id="nav">
+    <div class="nav-title">Etapas</div>
+    <button data-sec="s1" class="active">1 · Entender o problema</button>
+    <button data-sec="s2">2 · Estratégia (4 respostas)</button>
+    <button data-sec="s3">3 · DFS visual</button>
+    <button data-sec="s4">4 · Grafo reverso</button>
+    <button data-sec="s5">5 · Ignorar direções</button>
+    <button data-sec="s6">6 · Pontes</button>
+    <button data-sec="s7">7 · tin e low</button>
+    <button data-sec="s8">8 · Tipo da rua</button>
+    <button data-sec="s9">9 · Código por partes</button>
+    <button data-sec="s10">10 · Simulação completa</button>
+    <div class="nav-title">Avaliação</div>
+    <button data-sec="s11">Checklist final</button>
+  </nav>
+
+  <main id="main">
+    <!-- ===================== S1 ===================== -->
+    <section id="s1">
+      <h2>1 · Entender o problema</h2>
+      <p class="lead">Antes de qualquer algoritmo: o que a cidade é, e o que a prefeitura faz.</p>
+
+      <div class="card">
+        <h3>Vocabulário</h3>
+        <div class="tag-list">
+          <span class="tag">cruzamento = vértice = 1..n</span>
+          <span class="tag">rua = aresta = linha "A B T"</span>
+          <span class="tag">T=1 mão única A→B</span>
+          <span class="tag">T=2 mão dupla A↔B</span>
+          <span class="tag">n = nº de cruzamentos</span>
+          <span class="tag">m = nº de ruas</span>
+        </div>
+      </div>
+
+      <div class="svg-wrap">
+        <svg id="svg1" viewBox="0 0 640 280" aria-label="Grafo antes e depois de fechar a rua 1"></svg>
+        <div class="legend">
+          <span class="l-oneway">mão única</span>
+          <span class="l-twoway">mão dupla</span>
+          <span class="l-closed">fechada</span>
+          <span class="l-hi">destaque</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <button class="btn secondary" id="btnBefore">Antes</button>
+        <button class="btn" id="btnAfter">Depois de fechar a rua 1</button>
+        <button class="btn secondary" id="btnAnim1">Animar remoção</button>
+      </div>
+
+      <div class="callout">
+        <strong>Regra central:</strong> fechar a rua apaga <em>só a ligação</em>.
+        Os cruzamentos <code>1</code> e <code>2</code> <strong>continuam no mapa</strong>.
+        Outras ruas que tocam neles permanecem.
+      </div>
+
+      <div class="quiz" data-quiz="q1">
+        <div class="q">Q1. Depois de fechar a rua 1 (1→2), quem ainda alcança quem no exemplo acima?</div>
+        <button class="btn secondary" data-show="q1">Mostrar análise</button>
+        <div class="a" id="a-q1">
+          Sobram: <code>2⇄3</code>, <code>3⇄4</code>, <code>4→1</code>.<br>
+          · De 2: 2→3→4→1 (todos).<br>
+          · De 3: 3→2, 3→4→1 (todos).<br>
+          · De 4: 4→1, 4→3→2 (todos).<br>
+          · De 1: <strong>ninguém</strong> — só chega rua, não sai.<br>
+          Logo <strong>não</strong> é “todo mundo alcança todo mundo”. Ainda assim há caminho
+          <em>ignorando a mão</em> entre todos.
+        </div>
+      </div>
+
+      <div class="quiz" data-quiz="q1b">
+        <div class="q">Q2. O que o decreto real exige de verdade? (trabalho ↔ casa)</div>
+        <button class="btn secondary" data-show="q1b">Mostrar</button>
+        <div class="a" id="a-q1b">
+          Ir e <strong>voltar</strong>. Para todo par (u,v) precisa existir caminho
+          <strong>u→v</strong> (sentido das ruas). Isso é <strong>conectividade forte</strong>
+          (strongly connected) — não basta “haver rua ligando”.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== S2 ===================== -->
+    <section id="s2" class="hidden">
+      <h2>2 · Estratégia — as 4 respostas</h2>
+      <p class="lead">O juiz não quer caminho: quer um rótulo. A ordem dos testes é o raciocínio, não decoração.</p>
+
+      <div class="card">
+        <div class="kpi">
+          <div><b>-</b><span>não mexer em nada</span></div>
+          <div><b>1</b><span>só inverter mão única</span></div>
+          <div><b>2</b><span>precisa virar mão dupla</span></div>
+          <div><b>*</b><span>impossível</span></div>
+        </div>
+      </div>
+
+      <h3>Por que esta ordem?</h3>
+      <div class="card tight">
+        <p><strong>1º · Já está ok?</strong> Se com as ruas como estão (fora a fechada) todo mundo alcança todo mundo → <code>-</code>. Não tem que propor nada.</p>
+        <p><strong>2º · Dá para consertar de jeito nenhum?</strong> Se nem ligando tudo em mão dupla os cruzamentos se conectam → <code>*</code>.</p>
+        <p><strong>3º · Conserta só invertendo?</strong> Se existe alguma escolha de inversões de mão única que fecha o grafo → <code>1</code>.</p>
+        <p><strong>4º · Senão</strong>, precisa converter para mão dupla → <code>2</code>.</p>
+      </div>
+
+      <div class="callout warn">
+        <strong>Armadilha clássica:</strong> “é mão única → logo deve virar mão dupla”.
+        Isso é falso. O exemplo 4 tem mão única e a resposta é <code>1</code>
+        (basta inverter). O critério é estrutural, não o tipo da rua isolado.
+      </div>
+
+      <div class="quiz" data-quiz="q2">
+        <div class="q">Q3. Se o grafo sem olhar a mão já está desconectado, por que “converter tudo” não resolve?</div>
+        <button class="btn secondary" data-show="q2">Mostrar</button>
+        <div class="a" id="a-q2">
+          Converter/inverter muda a <em>direção</em> de ruas que <strong>já existem</strong>.
+          Não cria rua nova entre blocos separados. Se não há aresta ligando A e B,
+          nenhum ajuste de mão inventa essa ligação.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== S3 ===================== -->
+    <section id="s3" class="hidden">
+      <h2>3 · DFS visual (alcançabilidade)</h2>
+      <p class="lead">DFS = explorar fundo, marcar visitados, usar pilha (ou recursão).</p>
+
+      <div class="row">
+        <button class="btn" id="dfsStep">Passo</button>
+        <button class="btn secondary" id="dfsReset">Reiniciar</button>
+        <span class="muted small">Origem = cruzamento 1</span>
+      </div>
+
+      <div class="split">
+        <div class="svg-wrap"><svg id="svgDfs" viewBox="0 0 420 300"></svg></div>
+        <div class="card tight">
+          <h3 style="margin-top:0">Estado</h3>
+          <div class="muted small">Pilha (topo à esquerda)</div>
+          <div class="stack-box" id="dfsStack"></div>
+          <div class="muted small" style="margin-top:.6rem">Visitados</div>
+          <div id="dfsVis"></div>
+          <div class="muted small" style="margin-top:.6rem">Log</div>
+          <div class="stack-box" id="dfsLog" style="min-height:6rem"></div>
+        </div>
+      </div>
+
+      <pre class="code" id="codeDfs"><span class="cmt">// alcançabilidade — marcar ao processar</span>
+<span class="kw">void</span> <span class="fn">dfs</span>(<span class="kw">int</span> origem, vector&lt;vector&lt;<span class="kw">int</span>&gt;&gt;&amp; ruas, vector&lt;<span class="kw">int</span>&gt;&amp; vis) {
+    stack&lt;<span class="kw">int</span>&gt; pilha;
+    pilha.push(origem);
+    <span class="kw">while</span> (!pilha.empty()) {
+        <span class="kw">int</span> u = pilha.top(); pilha.pop();
+        <span class="kw">if</span> (vis[u]) <span class="kw">continue</span>;
+        vis[u] = <span class="num">1</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> v : ruas[u])
+            <span class="kw">if</span> (!vis[v]) pilha.push(v);
+    }
+}</pre>
+
+      <div class="quiz" data-quiz="q3">
+        <div class="q">Q4. Por que <code>if (vis[u]) continue;</code> existe?</div>
+        <button class="btn secondary" data-show="q3">Mostrar</button>
+        <div class="a" id="a-q3">
+          O mesmo vértice pode ser empilhado várias vezes (um vizinho de vários).
+          O <code>continue</code> evita reprocessar e evitar laço de trabalho.
+          Marcar ao processar (e não só ao empilhar) fica simples com essa guarda.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== S4 ===================== -->
+    <section id="s4" class="hidden">
+      <h2>4 · Grafo reverso</h2>
+      <p class="lead">Dois DFS a partir de 1: um no grafo, um no espelho.</p>
+
+      <div class="svg-wrap">
+        <svg id="svgRev" viewBox="0 0 640 260"></svg>
+      </div>
+
+      <div class="card">
+        <h3>Como montar o espelho</h3>
+        <table class="state">
+          <tr><th>Rua original</th><th>Em <code>ruas</code></th><th>Em <code>ruas_inverso</code></th></tr>
+          <tr><td>T=2 mão dupla a—b</td><td>a→b e b→a</td><td>a→b e b→a <em>(igual)</em></td></tr>
+          <tr><td>T=1 mão única a→b</td><td>só a→b</td><td>só b→a</td></tr>
+        </table>
+      </div>
+
+      <div class="callout ok">
+        <strong>Por quê funciona:</strong> se <code>1</code> alcança todos <em>e</em>
+        todos alcançam <code>1</code> (segundo DFS = “todos alcançam 1”), então para
+        quaisquer u,v: u→…→1→…→v. Fortemente conexo.
+      </div>
+
+      <div class="quiz" data-quiz="q4">
+        <div class="q">Q5. O espelho é “a cidade com ruas invertidas como solução”?</div>
+        <button class="btn secondary" data-show="q4">Mostrar</button>
+        <div class="a" id="a-q4">
+          <strong>Não.</strong> O espelho é ferramenta de <em>verificação</em> do estado atual.
+          Inverter ruas como solução é outra pergunta (existencial) — casos <code>1</code> e <code>2</code>.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== S5 ===================== -->
+    <section id="s5" class="hidden">
+      <h2>5 · Por que olhar sem direção</h2>
+      <p class="lead">Detectar <code>*</code>: impossibilidade absoluta.</p>
+
+      <div class="split">
+        <div class="svg-wrap"><svg id="svgDir" viewBox="0 0 300 240"></svg>
+          <div class="muted small" style="text-align:center">com mão</div>
+        </div>
+        <div class="svg-wrap"><svg id="svgUnd" viewBox="0 0 300 240"></svg>
+          <div class="muted small" style="text-align:center">ignorando a mão</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p>Exemplo mínimo do <code>*</code>:</p>
+        <pre class="code">4 2
+1 2 2    ← fechada
+3 4 2    ← sobra só isto</pre>
+        <p>Sobram dois blocos: <strong>{1,2}</strong> e <strong>{3,4}</strong>. Não há rua
+        entre eles. Converter mão não cria rua nova → <code>*</code>.</p>
+      </div>
+
+      <div class="quiz" data-quiz="q5">
+        <div class="q">Q6. E se houver rua, mas só de mão única ligando os blocos — ainda é <code>*</code>?</div>
+        <button class="btn secondary" data-show="q5">Mostrar</button>
+        <div class="a" id="a-q5">
+          <strong>Não.</strong> Se existe rua (em qualquer sentido), dá para inverter
+          e/ou torná-la mão dupla. <code>*</code> só quando o grafo sem mão está
+          <strong>desconectado</strong>.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== S6 ===================== -->
+    <section id="s6" class="hidden">
+      <h2>6 · Pontes</h2>
+      <p class="lead">Rua de corte: sem ela, a cidade (sem olhar a mão) parte em dois.</p>
+
+      <div class="svg-wrap"><svg id="svgBridge" viewBox="0 0 640 280"></svg></div>
+      <div class="row">
+        <button class="btn secondary" id="brCase1">Caso A · é ponte</button>
+        <button class="btn secondary" id="brCase2">Caso B · não é ponte</button>
+      </div>
+
+      <div class="card">
+        <h3>Definição operacional</h3>
+        <p>Aresta <code>e = (u,v)</code> é <strong>ponte</strong> se remover <code>e</code>
+        aumenta o número de componentes conexas do grafo <strong>não direcionado</strong>.</p>
+        <p class="small muted">No código a gente não apaga de verdade: usa <code>tin</code>/<code>low</code>.</p>
+      </div>
+
+      <div class="quiz" data-quiz="q6">
+        <div class="q">Q7. No caminho 2—3—1, quantas pontes existem? Por quê?</div>
+        <button class="btn secondary" data-show="q6">Mostrar</button>
+        <div class="a" id="a-q6">
+          Duas: <code>2—3</code> e <code>3—1</code>. Cada uma é a única ligação de um lado.
+          Tirar <code>2—3</code> isola 2; tirar <code>3—1</code> isola 1.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== S7 ===================== -->
+    <section id="s7" class="hidden">
+      <h2>7 · tin e low</h2>
+      <p class="lead">Relógio da DFS + “o mais alto que a subárvore consegue voltar”.</p>
+
+      <div class="row">
+        <button class="btn" id="tlStep">Passo da DFS</button>
+        <button class="btn secondary" id="tlReset">Reiniciar</button>
+      </div>
+
+      <div class="split">
+        <div class="svg-wrap"><svg id="svgTL" viewBox="0 0 420 300"></svg></div>
+        <div class="card tight">
+          <table class="state" id="tlTable">
+            <thead><tr><th>Vértice</th><th>tin</th><th>low</th><th>Significado</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <div class="muted small">Arestas da árvore: setas verdes · retorno: laranja · ponte: vermelha tracejada</div>
+          <div class="stack-box" id="tlLog" style="min-height:5rem;margin-top:.5rem"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Condição de ponte</h3>
+        <p>Para aresta de árvore <code>u → v</code> (u descobriu v):</p>
+        <pre class="code">low[v] &gt; tin[u]   ⇒  (u,v) é PONTE</pre>
+        <table class="state">
+          <tr><th>Relação</th><th>Significado</th></tr>
+          <tr><td><code>low[v] &gt; tin[u]</code></td><td>subárvore de v não volta a u nem acima → <strong>ponte</strong></td></tr>
+          <tr><td><code>low[v] == tin[u]</code></td><td>v alcança u por retorno → não é ponte</td></tr>
+          <tr><td><code>low[v] &lt; tin[u]</code></td><td>v alcança ancestral de u → não é ponte</td></tr>
+        </table>
+      </div>
+
+      <div class="callout">
+        <strong>Não misturar:</strong> isto é ponte em grafo <strong>não direcionado</strong>.
+        Tarjan de componentes fortemente conexas é outro assunto (outro uso de <code>low</code>).
+      </div>
+    </section>
+
+    <!-- ===================== S8 ===================== -->
+    <section id="s8" class="hidden">
+      <h2>8 · Por que o tipo da rua importa</h2>
+      <p class="lead">Achar a ponte não basta: precisamos saber se ela nasceu mão única.</p>
+
+      <div class="svg-wrap"><svg id="svgType" viewBox="0 0 640 220"></svg></div>
+
+      <div class="card">
+        <table class="state">
+          <tr><th>Ponte é…</th><th>Inverter resolve?</th><th>Rótulo</th></tr>
+          <tr><td>mão dupla (já vale 2 sentidos)</td><td>o gargalo não é ela</td><td rowspan="2">se <em>alguma</em> ponte for mão única → <span class="badge warn">2</span></td></tr>
+          <tr><td>mão única (só 1 sentido em qualquer orientação)</td><td>não — precisa converter</td></tr>
+          <tr><td>não existe ponte mão única</td><td>sim, dá para orientar o resto</td><td><span class="badge ok">1</span></td></tr>
+        </table>
+      </div>
+
+      <div class="callout ok">
+        <strong>Resumo de decisão após <code>-</code> e <code>*</code> descartados:</strong><br>
+        existe ponte de mão única? → <code>2</code> · senão → <code>1</code>
+      </div>
+
+      <div class="quiz" data-quiz="q8">
+        <div class="q">Q8. Por que ponte mão única não pode ser resolvida só com inversão?</div>
+        <button class="btn secondary" data-show="q8">Mostrar</button>
+        <div class="a" id="a-q8">
+          Inverter troca o sentido, mas a rua continua de <strong>um sentido só</strong>.
+          Como é a única ligação entre duas partes, um lado nunca alcança o outro.
+          Só convertendo para mão dupla os dois sentidos passam a existir.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== S9 ===================== -->
+    <section id="s9" class="hidden">
+      <h2>9 · Código C++ por partes</h2>
+      <p class="lead">Estruturas primeiro, funções depois, main por último.</p>
+
+      <h3>Estruturas</h3>
+      <div class="card">
+        <table class="state">
+          <tr><th>Estrutura</th><th>Guarda</th><th>Para quê</th></tr>
+          <tr><td><code>ruas[n+1]</code></td><td>vizinhos com mão real</td><td>teste <code>-</code></td></tr>
+          <tr><td><code>ruas_inverso[n+1]</code></td><td>espelho</td><td>segundo DFS do <code>-</code></td></tr>
+          <tr><td><code>ruas_sem_mao[n+1]</code></td><td>tudo nos 2 sentidos</td><td>teste <code>*</code></td></tr>
+          <tr><td><code>adj[n+1]</code> de <code>pair&lt;int,int&gt;</code></td><td>(vizinho, id da rua)</td><td>pontes / tin-low</td></tr>
+          <tr><td><code>mao_unica[id]</code></td><td>se a rua nasceu T=1</td><td>classificar ponte</td></tr>
+          <tr><td><code>tin, low, vis</code></td><td>tempos e visita</td><td>DFS de pontes</td></tr>
+        </table>
+      </div>
+
+      <h3>Por que <code>id</code> da aresta e não só o pai?</h3>
+      <div class="card tight">
+        <p>Se existem <strong>duas ruas</strong> entre o mesmo par (multi-aresta),
+        identificar só pelo vértice pai pode errar: a segunda rua vira “retorno”
+        e <strong>não é ponte</strong>. Cada rua precisa de <code>id</code> próprio.</p>
+      </div>
+
+      <h3>Função de pontes</h3>
+      <pre class="code"><span class="kw">void</span> <span class="fn">dfs_pontes</span>(<span class="kw">int</span> u, <span class="kw">int</span> aresta_pai, ...) {
+    vis[u] = <span class="num">1</span>;
+    tin[u] = low[u] = timer_dfs++;
+    <span class="kw">for</span> (<span class="kw">auto</span> [v, id] : adj[u]) {
+        <span class="kw">if</span> (id == aresta_pai) <span class="kw">continue</span>;
+        <span class="kw">if</span> (vis[v]) low[u] = min(low[u], tin[v]);   <span class="cmt">// retorno</span>
+        <span class="kw">else</span> {
+            dfs_pontes(v, id, ...);
+            low[u] = min(low[u], low[v]);
+            <span class="kw">if</span> (low[v] &gt; tin[u]) {          <span class="cmt">// PONTE</span>
+                <span class="kw">if</span> (mao_unica[id]) tem_ponte_mao_unica = <span class="kw">true</span>;
+            }
+        }
+    }
+}</pre>
+
+      <h3>Ordem no main</h3>
+      <pre class="code"><span class="cmt">// 1) já SC?           → "-"</span>
+<span class="cmt">// 2) sem mão ligado?   → senão "*"</span>
+<span class="cmt">// 3) ponte mão única?  → "2" / "1"</span></pre>
+    </section>
+
+    <!-- ===================== S10 ===================== -->
+    <section id="s10" class="hidden">
+      <h2>10 · Simulação completa</h2>
+      <p class="lead">Os 4 exemplos do PDF, com o caminho lógico até o rótulo.</p>
+
+      <div class="row">
+        <button class="btn secondary ex-btn" data-ex="0">Ex 1 → -</button>
+        <button class="btn secondary ex-btn" data-ex="1">Ex 2 → 2</button>
+        <button class="btn secondary ex-btn" data-ex="2">Ex 3 → *</button>
+        <button class="btn secondary ex-btn" data-ex="3">Ex 4 → 1</button>
+      </div>
+
+      <div class="card" id="exPanel">
+        <p class="muted">Escolha um exemplo acima.</p>
+      </div>
+    </section>
+
+    <!-- ===================== S11 ===================== -->
+    <section id="s11" class="hidden">
+      <h2>Checklist final</h2>
+      <p class="lead">Marque o que você consegue fazer sem olhar a explicação.</p>
+      <div class="card" id="checklist">
+        <label><input type="checkbox"> 1. Explicar o problema com as minhas palavras</label><br>
+        <label><input type="checkbox"> 2. Justificar original + reverso</label><br>
+        <label><input type="checkbox"> 3. Justificar o grafo sem direções (<code>*</code>)</label><br>
+        <label><input type="checkbox"> 4. Explicar o que é ponte</label><br>
+        <label><input type="checkbox"> 5. Calcular <code>tin</code>/<code>low</code> num exemplo pequeno</label><br>
+        <label><input type="checkbox"> 6. Justificar <code>low[v] &gt; tin[u]</code></label><br>
+        <label><input type="checkbox"> 7. Explicar tipo + id da aresta</label><br>
+        <label><input type="checkbox"> 8. Percorrer o código bloco a bloco</label><br>
+        <label><input type="checkbox"> 9. Escolher o algoritmo de cada etapa</label><br>
+        <label><input type="checkbox"> 10. Resolver um exemplo novo sem solução pronta</label><br>
+      </div>
+      <div class="callout warn">
+        Item em dúvida? Volte só naquela etapa da barra à esquerda. Não releia tudo.
+      </div>
+    </section>
+  </main>
+
+  <aside>
+    <div class="nav-title">Painel</div>
+    <div class="card tight">
+      <div class="muted small">Etapa atual</div>
+      <div id="sideStage" style="font-size:1.05rem;font-weight:650">1 · Entender o problema</div>
+    </div>
+    <div class="card tight">
+      <div class="muted small">Dicionário</div>
+      <p class="small" style="margin:.4rem 0">
+        <b>n</b> cruzamentos · <b>m</b> ruas<br>
+        <b>T=1</b> mão única · <b>T=2</b> mão dupla<br>
+        <b>tin[u]</b> tempo em que u foi descoberto<br>
+        <b>low[u]</b> menor tempo alcançável pela subárvore<br>
+        <b>ponte</b> aresta de corte
+      </p>
+    </div>
+    <div class="card tight">
+      <div class="muted small">Mapa de decisão</div>
+      <pre class="code" style="margin:.4rem 0">SC já?     → "-"
+sem mão?   → * se desconexo
+ponte T=1? → 2
+senão      → 1</pre>
+    </div>
+    <div class="card tight">
+      <div class="muted small">Arquivos do simulado</div>
+      <p class="small">j.cpp (seu original)<br>j_completo.cpp (referência)<br>j_visual.html (esta página)</p>
+    </div>
+  </aside>
+</div>
+
+<footer>ECOX21 · material de estudo local · sem dependências externas</footer>
+
+<script>
+/* ========== NAVEGAÇÃO ========== */
+const titles = {
+  s1: "1 · Entender o problema",
+  s2: "2 · Estratégia (4 respostas)",
+  s3: "3 · DFS visual",
+  s4: "4 · Grafo reverso",
+  s5: "5 · Ignorar direções",
+  s6: "6 · Pontes",
+  s7: "7 · tin e low",
+  s8: "8 · Tipo da rua",
+  s9: "9 · Código por partes",
+  s10: "10 · Simulação completa",
+  s11: "Checklist final"
+};
+const nav = document.getElementById("nav");
+const sections = [...document.querySelectorAll("main > section")];
+nav.addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-sec]");
+  if (!btn) return;
+  const id = btn.dataset.sec;
+  sections.forEach(s => s.classList.toggle("hidden", s.id !== id));
+  nav.querySelectorAll("button").forEach(b => b.classList.toggle("active", b === btn));
+  document.getElementById("sideStage").textContent = titles[id] || id;
+  const order = Object.keys(titles);
+  document.getElementById("progressBar").style.width =
+    ((order.indexOf(id) + 1) / order.length * 100) + "%";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+/* ========== QUIZ ========== */
+document.body.addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-show]");
+  if (!b) return;
+  const id = "a-" + b.dataset.show;
+  const box = document.getElementById(id);
+  if (box) box.classList.toggle("show");
+});
+
+/* ========== HELPERS SVG ========== */
+function ns(tag, attrs = {}) {
+  const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  for (const k in attrs) el.setAttribute(k, attrs[k]);
+  return el;
+}
+function clearSvg(svg) { while (svg.firstChild) svg.removeChild(svg.firstChild); }
+
+function drawNode(svg, x, y, label, opts = {}) {
+  const g = ns("g");
+  const c = ns("circle", {
+    cx: x, cy: y, r: opts.r || 18,
+    fill: opts.fill || "#1e2a3a",
+    stroke: opts.stroke || "#7aa2f7",
+    "stroke-width": opts.sw || 2
+  });
+  const t = ns("text", {
+    x, y: y + 5, "text-anchor": "middle",
+    fill: opts.text || "#e7ecf3",
+    "font-size": 14, "font-weight": 700
+  });
+  t.textContent = label;
+  g.appendChild(c); g.appendChild(t);
+  svg.appendChild(g);
+  return g;
+}
+
+function arrow(svg, x1, y1, x2, y2, opts = {}) {
+  const color = opts.color || "#7aa2f7";
+  const w = opts.w || 2.5;
+  const dx = x2 - x1, dy = y2 - y1;
+  const len = Math.hypot(dx, dy) || 1;
+  const ux = dx / len, uy = dy / len;
+  const pad = opts.pad ?? 18;
+  const sx = x1 + ux * pad, sy = y1 + uy * pad;
+  const ex = x2 - ux * pad, ey = y2 - uy * pad;
+  const line = ns("line", {
+    x1: sx, y1: sy, x2: ex, y2: ey,
+    stroke: color, "stroke-width": w,
+    "stroke-linecap": "round",
+    "stroke-dasharray": opts.dash || "none"
+  });
+  svg.appendChild(line);
+  if (opts.arrow !== false) {
+    const ah = 9;
+    const ang = Math.atan2(ey - sy, ex - sx);
+    const p1x = ex - ah * Math.cos(ang - 0.4);
+    const p1y = ey - ah * Math.sin(ang - 0.4);
+    const p2x = ex - ah * Math.cos(ang + 0.4);
+    const p2y = ey - ah * Math.sin(ang + 0.4);
+    svg.appendChild(ns("polygon", {
+      points: `${ex},${ey} ${p1x},${p1y} ${p2x},${p2y}`,
+      fill: color
+    }));
+  }
+  return line;
+}
+
+function lineUnd(svg, x1, y1, x2, y2, opts = {}) {
+  const color = opts.color || "#3dd68c";
+  const dx = x2 - x1, dy = y2 - y1;
+  const len = Math.hypot(dx, dy) || 1;
+  const pad = opts.pad ?? 18;
+  const ux = dx / len, uy = dy / len;
+  svg.appendChild(ns("line", {
+    x1: x1 + ux * pad, y1: y1 + uy * pad,
+    x2: x2 - ux * pad, y2: y2 - uy * pad,
+    stroke: color, "stroke-width": opts.w || 2.5,
+    "stroke-linecap": "round",
+    "stroke-dasharray": opts.dash || "none"
+  }));
+}
+
+/* ========== S1: antes / depois ========== */
+const N1 = {
+  1: { x: 80, y: 70 }, 2: { x: 220, y: 70 },
+  3: { x: 220, y: 190 }, 4: { x: 80, y: 190 }
+};
+function drawCity(svg, mode) {
+  clearSvg(svg);
+  const g1 = ns("g"); svg.appendChild(g1);
+  // side labels
+  const lbl = ns("text", { x: 320, y: 28, fill: "#8b9bb4", "font-size": 13 });
+  lbl.textContent = mode === "before" ? "ANTES da interdição" : "DEPOIS — rua 1 fechada";
+  svg.appendChild(lbl);
+
+  // edges
+  // rua1: 1->2 one-way
+  if (mode === "before") {
+    arrow(svg, N1[1].x, N1[1].y, N1[2].x, N1[2].y, { color: "#f07178" });
+  } else {
+    // ghost closed
+    lineUnd(svg, N1[1].x, N1[1].y, N1[2].x, N1[2].y, { color: "#f07178", dash: "4 4", arrow: false, w: 2 });
+    const t = ns("text", { x: 150, y: 52, fill: "#f07178", "font-size": 11, "text-anchor": "middle" });
+    t.textContent = "fechada"; svg.appendChild(t);
+  }
+  // rua2: 2<->3
+  lineUnd(svg, N1[2].x, N1[2].y, N1[3].x, N1[3].y, { color: "#3dd68c", arrow: false });
+  // rua3: 3<->4
+  lineUnd(svg, N1[3].x, N1[3].y, N1[4].x, N1[4].y, { color: "#3dd68c", arrow: false });
+  // rua4: 4->1
+  arrow(svg, N1[4].x, N1[4].y, N1[1].x, N1[1].y, { color: "#7aa2f7" });
+
+  // nodes
+  for (const id of [1, 2, 3, 4]) {
+    drawNode(svg, N1[id].x, N1[id].y, String(id), {
+      fill: mode === "after" && id === 1 ? "#3a2030" : "#1e2a3a"
+    });
+  }
+  // extra: right side explanation panel
+  const x0 = 360;
+  const texts = mode === "before"
+    ? ["Ruas:", "1) 1 → 2  mão única", "2) 2 ⇄ 3  mão dupla", "3) 3 ⇄ 4  mão dupla", "4) 4 → 1  mão única", "", "Decreeto: caminho u→v", "para todo par (u,v)."]
+    : ["Sobra (sem a rua 1):", "2 ⇄ 3 · 3 ⇄ 4 · 4 → 1", "", "Do 1 não sai rua.", "O 2,3,4 se alcançam.", "Mas 1 não volta para 2.", "", "→ ainda não é SC"];
+  texts.forEach((s, i) => {
+    const t = ns("text", { x: x0, y: 60 + i * 22, fill: i === 0 ? "#c5d4f0" : "#8b9bb4", "font-size": 13 });
+    t.textContent = s; svg.appendChild(t);
+  });
+}
+const svg1 = document.getElementById("svg1");
+drawCity(svg1, "before");
+document.getElementById("btnBefore").onclick = () => drawCity(svg1, "before");
+document.getElementById("btnAfter").onclick = () => drawCity(svg1, "after");
+document.getElementById("btnAnim1").onclick = () => {
+  drawCity(svg1, "before");
+  setTimeout(() => drawCity(svg1, "after"), 700);
+};
+
+/* ========== S3: DFS stepper ========== */
+const dfsG = {
+  adj: { 1: [2, 4], 2: [1, 3], 3: [2, 4], 4: [1, 3] },
+  pos: { 1: [70, 70], 2: [250, 70], 3: [250, 210], 4: [70, 210] }
+};
+// directed demo graph (one-way mix)
+const dfsDir = {
+  adj: { 1: [2], 2: [3], 3: [1, 4], 4: [] }, // will paint arrows
+  edges: [[1, 2, true], [2, 3, true], [3, 1, true], [3, 4, true]],
+  pos: { 1: [80, 80], 2: [240, 80], 3: [240, 210], 4: [80, 210] }
+};
+let dfsState = null;
+function dfsInit() {
+  dfsState = { stack: [1], vis: {}, log: [], cur: null };
+  dfsDraw();
+}
+function dfsStep() {
+  if (!dfsState) dfsInit();
+  if (dfsState.stack.length === 0) {
+    dfsState.log.push("pilha vazia — fim");
+    dfsDraw(); return;
+  }
+  const u = dfsState.stack.pop();
+  dfsState.cur = u;
+  if (dfsState.vis[u]) {
+    dfsState.log.push(`u=${u} já visitado → continue`);
+    dfsDraw(); return;
+  }
+  dfsState.vis[u] = 1;
+  dfsState.log.push(`processa u=${u}, marca visitado`);
+  const nbs = dfsDir.adj[u] || [];
+  for (let i = nbs.length - 1; i >= 0; i--) {
+    const v = nbs[i];
+    if (!dfsState.vis[v]) {
+      dfsState.stack.push(v);
+      dfsState.log.push(`  empilha ${v}`);
+    }
+  }
+  dfsDraw();
+}
+function dfsDraw() {
+  const svg = document.getElementById("svgDfs");
+  clearSvg(svg);
+  for (const [a, b] of dfsDir.edges) {
+    arrow(svg, dfsDir.pos[a][0], dfsDir.pos[a][1], dfsDir.pos[b][0], dfsDir.pos[b][1], {
+      color: "#7aa2f7"
+    });
+  }
+  for (const id of [1, 2, 3, 4]) {
+    const done = dfsState?.vis[id];
+    const hot = dfsState?.cur === id;
+    drawNode(svg, dfsDir.pos[id][0], dfsDir.pos[id][1], String(id), {
+      fill: hot ? "#6b4a12" : done ? "#1a3d2e" : "#1e2a3a",
+      stroke: hot ? "#ffcc66" : done ? "#3dd68c" : "#7aa2f7"
+    });
+  }
+  document.getElementById("dfsStack").innerHTML =
+    (dfsState?.stack || []).slice().reverse().map((x, i) =>
+      `<span class="chip ${i === 0 ? "hot" : ""}">${x}</span>`).join("") || "<span class='muted'>(vazia)</span>";
+  document.getElementById("dfsVis").innerHTML =
+    Object.keys(dfsState?.vis || {}).sort().map(k =>
+      `<span class="chip done">${k}</span>`).join("") || "<span class='muted'>—</span>";
+  document.getElementById("dfsLog").innerHTML =
+    (dfsState?.log || []).slice(-8).map(s => `<div>${s}</div>`).join("");
+}
+document.getElementById("dfsStep").onclick = dfsStep;
+document.getElementById("dfsReset").onclick = dfsInit;
+dfsInit();
+
+/* ========== S4: reverse graph ========== */
+function drawRev() {
+  const svg = document.getElementById("svgRev");
+  clearSvg(svg);
+  const left = { 1: [80, 60], 2: [200, 60], 3: [200, 170], 4: [80, 170] };
+  const right = { 1: [400, 60], 2: [520, 60], 3: [520, 170], 4: [400, 170] };
+  // original: 1->2, 2->3, 3->1, 3->4
+  const orig = [[1, 2], [2, 3], [3, 1], [3, 4]];
+  const rev = [[2, 1], [3, 2], [1, 3], [4, 3]];
+  const t1 = ns("text", { x: 80, y: 28, fill: "#c5d4f0", "font-size": 13, "text-anchor": "middle" });
+  t1.textContent = "ruas (original)"; svg.appendChild(t1);
+  const t2 = ns("text", { x: 480, y: 28, fill: "#c5d4f0", "font-size": 13, "text-anchor": "middle" });
+  t2.textContent = "ruas_inverso (espelho)"; svg.appendChild(t2);
+  for (const [a, b] of orig) arrow(svg, left[a][0], left[a][1], left[b][0], left[b][1], { color: "#7aa2f7" });
+  for (const [a, b] of rev) arrow(svg, right[a][0], right[a][1], right[b][0], right[b][1], { color: "#3dd68c" });
+  for (const id of [1, 2, 3, 4]) {
+    drawNode(svg, left[id][0], left[id][1], String(id));
+    drawNode(svg, right[id][0], right[id][1], String(id));
+  }
+}
+drawRev();
+
+/* ========== S5 ========== */
+function drawDirUnd() {
+  const p = { 1: [70, 60], 2: [200, 60], 3: [70, 170], 4: [200, 170] };
+  const s1 = document.getElementById("svgDir");
+  const s2 = document.getElementById("svgUnd");
+  clearSvg(s1); clearSvg(s2);
+  // disconnected pairs after close: 1-2 closed, only 3-4
+  // show closed 1-2 ghost and 3-4
+  lineUnd(s1, p[1][0], p[1][1], p[2][0], p[2][1], { color: "#f07178", dash: "4 4", arrow: false });
+  lineUnd(s1, p[3][0], p[3][1], p[4][0], p[4][1], { color: "#3dd68c", arrow: false });
+  lineUnd(s2, p[1][0], p[1][1], p[2][0], p[2][1], { color: "#f07178", dash: "4 4", arrow: false });
+  lineUnd(s2, p[3][0], p[3][1], p[4][0], p[4][1], { color: "#3dd68c", arrow: false });
+  for (const id of [1, 2, 3, 4]) {
+    drawNode(s1, p[id][0], p[id][1], String(id));
+    drawNode(s2, p[id][0], p[id][1], String(id));
+  }
+  const t = ns("text", { x: 150, y: 230, fill: "#f07178", "font-size": 12, "text-anchor": "middle" });
+  t.textContent = "dois blocos sem rua entre eles → *"; s2.appendChild(t);
+}
+drawDirUnd();
+
+/* ========== S6: bridges cases ========== */
+function drawBridgeCase(which) {
+  const svg = document.getElementById("svgBridge");
+  clearSvg(svg);
+  if (which === 1) {
+    // path 1-2-3-4, middle is bridge? highlight 2-3
+    const p = { 1: [80, 120], 2: [220, 120], 3: [380, 120], 4: [520, 120] };
+    lineUnd(svg, p[1][0], p[1][1], p[2][0], p[2][1], { color: "#3dd68c", arrow: false });
+    lineUnd(svg, p[2][0], p[2][1], p[3][0], p[3][1], { color: "#f07178", arrow: false, w: 3.5 });
+    lineUnd(svg, p[3][0], p[3][1], p[4][0], p[4][1], { color: "#3dd68c", arrow: false });
+    for (const id of [1, 2, 3, 4]) drawNode(svg, p[id][0], p[id][1], String(id));
+    const t = ns("text", { x: 320, y: 60, fill: "#f07178", "font-size": 13, "text-anchor": "middle" });
+    t.textContent = "2—3 é PONTE: não há outro caminho entre {1,2} e {3,4}";
+    svg.appendChild(t);
+  } else {
+    // cycle 1-2-3-4-1, edge 2-3 not a bridge
+    const p = { 1: [160, 50], 2: [360, 50], 3: [360, 180], 4: [160, 180] };
+    lineUnd(svg, p[1][0], p[1][1], p[2][0], p[2][1], { color: "#3dd68c", arrow: false });
+    lineUnd(svg, p[2][0], p[2][1], p[3][0], p[3][1], { color: "#ffcc66", arrow: false, w: 3.5 });
+    lineUnd(svg, p[3][0], p[3][1], p[4][0], p[4][1], { color: "#3dd68c", arrow: false });
+    lineUnd(svg, p[4][0], p[4][1], p[1][0], p[1][1], { color: "#3dd68c", arrow: false });
+    for (const id of [1, 2, 3, 4]) drawNode(svg, p[id][0], p[id][1], String(id));
+    const t = ns("text", { x: 260, y: 250, fill: "#ffcc66", "font-size": 13, "text-anchor": "middle" });
+    t.textContent = "2—3 NÃO é ponte: existe o caminho 2—1—4—3";
+    svg.appendChild(t);
+  }
+}
+drawBridgeCase(1);
+document.getElementById("brCase1").onclick = () => drawBridgeCase(1);
+document.getElementById("brCase2").onclick = () => drawBridgeCase(2);
+
+/* ========== S7: tin/low stepper ========== */
+// undirected graph: 1-2, 2-3, 3-1 (triangle), 3-4 (pendant 4) → bridge 3-4
+const tlGraph = {
+  adj: {
+    1: [[2, 0], [3, 1]],
+    2: [[1, 0], [3, 2]],
+    3: [[1, 1], [2, 2], [4, 3]],
+    4: [[3, 3]]
+  },
+  pos: { 1: [80, 80], 2: [260, 80], 3: [170, 200], 4: [340, 200] },
+  // edges for drawing: [u,v,id]
+  drawEdges: [[1, 2, 0], [1, 3, 1], [2, 3, 2], [3, 4, 3]]
+};
+let tl = null;
+function tlInit() {
+  tl = {
+    timer: 0, cur: null, stackFrame: null,
+    tin: {}, low: {}, vis: {}, log: [],
+    tree: [], back: [], bridges: [],
+    events: []
+  };
+  // precompute DFS order as list of micro-steps (simple recursive trace)
+  const steps = [];
+  const state = { tin: {}, low: {}, vis: {}, timer: 0 };
+  const order = [];
+  function rec(u, pe) {
+    state.vis[u] = 1;
+    state.tin[u] = state.low[u] = state.timer++;
+    order.push({ type: "enter", u, tin: state.tin[u], low: state.low[u] });
+    for (const [v, id] of tlGraph.adj[u]) {
+      if (id === pe) continue;
+      if (state.vis[v]) {
+        const old = state.low[u];
+        state.low[u] = Math.min(state.low[u], state.tin[v]);
+        order.push({ type: "back", u, v, id, low: state.low[u], changed: old !== state.low[u] });
+      } else {
+        order.push({ type: "tree", u, v, id });
+        rec(v, id);
+        const old = state.low[u];
+        state.low[u] = Math.min(state.low[u], state.low[v]);
+        order.push({
+          type: "return", u, v, id, low: state.low[u],
+          isBridge: state.low[v] > state.tin[u]
+        });
+      }
+    }
+    order.push({ type: "leave", u, tin: state.tin[u], low: state.low[u] });
+  }
+  rec(1, -1);
+  tl.events = order;
+  tl.idx = -1;
+  tl.finalTin = state.tin; tl.finalLow = state.low;
+  tlDraw();
+}
+function tlStep() {
+  if (!tl) tlInit();
+  if (tl.idx >= tl.events.length - 1) {
+    tl.log.push("fim da DFS");
+    tlDraw(); return;
+  }
+  tl.idx++;
+  const e = tl.events[tl.idx];
+  tl.cur = e.u;
+  if (e.type === "enter") {
+    tl.tin[e.u] = e.tin; tl.low[e.u] = e.low; tl.vis[e.u] = 1;
+    tl.log.push(`entra ${e.u} · tin=${e.tin} low=${e.low}`);
+  } else if (e.type === "tree") {
+    tl.tree.push([e.u, e.v]);
+    tl.log.push(`árvore ${e.u}→${e.v}`);
+  } else if (e.type === "back") {
+    tl.back.push([e.u, e.v]);
+    tl.log.push(`retorno ${e.u}–${e.v} · low[${e.u}]=${e.low}`);
+  } else if (e.type === "return") {
+    tl.low[e.u] = e.low;
+    if (e.isBridge) {
+      tl.bridges.push([e.u, e.v]);
+      tl.log.push(`PONTE ${e.u}—${e.v} (low[${e.v}]>tin[${e.u}])`);
+    } else {
+      tl.log.push(`volta ${e.v}→${e.u} · não é ponte`);
+    }
+  } else if (e.type === "leave") {
+    tl.log.push(`sai ${e.u} · low=${e.low}`);
+  }
+  tlDraw();
+}
+function tlDraw() {
+  const svg = document.getElementById("svgTL");
+  clearSvg(svg);
+  for (const [u, v] of tlGraph.drawEdges) {
+    const isB = tl.bridges.some(([a, b]) => (a === u && b === v) || (a === v && b === u));
+    const isT = tl.tree.some(([a, b]) => (a === u && b === v));
+    const isBack = tl.back.some(([a, b]) => (a === u && b === v) || (a === v && b === u));
+    const color = isB ? "#f07178" : isT ? "#3dd68c" : isBack ? "#f5a623" : "#4a5d78";
+    lineUnd(svg, tlGraph.pos[u][0], tlGraph.pos[u][1], tlGraph.pos[v][0], tlGraph.pos[v][1], {
+      color, arrow: false, w: isB ? 3.5 : 2.2, dash: isB ? "5 3" : "none"
+    });
+  }
+  for (const id of [1, 2, 3, 4]) {
+    const done = tl.vis[id];
+    const hot = tl.cur === id;
+    drawNode(svg, tlGraph.pos[id][0], tlGraph.pos[id][1], String(id), {
+      fill: hot ? "#6b4a12" : done ? "#1a3d2e" : "#1e2a3a",
+      stroke: hot ? "#ffcc66" : "#7aa2f7"
+    });
+  }
+  const tb = document.querySelector("#tlTable tbody");
+  tb.innerHTML = [1, 2, 3, 4].map(id => {
+    const tin = tl.tin[id] ?? "—";
+    const low = tl.low[id] ?? "—";
+    const meaning = tin === "—" ? "não visitado" :
+      (tl.low[id] === tl.tin[id] && !tl.vis[id + 100])
+        ? `descoberto em ${tin}` : `low=${low}`;
+    return `<tr class="${tl.cur === id ? "hl" : ""}"><td>${id}</td><td class="num">${tin}</td><td class="num">${low}</td><td>${meaning}</td></tr>`;
+  }).join("");
+  document.getElementById("tlLog").innerHTML =
+    (tl.log || []).slice(-10).map(s => `<div>${s}</div>`).join("");
+}
+document.getElementById("tlStep").onclick = tlStep;
+document.getElementById("tlReset").onclick = tlInit;
+tlInit();
+
+/* ========== S8 ========== */
+function drawType() {
+  const svg = document.getElementById("svgType");
+  clearSvg(svg);
+  // left: bridge two-way  |  right: bridge one-way
+  const t1 = ns("text", { x: 160, y: 30, fill: "#3dd68c", "font-size": 13, "text-anchor": "middle" });
+  t1.textContent = "ponte mão dupla — cruza nos 2 sentidos"; svg.appendChild(t1);
+  const t2 = ns("text", { x: 480, y: 30, fill: "#f07178", "font-size": 13, "text-anchor": "middle" });
+  t2.textContent = "ponte mão única — inverter não basta"; svg.appendChild(t2);
+  const L = { a: [80, 120], b: [240, 120] };
+  const R = { a: [400, 120], b: [560, 120] };
+  lineUnd(svg, L.a[0], L.a[1], L.b[0], L.b[1], { color: "#3dd68c", arrow: false, w: 3 });
+  arrow(svg, R.a[0], R.a[1], R.b[0], R.b[1], { color: "#f07178" });
+  drawNode(svg, L.a[0], L.a[1], "A"); drawNode(svg, L.b[0], L.b[1], "B");
+  drawNode(svg, R.a[0], R.a[1], "A"); drawNode(svg, R.b[0], R.b[1], "B");
+  const n1 = ns("text", { x: 160, y: 170, fill: "#8b9bb4", "font-size": 12, "text-anchor": "middle" });
+  n1.textContent = "dois sentidos já existem"; svg.appendChild(n1);
+  const n2 = ns("text", { x: 480, y: 170, fill: "#8b9bb4", "font-size": 12, "text-anchor": "middle" });
+  n2.textContent = "mesmo invertendo: só 1 sentido"; svg.appendChild(n2);
+}
+drawType();
+
+/* ========== S10: examples ========== */
+const examples = [
+  {
+    title: "Exemplo 1 — resposta: -",
+    input: `3 3\n1 2 2\n2 3 2\n3 1 2`,
+    after: ["1—2", "2—3", "3—1"], // remaining edges undirected
+    remainingDesc: "2⇄3 e 3⇄1 (ambas mão dupla)",
+    steps: [
+      "Fecha rua 1 (1⇄2).",
+      "DFS em ruas a partir de 1: visita 1,3,2 → cont = n.",
+      "DFS em ruas_inverso: visita todos → cont = n.",
+      "Já é fortemente conexo → imprime '-' e nem testa pontes."
+    ],
+    answer: "-"
+  },
+  {
+    title: "Exemplo 2 — resposta: 2",
+    input: `3 3\n1 2 1\n2 3 1\n3 1 1`,
+    remainingDesc: "2→3 e 3→1 (ambas mão única)",
+    steps: [
+      "Fecha 1→2. Sobra caminho 2—3—1.",
+      "Não é SC (1 não alcança 2, 3 não alcança 2).",
+      "Grafo sem mão está ligado → não é '*'.",
+      "Pontes: 2—3 e 3—1 — as duas mão única.",
+      "Existe ponte de mão única → precisa converter → '2'."
+    ],
+    answer: "2"
+  },
+  {
+    title: "Exemplo 3 — resposta: *",
+    input: `2 1\n1 2 2`,
+    remainingDesc: "(nenhuma rua)",
+    steps: [
+      "A única rua é a interditada.",
+      "Sobram 0 ruas. Cruzamentos 1 e 2 isolados.",
+      "Grafo sem mão desconectado → '*' (impossível)."
+    ],
+    answer: "*"
+  },
+  {
+    title: "Exemplo 4 — resposta: 1",
+    input: `5 6\n3 4 1\n1 3 2\n2 4 2\n3 5 2\n2 1 1\n4 1 1`,
+    remainingDesc: "1⇄3, 2⇄4, 3⇄5, 2→1, 4→1",
+    steps: [
+      "Fecha 3→4.",
+      "Não é SC sem mexer (o 3 não alcança 2/4 dependendo do sentido).",
+      "Grafo sem mão ligado → não é '*'.",
+      "Pontes do grafo sem mão: 1—3 e 3—5 — as duas mão dupla.",
+      "Nenhuma ponte é mão única → basta inverter → '1'.",
+      "De fato: inverter 2→1 para 1→2 fecha o ciclo."
+    ],
+    answer: "1"
+  }
+];
+function renderEx(i) {
+  const e = examples[i];
+  const panel = document.getElementById("exPanel");
+  panel.innerHTML = `
+    <h3 style="margin-top:0">${e.title}</h3>
+    <pre class="code">${e.input}</pre>
+    <p><strong>Após fechar a 1ª rua:</strong> ${e.remainingDesc}</p>
+    <ol>${e.steps.map(s => `<li>${s}</li>`).join("")}</ol>
+    <p>Resposta: <span class="badge ${e.answer === "-" ? "ok" : e.answer === "*" ? "err" : "warn"}">${e.answer}</span></p>
+  `;
+}
+document.querySelectorAll(".ex-btn").forEach(b => {
+  b.onclick = () => renderEx(+b.dataset.ex);
+});
+renderEx(0);
+</script>
+</body>
+</html>
