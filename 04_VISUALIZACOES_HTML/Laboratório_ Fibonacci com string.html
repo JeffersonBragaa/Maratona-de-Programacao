@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Laboratório: Fibonacci com string</title>
+<style>
+:root{
+  --bg:#f6f7f9;--card:#fff;--fg:#1b2430;--muted:#6b7686;--line:#dde2ea;
+  --acc:#2563eb;--carry:#d97706;--ok:#059669;--cur:#dbeafe;--curb:#2563eb;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#10151c;--card:#182029;--fg:#e6ebf2;--muted:#93a0b2;--line:#2a3441;--acc:#6ea0ff;--carry:#f5a94a;--ok:#34d399;--cur:#1e3a6b;--curb:#6ea0ff}
+}
+:root[data-theme="dark"]{--bg:#10151c;--card:#182029;--fg:#e6ebf2;--muted:#93a0b2;--line:#2a3441;--acc:#6ea0ff;--carry:#f5a94a;--ok:#34d399;--cur:#1e3a6b;--curb:#6ea0ff}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:860px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:22px;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 16px;font-size:14px}
+.tabs{display:flex;gap:8px;margin-bottom:16px}
+.tabs button{flex:1;padding:10px;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:10px;font:inherit;cursor:pointer}
+.tabs button[aria-selected="true"]{border-color:var(--acc);background:var(--cur);font-weight:600}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.hide{display:none}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+input{width:130px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font:inherit;font-family:ui-monospace,Menlo,Consolas,monospace}
+button.b{padding:8px 14px;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:8px;font:inherit;cursor:pointer}
+button.b.p{background:var(--acc);border-color:var(--acc);color:#fff}
+button.b:disabled{opacity:.4;cursor:default}
+button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.scroll{overflow-x:auto;padding-bottom:6px}
+.grid{display:grid;grid-auto-flow:column;gap:4px;width:max-content;margin:0 auto}
+.col{display:grid;grid-template-rows:26px var(--w) var(--w) 4px var(--w);gap:4px;width:var(--w)}
+.cell{display:flex;align-items:center;justify-content:center;border-radius:8px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:calc(var(--w) * .5);position:relative}
+.cell.d{background:var(--bg);border:1px solid var(--line)}
+.cell.cur{background:var(--cur);border-color:var(--curb)}
+.cell.done{color:var(--muted)}
+.cell.cy{color:var(--carry);font-weight:700;font-size:calc(var(--w) * .38)}
+.cell.res{background:var(--bg);border:1px dashed var(--line)}
+.cell.res.on{border:1px solid var(--ok);color:var(--ok);font-weight:700}
+.bar{background:var(--line);border-radius:2px}
+.tag{position:absolute;bottom:-1px;right:2px;font-size:10px;color:var(--muted);font-family:system-ui,sans-serif}
+.lab{font-size:12px;color:var(--muted);margin:10px 0 4px}
+.chips{display:flex;flex-wrap:wrap;gap:4px;min-height:36px}
+.chip{min-width:30px;padding:4px 8px;border:1px solid var(--line);border-radius:8px;text-align:center;font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--bg)}
+.chip.g{border-color:var(--ok);color:var(--ok);font-weight:700}
+.info{margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--line);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;min-height:46px}
+.info b{color:var(--acc)}
+.fib{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px}
+.fc{border:1px solid var(--line);border-radius:10px;padding:6px 8px;background:var(--bg);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;min-width:54px}
+.fc small{display:block;color:var(--muted);font-family:system-ui,sans-serif;font-size:11px}
+.fc.last{border-color:var(--acc);background:var(--cur)}
+.fc.stop{border-color:var(--carry)}
+.meter{height:10px;border-radius:5px;background:var(--line);overflow:hidden;margin:6px 0}
+.meter i{display:block;height:100%;background:var(--acc);transition:width .2s}
+@media (prefers-reduced-motion: reduce){.meter i{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<h1>Fibonacci com string</h1>
+<p class="sub">Como somar números gigantes dígito a dígito, e como o vetor <code>fib</code> é preenchido.</p>
+
+<div class="tabs" role="tablist">
+  <button role="tab" id="t1" aria-selected="true">1. Soma de strings</button>
+  <button role="tab" id="t2" aria-selected="false">2. Vetor fib</button>
+</div>
+
+<section class="panel" id="p1">
+  <div class="row">
+    <label>a <input id="ia" inputmode="numeric" value="89"></label>
+    <label>b <input id="ib" inputmode="numeric" value="144"></label>
+    <button class="b" id="load">Carregar</button>
+  </div>
+  <div class="scroll"><div class="grid" id="grid"></div></div>
+  <div class="lab">resultado (ordem do push_back)</div>
+  <div class="chips" id="raw"></div>
+  <div class="info" id="info"></div>
+  <div class="row" style="margin:12px 0 0">
+    <button class="b" id="prev">Voltar</button>
+    <button class="b p" id="next">Próximo passo</button>
+    <button class="b" id="auto">Auto</button>
+    <button class="b" id="reset">Reiniciar</button>
+  </div>
+</section>
+
+<section class="panel hide" id="p2">
+  <div class="row">
+    <button class="b p" id="gen1">Gerar próximo</button>
+    <button class="b" id="gen10">Gerar 10</button>
+    <button class="b" id="genAll">Gerar tudo</button>
+    <button class="b" id="fReset">Reiniciar</button>
+  </div>
+  <div class="info" id="fcond"></div>
+  <div class="meter"><i id="meter"></i></div>
+  <div class="lab" id="fcount"></div>
+  <div class="fib" id="fibs"></div>
+  <div class="info" id="fop"></div>
+  <div class="row" style="margin:12px 0 0"><button class="b" id="see" disabled>Ver essa soma passo a passo</button></div>
+</section>
+</main>
+
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+var A="89",B="144",idx=0,steps=[],timer=null;
+
+function calc(a,b){
+  var i=a.length-1,j=b.length-1,c=0,res="",out=[];
+  while(i>=0||j>=0||c>0){
+    var v=c,da=null,db=null,i0=i,j0=j,cin=c;
+    if(i>=0){da=+a[i];v+=da;i--}
+    if(j>=0){db=+b[j];v+=db;j--}
+    var d=v%10;c=Math.floor(v/10);res+=d;
+    out.push({i0:i0,j0:j0,da:da,db:db,cin:cin,v:v,d:d,cout:c,res:res});
+  }
+  return out;
+}
+function load(a,b){
+  A=a;B=b;steps=calc(A,B);idx=0;stop();render();
+}
+function render(){
+  var n=steps.length,L=n,done=idx>n;
+  var w=L>16?20:L>9?30:44;
+  var g=$("grid");g.style.setProperty("--w",w+"px");
+  var h="";
+  for(var c=L-1;c>=0;c--){
+    var k=c,cur=(idx-1===k&&!done),fin=k<idx;
+    var da=A.length-1-k>=0?A[A.length-1-k]:"",db=B.length-1-k>=0?B[B.length-1-k]:"";
+    var cy=(k>=1&&k-1<Math.min(idx,n)&&steps[k-1].cout>0)?steps[k-1].cout:"";
+    var st=steps[k];
+    var tagA=cur?'<span class="tag">i='+(st.i0>=0?st.i0:"-1")+'</span>':"";
+    var tagB=cur?'<span class="tag">j='+(st.j0>=0?st.j0:"-1")+'</span>':"";
+    var cls=function(x){return "cell d"+(cur?" cur":(fin?" done":""))};
+    var r=(k<Math.min(idx,n))?st.d:"";
+    h+='<div class="col"><div class="cell cy">'+(cy!==""?"+"+cy:"")+'</div>'
+     +'<div class="'+cls()+'">'+da+tagA+'</div>'
+     +'<div class="'+cls()+'">'+db+tagB+'</div>'
+     +'<div class="bar"></div>'
+     +'<div class="cell res'+(r!==""?" on":"")+'">'+r+'</div></div>';
+  }
+  g.innerHTML=h;
+  // raw string
+  var raw="";
+  if(idx>=1){
+    var s=steps[Math.min(idx,n)-1].res;
+    if(done)s=s.split("").reverse().join("");
+    for(var q=0;q<s.length;q++)raw+='<span class="chip'+(done?" g":"")+'">'+s[q]+'</span>';
+  }
+  $("raw").innerHTML=raw||'<span class="chip">""</span>';
+  // info
+  var t;
+  if(idx===0)t="Começa em <b>i="+(A.length-1)+"</b> e <b>j="+(B.length-1)+"</b>, o último dígito de cada número. <b>carry = 0</b>.";
+  else if(idx<=n){
+    var s2=steps[idx-1],parts=[s2.cin];
+    var f="valor = carry("+s2.cin+")";
+    if(s2.da!==null)f+=" + a[i]("+s2.da+")";
+    if(s2.db!==null)f+=" + b[j]("+s2.db+")";
+    f+=" = <b>"+s2.v+"</b><br>digito = "+s2.v+" % 10 = <b>"+s2.d+"</b> → push_back('"+s2.d+"')<br>carry = "+s2.v+" / 10 = <b>"+s2.cout+"</b>";
+    t=f;
+  } else t="i&lt;0, j&lt;0 e carry=0: o while termina. O <b>reverse</b> vira <b>"+steps[n-1].res+"</b> em <b>"+steps[n-1].res.split("").reverse().join("")+"</b>.";
+  $("info").innerHTML=t;
+  $("prev").disabled=idx===0;
+  var last=idx>n;
+  $("next").disabled=last;
+  $("next").textContent=idx===n?"Aplicar reverse":"Próximo passo";
+}
+function stop(){if(timer){clearInterval(timer);timer=null;$("auto").textContent="Auto"}}
+$("next").onclick=function(){if(idx<=steps.length){idx++;render()}};
+$("prev").onclick=function(){if(idx>0){idx--;render()}};
+$("reset").onclick=function(){idx=0;stop();render()};
+$("auto").onclick=function(){
+  if(timer){stop();return}
+  if(idx>steps.length)idx=0;
+  $("auto").textContent="Pausar";
+  timer=setInterval(function(){if(idx>steps.length){stop();return}idx++;render()},900);
+};
+$("load").onclick=function(){
+  var a=$("ia").value.replace(/\D/g,"").replace(/^0+(?=\d)/,""),b=$("ib").value.replace(/\D/g,"").replace(/^0+(?=\d)/,"");
+  if(!a)a="0";if(!b)b="0";
+  $("ia").value=a;$("ib").value=b;load(a,b);
+};
+
+// ---- aba 2
+var fib=["1","2"],lastOp=null;
+function soma(a,b){var r="",i=a.length-1,j=b.length-1,c=0;while(i>=0||j>=0||c>0){var v=c;if(i>=0)v+=+a[i--];if(j>=0)v+=+b[j--];r+=v%10;c=Math.floor(v/10)}return r.split("").reverse().join("")}
+function finished(){return fib[fib.length-1].length>101}
+function genOne(){
+  if(finished())return;
+  var pen=fib[fib.length-2],ult=fib[fib.length-1],prox=soma(ult,pen);
+  fib.push(prox);lastOp={pen:pen,ult:ult,prox:prox};
+}
+function short(s){return s.length>12?s.slice(0,6)+"…"+s.slice(-3):s}
+function fr(){
+  var last=fib[fib.length-1],len=last.length,fin=finished();
+  $("fcond").innerHTML="while (fib.back().size() &lt;= 101) → último tem <b>"+len+"</b> dígito"+(len>1?"s":"")+" → <b>"+(fin?"false: PARA":"true: continua")+"</b>";
+  $("meter").style.width=Math.min(100,len/102*100)+"%";
+  $("fcount").textContent="fib tem "+fib.length+" números (dígitos do último: "+len+" de 102)";
+  var h="";
+  for(var q=0;q<fib.length;q++){
+    var cl="fc"+(q===fib.length-1?(fin?" stop":" last"):"");
+    h+='<div class="'+cl+'" title="'+fib[q]+'"><small>fib['+q+']</small>'+short(fib[q])+'</div>';
+  }
+  $("fibs").innerHTML=h;
+  if(lastOp){
+    $("fop").innerHTML="penultimo = <b>"+short(lastOp.pen)+"</b><br>ultimo = <b>"+short(lastOp.ult)+"</b><br>proximo = soma(ultimo, penultimo) = <b>"+short(lastOp.prox)+"</b>";
+  } else $("fop").innerHTML="fib começa com {\"1\", \"2\"}. Clique em <b>Gerar próximo</b>.";
+  $("see").disabled=!lastOp||lastOp.ult.length>30;
+  $("gen1").disabled=$("gen10").disabled=$("genAll").disabled=fin;
+}
+$("gen1").onclick=function(){genOne();fr()};
+$("gen10").onclick=function(){for(var q=0;q<10;q++)genOne();fr()};
+$("genAll").onclick=function(){while(!finished())genOne();fr()};
+$("fReset").onclick=function(){fib=["1","2"];lastOp=null;fr()};
+$("see").onclick=function(){if(!lastOp)return;$("ia").value=lastOp.ult;$("ib").value=lastOp.pen;load(lastOp.ult,lastOp.pen);tab(1)};
+
+function tab(n){
+  $("p1").classList.toggle("hide",n!==1);$("p2").classList.toggle("hide",n!==2);
+  $("t1").setAttribute("aria-selected",n===1);$("t2").setAttribute("aria-selected",n===2);
+  if(n===2)stop();
+}
+$("t1").onclick=function(){tab(1)};$("t2").onclick=function(){tab(2)};
+
+load(A,B);fr();
+})();
+</script>
+</body>
+</html>
