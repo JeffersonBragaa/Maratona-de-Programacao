@@ -1,0 +1,2130 @@
+[
+  {
+    "path": "06_AULAS/1301.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "06_AULAS/1301.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "06_AULAS/1301.cpp: In function ‘int main()’:\n06_AULAS/1301.cpp:53:31: warning: statement has no effect [-Wunused-value]\n   53 |             if(a[i] > 0) a[i] == 1;\n      |                          ~~~~~^~~~\n"
+  },
+  {
+    "path": "06_AULAS/aula03.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "06_AULAS/aula03.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "06_AULAS/vector.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "06_AULAS/vector.cpp"
+    ],
+    "returncode": 1,
+    "diagnostics": "06_AULAS/vector.cpp: In function ‘int main()’:\n06_AULAS/vector.cpp:7:5: error: ‘vector’ was not declared in this scope\n    7 |     vector<int> vec;\n      |     ^~~~~~\n06_AULAS/vector.cpp:7:5: note: suggested alternatives:\nIn file included from /usr/include/c++/13/vector:66,\n                 from /usr/include/c++/13/functional:64,\n                 from /usr/include/x86_64-linux-gnu/c++/13/bits/stdc++.h:53,\n                 from 06_AULAS/vector.cpp:1:\n/usr/include/c++/13/bits/stl_vector.h:428:11: note:   ‘std::vector’\n  428 |     class vector : protected _Vector_base<_Tp, _Alloc>\n      |           ^~~~~~\n/usr/include/c++/13/vector:86:13: note:   ‘std::pmr::vector’\n   86 |       using vector = std::vector<_Tp, polymorphic_allocator<_Tp>>;\n      |             ^~~~~~\n06_AULAS/vector.cpp:7:12: error: expected primary-expression before ‘int’\n    7 |     vector<int> vec;\n      |            ^~~\n06_AULAS/vector.cpp:8:12: error: ‘iterator’ was not declared in this scope; did you mean ‘std::iterator’?\n    8 |     vector<iterator> it;\n      |            ^~~~~~~~\n      |            std::iterator\nIn file included from /usr/include/c++/13/bits/stl_algobase.h:65,\n                 from /usr/include/c++/13/algorithm:60,\n                 from /usr/include/x86_64-linux-gnu/c++/13/bits/stdc++.h:51:\n/usr/include/c++/13/bits/stl_iterator_base_types.h:127:34: note: ‘std::iterator’ declared here\n  127 |     struct _GLIBCXX17_DEPRECATED iterator\n      |                                  ^~~~~~~~\n06_AULAS/vector.cpp:8:22: error: ‘it’ was not declared in this scope; did you mean ‘int’?\n    8 |     vector<iterator> it;\n      |                      ^~\n      |                      int\n06_AULAS/vector.cpp:11:5: error: ‘vec’ was not declared in this scope\n   11 |     vec.push_back(10);\n      |     ^~~\n06_AULAS/vector.cpp:15:15: error: initializer in range-based ‘for’ loop\n   15 |     for(int i = 0: i < vec.size(); i++){\n      |               ^\n06_AULAS/vector.cpp:15:34: error: expected ‘)’ before ‘;’ token\n   15 |     for(int i = 0: i < vec.size(); i++){\n      |        ~                         ^\n      |                                  )\n06_AULAS/vector.cpp:15:5: warning: this ‘for’ clause does not guard... [-Wmisleading-indentation]\n   15 |     for(int i = 0: i < vec.size(); i++){\n      |     ^~~\n06_AULAS/vector.cpp:15:36: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’\n   15 |     for(int i = 0: i < vec.size(); i++){\n      |                                    ^\n06_AULAS/vector.cpp:15:36: error: ‘i’ was not declared in this scope\n06_AULAS/vector.cpp:20:5: error: ‘cout’ was not declared in this scope; did you mean ‘std::cout’?\n   20 |     cout << \"\\n\";\n      |     ^~~~\n      |     std::cout\nIn file included from /usr/include/x86_64-linux-gnu/c++/13/bits/stdc++.h:146:\n/usr/include/c++/13/iostream:63:18: note: ‘std::cout’ declared here\n   63 |   extern ostream cout;          ///< Linked to standard output\n      |                  ^~~~\n"
+  },
+  {
+    "path": "02_SIMULADOS_E_PROVAS/SIMULADO_00/b.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "02_SIMULADOS_E_PROVAS/SIMULADO_00/b.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "02_SIMULADOS_E_PROVAS/SIMULADO_00/d.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "02_SIMULADOS_E_PROVAS/SIMULADO_00/d.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "02_SIMULADOS_E_PROVAS/SIMULADO_00/a.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "02_SIMULADOS_E_PROVAS/SIMULADO_00/a.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "02_SIMULADOS_E_PROVAS/SIMULADO_00/E.c",
+    "command": [
+      "gcc",
+      "-std=gnu11",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "02_SIMULADOS_E_PROVAS/SIMULADO_00/E.c"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "02_SIMULADOS_E_PROVAS/SIMULADO_00/c.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "02_SIMULADOS_E_PROVAS/SIMULADO_00/c.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "02_SIMULADOS_E_PROVAS/SIMULADO_02/j_completo.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "02_SIMULADOS_E_PROVAS/SIMULADO_02/j_completo.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "02_SIMULADOS_E_PROVAS/SIMULADO_02/j_completo.cpp: In function ‘void dfs(int, std::vector<std::vector<int> >&, std::vector<int>&)’:\n02_SIMULADOS_E_PROVAS/SIMULADO_02/j_completo.cpp:21:27: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<int>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   21 |         for (int i = 0; i < ruas[u].size(); i++)\n      |                         ~~^~~~~~~~~~~~~~~~\n02_SIMULADOS_E_PROVAS/SIMULADO_02/j_completo.cpp: In function ‘void dfs_invertida(int, std::vector<std::vector<int> >&, std::vector<int>&)’:\n02_SIMULADOS_E_PROVAS/SIMULADO_02/j_completo.cpp:49:27: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<int>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   49 |         for (int i = 0; i < ruas_inverso[u].size(); i++)\n      |                         ~~^~~~~~~~~~~~~~~~~~~~~~~~\n"
+  },
+  {
+    "path": "02_SIMULADOS_E_PROVAS/SIMULADO_02/E.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "02_SIMULADOS_E_PROVAS/SIMULADO_02/E.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "02_SIMULADOS_E_PROVAS/SIMULADO_02/E.cpp: In function ‘int main()’:\n02_SIMULADOS_E_PROVAS/SIMULADO_02/E.cpp:47:27: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   47 |             for (k = 0; k < temp.size(); k++)\n      |                         ~~^~~~~~~~~~~~~\n02_SIMULADOS_E_PROVAS/SIMULADO_02/E.cpp:52:27: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   52 |             for (k = 0; k < temp.size(); k++)\n      |                         ~~^~~~~~~~~~~~~\n02_SIMULADOS_E_PROVAS/SIMULADO_02/E.cpp:29:15: warning: unused variable ‘j’ [-Wunused-variable]\n   29 |     int n, i, j, k, sm1 = 0, sm2 = 0, temp1, temp2, atual, anterior;\n      |               ^\n"
+  },
+  {
+    "path": "02_SIMULADOS_E_PROVAS/SIMULADO_02/j.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "02_SIMULADOS_E_PROVAS/SIMULADO_02/j.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "02_SIMULADOS_E_PROVAS/SIMULADO_02/K.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "02_SIMULADOS_E_PROVAS/SIMULADO_02/K.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "02_SIMULADOS_E_PROVAS/SIMULADO_02/B.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "02_SIMULADOS_E_PROVAS/SIMULADO_02/B.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "02_SIMULADOS_E_PROVAS/SIMULADO_02/l.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "02_SIMULADOS_E_PROVAS/SIMULADO_02/l.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "03_ALGORITMOS/GEOMETRIA_COMPUTACIONAL/01_par_mais_proximo.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "03_ALGORITMOS/GEOMETRIA_COMPUTACIONAL/01_par_mais_proximo.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "03_ALGORITMOS/BFS_DFS/a.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "03_ALGORITMOS/BFS_DFS/a.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "03_ALGORITMOS/TARJAN/aula.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "03_ALGORITMOS/TARJAN/aula.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "03_ALGORITMOS/DIJKSTRA/b.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "03_ALGORITMOS/DIJKSTRA/b.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "03_ALGORITMOS/DIJKSTRA/dijkstra-aula.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "03_ALGORITMOS/DIJKSTRA/dijkstra-aula.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "03_ALGORITMOS/DIJKSTRA/desafio1.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "03_ALGORITMOS/DIJKSTRA/desafio1.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/2294.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/2294.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1212.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1212.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_05/1212.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_05/1212.cpp:8:9: warning: unused variable ‘xi’ [-Wunused-variable]\n    8 |     int xi, yi, i, curry = 0, temp = 0;\n      |         ^~\n01_LISTAS/LISTA_05/1212.cpp:8:13: warning: unused variable ‘yi’ [-Wunused-variable]\n    8 |     int xi, yi, i, curry = 0, temp = 0;\n      |             ^~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1211.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1211.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_05/1211.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_05/1211.cpp:22:25: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   22 |                 while(c < w.size() && c < atual.size() && w[c] == atual[c]){\n      |                       ~~^~~~~~~~~~\n01_LISTAS/LISTA_05/1211.cpp:22:41: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   22 |                 while(c < w.size() && c < atual.size() && w[c] == atual[c]){\n      |                                       ~~^~~~~~~~~~~~~~\n01_LISTAS/LISTA_05/1211.cpp:26:27: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   26 |                 if(melhor == atual.size()){\n      |                    ~~~~~~~^~~~~~~~~~~~~~~\n01_LISTAS/LISTA_05/1211.cpp:33:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   33 |             if(melhor < atual.size()){\n      |                ~~~~~~~^~~~~~~~~~~~~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1170.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1170.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1136.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1136.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_05/1136.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_05/1136.cpp:21:22: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<int>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   21 |         for(i = 0; i < bolas.size(); i++){\n      |                    ~~^~~~~~~~~~~~~~\n01_LISTAS/LISTA_05/1136.cpp:23:30: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<int>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   23 |             for(j = i + 1; j < bolas.size(); j++){\n      |                            ~~^~~~~~~~~~~~~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1022.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1022.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_05/1022.cpp: In function ‘void som(int, char, int, char, int, char, int)’:\n01_LISTAS/LISTA_05/1022.cpp:17:23: warning: unused parameter ‘s1’ [-Wunused-parameter]\n   17 | void som(int n1, char s1, int d1, char s2, int n2, char s3, int d2)\n      |                  ~~~~~^~\n01_LISTAS/LISTA_05/1022.cpp:17:57: warning: unused parameter ‘s3’ [-Wunused-parameter]\n   17 | void som(int n1, char s1, int d1, char s2, int n2, char s3, int d2)\n      |                                                    ~~~~~^~\n01_LISTAS/LISTA_05/1022.cpp: In function ‘void div_mult(int, char, int, char, int, char, int)’:\n01_LISTAS/LISTA_05/1022.cpp:36:28: warning: unused parameter ‘s1’ [-Wunused-parameter]\n   36 | void div_mult(int n1, char s1, int d1, char s2, int n2, char s3, int d2)\n      |                       ~~~~~^~\n01_LISTAS/LISTA_05/1022.cpp:36:62: warning: unused parameter ‘s3’ [-Wunused-parameter]\n   36 | void div_mult(int n1, char s1, int d1, char s2, int n2, char s3, int d2)\n      |                                                         ~~~~~^~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1536.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1536.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1125.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1125.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1267.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1267.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/2653.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/2653.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/2374.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/2374.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/2460.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/2460.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_05/2460.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_05/2460.cpp:29:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<int>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   29 |     for (int i = 0; i < v.size(); i++)\n      |                     ~~^~~~~~~~~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1128.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1128.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1103.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1103.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1081.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1081.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/2424.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/2424.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1221.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1221.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1873.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1873.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1082.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1082.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_05/1082.cpp: In function ‘void dfs(int, int, std::vector<std::vector<int> >&, std::vector<int>&, std::vector<int>&, std::stack<int>&)’:\n01_LISTAS/LISTA_05/1082.cpp:27:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<int>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   27 |         for (i = 0; i < grafo[u].size(); i++)\n      |                     ~~^~~~~~~~~~~~~~~~~\n01_LISTAS/LISTA_05/1082.cpp:39:22: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   39 |     for(int i = 0; i < resposta.size(); i++){\n      |                    ~~^~~~~~~~~~~~~~~~~\n01_LISTAS/LISTA_05/1082.cpp:5:21: warning: unused parameter ‘v’ [-Wunused-parameter]\n    5 | void dfs(int s, int v, vector<vector<int>> &grafo,\n      |                 ~~~~^\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1148.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1148.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_05/1148.cpp: In function ‘void dijkstra(int, int, std::vector<std::vector<std::pair<int, int> > >&, std::vector<int>&, std::vector<int>&, std::vector<int>&, std::priority_queue<std::pair<int, int> >&)’:\n01_LISTAS/LISTA_05/1148.cpp:6:26: warning: unused parameter ‘c’ [-Wunused-parameter]\n    6 | void dijkstra(int s, int c, vector<vector<pair<int, int>>> &adj, vector<int> &dist, vector<int> &pred, vector<int> &visitado, priority_queue<pair<int, int>> &q)\n      |                      ~~~~^\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/2253.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/2253.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_05/2253.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_05/2253.cpp:16:31: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   16 |             for (int i = 0; i < s.size(); i++)\n      |                             ~~^~~~~~~~~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1244.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1244.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_05/1244.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_05/1244.cpp:21:31: warning: comparison of integer expressions of different signedness: ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} and ‘int’ [-Wsign-compare]\n   21 |             if(palavra.size() > maior) maior = palavra.size();\n      |                ~~~~~~~~~~~~~~~^~~~~~~\n01_LISTAS/LISTA_05/1244.cpp:35:31: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::__cxx11::basic_string<char> >::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   35 |                 for (j = 0; j < v[i].size(); j++)\n      |                             ~~^~~~~~~~~~~~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1943.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1943.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1029.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1029.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_05/1193.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_05/1193.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_05/1193.cpp: In function ‘long long int para_dec(std::string, std::string)’:\n01_LISTAS/LISTA_05/1193.cpp:31:18: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   31 |     for(i = 0; i < x.size(); i++){\n      |                ~~^~~~~~~~~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_06/2174.CPP",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_06/2174.CPP"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_06/2631.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_06/2631.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_06/3358.CPP",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_06/3358.CPP"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_06/3358.CPP: In function ‘int main()’:\n01_LISTAS/LISTA_06/3358.CPP:17:23: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   17 |         for (i = 0; i < nome.size(); i++)\n      |                     ~~^~~~~~~~~~~~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_06/2091.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_06/2091.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_06/1549.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_06/1549.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_06/1938.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_06/1938.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_06/1938.cpp: In function ‘void verifica(const std::vector<std::pair<int, int> >&, int, long long int&)’:\n01_LISTAS/LISTA_06/1938.cpp:12:27: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::pair<int, int> >::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   12 |     for (int j = i + 1; j < vet.size(); j++) {\n      |                         ~~^~~~~~~~~~~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_06/2136.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_06/2136.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_06/3036.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_06/3036.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_06/1023.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_06/1023.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_06/1023.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_06/1023.cpp:46:27: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::pair<int, int> >::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   46 |         for (int i = 0; i < v.size();)\n      |                         ~~^~~~~~~~~~\n01_LISTAS/LISTA_06/1023.cpp:53:22: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::pair<int, int> >::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   53 |             while (i < v.size() && v[i].second == consumo)\n      |                    ~~^~~~~~~~~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_06/1077.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_06/1077.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_06/1077.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_06/1077.cpp:20:27: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   20 |         for (int i = 0; i < ex.size(); i++)\n      |                         ~~^~~~~~~~~~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_06/2242.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_06/2242.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_06/2242.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_06/2242.cpp:17:19: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   17 |     for (i = 0; i < ris.size(); i++)\n      |                 ~~^~~~~~~~~~~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_06/1722.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_06/1722.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/2747.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/2747.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/1107.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/1107.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_04/1107.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_04/1107.cpp:6:31: warning: unused variable ‘anterior’ [-Wunused-variable]\n    6 |     int a, c, x, i, cont = 0, anterior;\n      |                               ^~~~~~~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/2065.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/2065.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/2049.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/2049.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/1195.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/1195.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/1340.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/1340.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/1258.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/1258.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/1548.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/1548.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/1110.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/1110.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/1272.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/1272.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_04/1272.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_04/1272.cpp:19:22: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   19 |         for(i = 0; i < frase.size(); i++) {\n      |                    ~~^~~~~~~~~~~~~~\n01_LISTAS/LISTA_04/1272.cpp:26:22: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<char>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   26 |         for(i = 0; i < final.size(); i++) {\n      |                    ~~^~~~~~~~~~~~~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/1129.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/1129.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/3257.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/3257.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_04/3257.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_04/3257.cpp:17:18: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<int>::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   17 |     for(i = 1; i < v.size(); i++){\n      |                ~~^~~~~~~~~~\n01_LISTAS/LISTA_04/3257.cpp:6:15: warning: unused variable ‘j’ [-Wunused-variable]\n    6 |     int n, i, j, x, dias;\n      |               ^\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/1165.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/1165.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/2880.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/2880.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/1049.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/1049.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/1250.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/1250.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/1225.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/1225.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/1147.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/1147.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/1944.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/1944.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_04/1763.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_04/1763.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_02/1257.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_02/1257.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_02/1105.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_02/1105.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_02/3301.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_02/3301.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_02/1105.c",
+    "command": [
+      "gcc",
+      "-std=gnu11",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_02/1105.c"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_02/2854.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_02/2854.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_02/1457.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_02/1457.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_02/1026.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_02/1026.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_02/1192.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_02/1192.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_02/1192.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_02/1192.cpp:12:17: warning: format ‘%s’ expects argument of type ‘char*’, but argument 2 has type ‘char (*)[4]’ [-Wformat=]\n   12 |         scanf(\"%s\", &jogo);\n      |                ~^   ~~~~~\n      |                 |   |\n      |                 |   char (*)[4]\n      |                 char*\n01_LISTAS/LISTA_02/1192.cpp:5:33: warning: unused variable ‘controla’ [-Wunused-variable]\n    5 |     int n, n1, n2, i, soma = 0, controla = 1;\n      |                                 ^~~~~~~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_02/1030.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_02/1030.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_02/1030.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_02/1030.cpp:10:13: warning: format ‘%d’ expects a matching ‘int*’ argument [-Wformat=]\n   10 |     scanf(\"%d\");\n      |            ~^\n      |             |\n      |             int*\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_02/3068.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_02/3068.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_02/1241.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_02/1241.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_02/1142.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_02/1142.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_02/1142.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_02/1142.cpp:5:27: warning: unused variable ‘cont’ [-Wunused-variable]\n    5 |     int n, numero = 1, i, cont = 1;\n      |                           ^~~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_02/1024.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_02/1024.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_02/1168.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_02/1168.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_02/1985.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_02/1985.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1039.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1039.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1403.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1403.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/3344.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/3344.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/2729.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/2729.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_03/2729.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_03/2729.cpp:34:26: warning: comparison of integer expressions of different signedness: ‘int’ and ‘std::vector<std::__cxx11::basic_string<char> >::size_type’ {aka ‘long unsigned int’} [-Wsign-compare]\n   34 |         for(int i = 0; i < prods.size(); i++) {\n      |                        ~~^~~~~~~~~~~~~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/2286.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/2286.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1962.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1962.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1259.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1259.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/2309.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/2309.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1037.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1037.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1030.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1030.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1041.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1041.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1045.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1045.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1020.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1020.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_03/1020.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_03/1020.cpp:7:12: warning: unused variable ‘dia’ [-Wunused-variable]\n    7 |     int d, dia, mes, ano;\n      |            ^~~\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1863.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1863.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1241.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1241.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/3137.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/3137.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1555.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1555.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1769.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1769.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1449.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1449.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1196.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1196.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1893.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1893.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_03/1068.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_03/1068.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/1982.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/1982.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/1124.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/1124.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/2840.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/2840.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/1291.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/1291.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/1468.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/1468.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/1549.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/1549.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/1126.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/1126.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/1464.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/1464.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/1378.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/1378.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/2891.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/2891.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/3068.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/3068.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/1315.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/1315.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/1296.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/1296.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/1797.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/1797.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/1223.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/1223.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/1576.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/1576.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/1631.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/1631.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/1295.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/1295.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/3152.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/3152.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_07/1528.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_07/1528.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_01/3106.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_01/3106.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_01/1163.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_01/1163.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_01/1046.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_01/1046.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_01/1046.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_01/1046.cpp:8:9: warning: unused variable ‘i’ [-Wunused-variable]\n    8 |     int i;\n      |         ^\n"
+  },
+  {
+    "path": "01_LISTAS/LISTA_01/1318.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_01/1318.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_01/1410.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_01/1410.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_01/1017.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_01/1017.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_01/1144.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_01/1144.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_01/1015.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_01/1015.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_01/1367.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_01/1367.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_01/1087.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_01/1087.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_01/1021.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_01/1021.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_01/1581.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_01/1581.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_01/1161.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_01/1161.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_01/1091.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_01/1091.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "01_LISTAS/LISTA_01/1140.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "01_LISTAS/LISTA_01/1140.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": "01_LISTAS/LISTA_01/1140.cpp: In function ‘int main()’:\n01_LISTAS/LISTA_01/1140.cpp:10:10: warning: unused variable ‘teste’ [-Wunused-variable]\n   10 |     char teste;\n      |          ^~~~~\n"
+  },
+  {
+    "path": "07_AVALIACOES_EM_SALA/WARMUP_AULA_10/A-didatico.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "07_AVALIACOES_EM_SALA/WARMUP_AULA_10/A-didatico.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "07_AVALIACOES_EM_SALA/WARMUP_AULA_10/A.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "07_AVALIACOES_EM_SALA/WARMUP_AULA_10/A.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  },
+  {
+    "path": "07_AVALIACOES_EM_SALA/WARMUP_AULA_10/c.cpp",
+    "command": [
+      "g++",
+      "-std=gnu++17",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-fsyntax-only",
+      "07_AVALIACOES_EM_SALA/WARMUP_AULA_10/c.cpp"
+    ],
+    "returncode": 0,
+    "diagnostics": ""
+  }
+]
