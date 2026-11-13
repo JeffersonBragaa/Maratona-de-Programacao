@@ -1,136 +1,86 @@
 # Índice — MP1 (Maratona de Programação I)
 
-Organizado em 2026-10-19.  
-**Regra adotada:** pastas padronizadas · **nomes de arquivo preservados** · duplicatas idênticas removidas.
-
-Raiz: `/home/j-braga/Documentos/MP1`
-
----
+Organização revisada em 13/11/2026. Caminhos relativos à raiz do repositório; nomes dos PDFs e dos códigos preservados.
 
 ## Estrutura
 
 ```text
-MP1/
-├── 00_INDICE/                      ← este arquivo
-├── 01_LISTAS/                      ← listas Beecrowd (ex-Exercicios/lista*)
-│   ├── LISTA_01/                   15 arquivos (IDs Beecrowd)
+Maratora-de-Programacao/
+├── 00_INDICE/
+├── 01_LISTAS/
+│   ├── LISTA_01/
 │   ├── LISTA_02/
 │   ├── LISTA_03/
 │   ├── LISTA_04/
-│   └── LISTA_05/
+│   ├── LISTA_05/
+│   ├── LISTA_06/
+│   └── LISTA_07/
 ├── 02_SIMULADOS_E_PROVAS/
-│   ├── PROVAS/
-│   │   ├── SIMULADO_GERAL_2.pdf    ← era Exercicios/prova.pdf (14/10/2026)
-│   │   └── prova-5.pdf
-│   ├── SIMULADO_00/                ← era "simulado 0/"
-│   └── SIMULADO_02/                ← era "simulado02/" + soltos B.cpp, K.cpp
+│   ├── SIMULADO_00/
+│   └── SIMULADO_02/
 ├── 03_ALGORITMOS/
-│   ├── BFS_DFS/                    ← era grafos/ (raiz)
-│   ├── DIJKSTRA/                   ← era grafos/dijkstra/
-│   └── TARJAN/                     ← era grafos/tarjan/
+│   ├── BFS_DFS/
+│   ├── DIJKSTRA/
+│   ├── GEOMETRIA_COMPUTACIONAL/
+│   └── TARJAN/
 ├── 04_VISUALIZACOES_HTML/
 ├── 05_APOSTILAS_E_REFERENCIAS/
-├── 06_AULAS/                       ← era aula/ + estudos/
-└── Exercicios/
-    ├── AGENTS.md
-    └── ecox21/                     ← agente de estudo (método/progresso)
+├── 06_AULAS/
+└── 07_AVALIACOES_EM_SALA/
+    ├── SIMULADOS/
+    ├── WARMUP_AULA_05/
+    ├── WARMUP_AULA_08/
+    └── WARMUP_AULA_10/
 ```
 
----
+## Listas de exercícios
 
-## O que foi onde
+[Listas 01 a 07](../01_LISTAS/): fontes com o ID do problema no Beecrowd, incluindo arquivos `.c`, `.cpp` e `.CPP`. Entradas de teste, como `LISTA_02/entrada.txt`, permanecem junto dos exercícios.
 
-### 01_LISTAS (nomes `.cpp` = ID Beecrowd, **não** renomeados)
+## Simulados e soluções
 
-| Pasta | Origem | Observação |
-|-------|--------|------------|
-| LISTA_01 | `Exercicios/lista 01/` | I/O, geometria básica, simulação |
-| LISTA_02 | `Exercicios/lista 02/` | inclui `1105.c`, `entrada.txt`, `programa` |
-| LISTA_03 | `Exercicios/lista 03/` | `1196.cpp` vazio · `saida` artefato |
-| LISTA_04 | `Exercicios/lista04/` | |
-| LISTA_05 | `Exercicios/lista05/` | grafos · binários soltos (1029, 1081, …) ficaram junto |
+| Pasta | Conteúdo |
+|-------|----------|
+| [SIMULADO_00](../02_SIMULADOS_E_PROVAS/SIMULADO_00/) | `Simulado_Zero.pdf` e soluções A–E |
+| [SIMULADO_02](../02_SIMULADOS_E_PROVAS/SIMULADO_02/) | `SIMULADO_GERAL_2.pdf`, soluções e referência `j_completo.cpp` |
 
-### 02_SIMULADOS_E_PROVAS
+Os antigos warmups e suas soluções saíram de `02_SIMULADOS_E_PROVAS/PROVAS/` para a seção 07. O enunciado do Simulado Geral 2 foi reunido às soluções em `SIMULADO_02/`.
 
-| Arquivo | Conteúdo identificado |
-|---------|----------------------|
-| `SIMULADO_00/Simulado_Zero.pdf` | enunciado simulado 0 |
-| `SIMULADO_00/a.cpp` … `E.c` | soluções A–E do simulado 0 |
-| `PROVAS/SIMULADO_GERAL_2.pdf` | prova de 14/10/2026 (problemas A–L) |
-| `PROVAS/prova-5.pdf` | prova/avaliação anterior |
-| `SIMULADO_02/j.cpp` | **J — Desvio de Rua** (seu código) |
-| `SIMULADO_02/j_completo.cpp` | referência J (pontes tin/low) |
-| `SIMULADO_02/j_visual.html` | laboratório visual do J |
-| `SIMULADO_02/E.cpp` | **E — Guerra em Marte** (Ackermann) |
-| `SIMULADO_02/B.cpp` | **B — 3N+1** |
-| `SIMULADO_02/K.cpp` | **K — Figurinhas** |
-| `SIMULADO_02/l.cpp` | **L — Fuga da Princesa** (BFS) |
-| `SIMULADO_02/E`, `j`, `saida`, `out.txt` | binários/artefatos (não são fonte) |
+## Algoritmos
 
-### 03_ALGORITMOS
+| Pasta | Conteúdo |
+|-------|----------|
+| [BFS_DFS](../03_ALGORITMOS/BFS_DFS/) | `a.cpp`: busca em grade |
+| [DIJKSTRA](../03_ALGORITMOS/DIJKSTRA/) | `b.cpp`, `desafio1.cpp`, `dijkstra-aula.cpp` |
+| [GEOMETRIA_COMPUTACIONAL](../03_ALGORITMOS/GEOMETRIA_COMPUTACIONAL/) | `01_par_mais_proximo.cpp`: exemplo dos slides da Aula 11, antes na Lista 07 |
+| [TARJAN](../03_ALGORITMOS/TARJAN/) | `aula.cpp`: componentes fortemente conexas |
 
-| Pasta | Arquivos | Assunto |
-|-------|----------|---------|
-| BFS_DFS | `a.cpp`, binário `a` | BFS em grade |
-| DIJKSTRA | `b.cpp`, `desafio1.cpp`, `dijkstra-aula.cpp` + binários | Dijkstra |
-| TARJAN | `aula.cpp` + binário | SCC / Tarjan |
+## Visualizações HTML
 
-### 04_VISUALIZACOES_HTML (nomes originais)
+Todos os laboratórios visuais estão em [04_VISUALIZACOES_HTML](../04_VISUALIZACOES_HTML/), incluindo os que estavam junto das listas, simulados e algoritmos.
 
-| Arquivo | Algoritmo |
-|---------|-----------|
-| `Desvio de Rua — laboratório didático.html` | pontes / desvio de rua (J) |
-| `Laboratório de Dijkstra-primeiro-bom.html` | Dijkstra (versão mais completa) |
-| `laboratorio-dijkstra.html` | Dijkstra (versão curta) |
+| Arquivo | Material relacionado |
+|---------|---------------------|
+| [01_par_mais_proximo.html](../04_VISUALIZACOES_HTML/01_par_mais_proximo.html) | [Código](../03_ALGORITMOS/GEOMETRIA_COMPUTACIONAL/01_par_mais_proximo.cpp) e [slides da Aula 11](../06_AULAS/MP1_-_Aula_11_-_GC.pdf) |
+| [j_visual.html](../04_VISUALIZACOES_HTML/j_visual.html) | [Solução J](../02_SIMULADOS_E_PROVAS/SIMULADO_02/j.cpp) e [referência](../02_SIMULADOS_E_PROVAS/SIMULADO_02/j_completo.cpp) |
+| [laboratorio-dijkstra-comcodigo.html](../04_VISUALIZACOES_HTML/laboratorio-dijkstra-comcodigo.html) | [Algoritmos de Dijkstra](../03_ALGORITMOS/DIJKSTRA/) |
+| [laboratorio-tarjan.html](../04_VISUALIZACOES_HTML/laboratorio-tarjan.html) | [Algoritmo de Tarjan](../03_ALGORITMOS/TARJAN/aula.cpp) |
 
-> Três HTMLs de Dijkstra são **diferentes** (hashes distintos) — nenhum foi apagado.
+A pasta também reúne os laboratórios de Fibonacci, Dividindo a Coca, Desvio de Rua e outras versões de Dijkstra. Versões distintas foram preservadas.
 
-### 05_APOSTILAS_E_REFERENCIAS
+## Apostilas e aulas
 
-- `Apostila de Revisao - Maratona de Programacao 1.pdf`
-- `apostila_revisao_mp1.md`
+- [05_APOSTILAS_E_REFERENCIAS](../05_APOSTILAS_E_REFERENCIAS/): apostila de revisão em PDF e Markdown.
+- [06_AULAS](../06_AULAS/): slides das Aulas 07 e 11, `aula03.cpp`, `vector.cpp` e `1301.cpp`.
 
-### 06_AULAS
+## Avaliações em sala — seção 07
 
-- `MP1_-_Aula_07_-_Intro._Grafos_-_Buscas.pdf` (era `estudos/`)
-- `aula03.cpp` — lista encadeada
-- `vector.cpp` — rascunho STL (com erros de sintaxe, material de aula)
-- `1301.cpp` — exercício comentado
-- binário `aula03`
+[07_AVALIACOES_EM_SALA](../07_AVALIACOES_EM_SALA/README.md) reúne os enunciados dos simulados 0, 1 e 2 e dos warmups das Aulas 05, 08 e 10, com datas, links e soluções disponíveis.
 
----
+Os seis PDFs adicionados na raiz foram movidos para esta seção. Os warmups que estavam em `PROVAS/` foram agrupados por aula; as soluções `A.cpp`, `A-didatico.cpp` e `c.cpp` ficaram com o Warmup Aula 10, identificado pelos problemas Guerra e Os Suspeitos. PDFs repetidos e versões foram preservados e estão descritos no índice da seção.
 
-## Duplicatas removidas (byte a byte idênticas)
+## Compilação e arquivos locais
 
-| Removido | Mantido |
-|----------|---------|
-| `K (1).cpp` | `02_SIMULADOS_E_PROVAS/SIMULADO_02/K.cpp` |
-| `l.cpp` (raiz) | `02_SIMULADOS_E_PROVAS/SIMULADO_02/l.cpp` |
+Os dez executáveis das Listas 06 e 07 que já estavam marcados como removidos continuam excluídos. A varredura não encontrou outros executáveis ELF nos materiais do projeto.
 
----
-
-## Relações secundárias (não moveram de pasta)
-
-- HTML **Desvio de Rua** ↔ `SIMULADO_02/j.cpp` / `j_completo.cpp` / `j_visual.html`
-- HTMLs **Dijkstra** ↔ `03_ALGORITMOS/DIJKSTRA/*.cpp`
-- `BFS_DFS/a.cpp` ↔ `SIMULADO_02/l.cpp` (mesma família BFS em grade)
-- `LISTA_05` contém grafos (1081, 1082, 1128, …) — prática relacionada a `03_ALGORITMOS/`
-
----
-
-## Agente ECOX21
-
-Continua em `Exercicios/ecox21/` (método, progresso, plano, diagnóstico).  
-As listas **mudaram de caminho** — ver aviso em `Exercicios/AGENTS.md`.
-
----
-
-## Incertezas / artefatos
-
-| Item | Nota |
-|------|------|
-| Binários ELF (`programa`, `j`, `E`, `a`, …) | **removidos** em 2026-10-19 (22 executáveis) |
-| `out.txt` | saída de teste (mantida) |
-| `1196.cpp` (LISTA_03) | arquivo vazio |
-| `prova-5.pdf` | não aberto nesta auditoria — classificado pelo nome |
-| `.vscode/` | configurações locais VS Code; mantidas junto das pastas |
+Para novas compilações, use a extensão `.out`, conforme o [README](../README.md); esses executáveis e os artefatos comuns de compilação estão no `.gitignore`. Fontes, PDFs, visualizações e entradas de teste foram preservados.

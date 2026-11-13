@@ -5,6 +5,12 @@
 # Artefatos de compilação
 *.o
 *.obj
+*.out
+*.a
+*.so
+*.class
+.build/
+build/
 a.out
 programa
 *.exe
