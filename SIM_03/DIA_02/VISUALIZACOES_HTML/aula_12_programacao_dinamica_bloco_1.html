@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MP1 • Aula 12 • Programação Dinâmica • Bloco 1</title>
+<style>
+:root{--bg:#f2f4f8;--fg:#17202e;--card:#fff;--bd:#d5dbe6;--val:#b45309;--qty:#0f766e;--ac:#2456a6;--hl:#fde68a;--rep:#f59e0b;--hit:#2dd4bf}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1420;--fg:#e5e9f3;--card:#18202f;--bd:#2b3650;--val:#fbbf24;--qty:#5eead4;--ac:#7aa7ff;--hl:#5a4a10}}
+*{box-sizing:border-box}body{margin:0;font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--fg)}
+header{padding:14px 20px 8px}h1{font-size:19px;margin:0}header p{margin:2px 0 0;opacity:.75;font-size:13px}
+nav{display:flex;gap:6px;padding:8px 20px;flex-wrap:wrap;position:sticky;top:0;background:var(--bg);z-index:5;border-bottom:1px solid var(--bd)}
+main{max-width:1040px;margin:auto;padding:10px 20px 60px}
+section{display:none}section.on{display:block}h2{font-size:18px;margin:10px 0 2px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px 14px;margin:10px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:10px}.grid .card{margin:0}
+button{font:inherit;cursor:pointer;border:1px solid var(--bd);background:var(--card);color:inherit;border-radius:8px;padding:5px 11px}
+button:focus-visible,summary:focus-visible,textarea:focus-visible{outline:3px solid var(--ac);outline-offset:1px}
+button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.ctl,.tabs{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0}.cnt{opacity:.7;font-size:13px}
+.coin{display:inline-flex;width:38px;height:38px;border-radius:50%;align-items:center;justify-content:center;font-weight:700;background:var(--val);color:#1b1304;border:3px double rgba(0,0,0,.4);margin:2px}
+.pl{opacity:.5;margin:0 2px}.v{color:var(--val);font-weight:700}.q{color:var(--qty);font-weight:700}.tag{font-size:12px;opacity:.7}
+.adapt{border-left:4px solid var(--ac);padding-left:10px;margin:8px 0}
+.code{font:13px/1.45 ui-monospace,Consolas,monospace;overflow:auto;background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:6px 0}
+.ln{white-space:pre;padding:0 10px}.ln.hl{background:var(--hl)}
+table{border-collapse:collapse;margin:4px 0}td,th{border:1px solid var(--bd);padding:3px 10px;text-align:center;min-width:34px}
+th{font-weight:500;opacity:.75;font-size:12px}td.cur{background:var(--hl)}td.fresh{outline:2px solid var(--qty)}
+.wrap{overflow:auto}svg{max-width:100%;height:auto}
+.nd circle{fill:var(--card);stroke:var(--ac);stroke-width:2}.nd text{fill:var(--fg);font:600 13px system-ui;text-anchor:middle}
+.nd.rep circle{fill:var(--rep)}.nd.hit circle{fill:var(--hit)}.nd.rep text,.nd.hit text{fill:#111}.nd.cur circle{stroke:var(--fg);stroke-width:4}
+.ed{stroke:var(--bd);stroke-width:2}
+.flow div{padding:4px 10px;border-left:3px solid var(--bd);margin:2px 0}.flow .tot{border-color:var(--qty);background:var(--card)}
+.pick{display:flex;gap:8px;flex-wrap:wrap}.pick button{padding:6px 10px}.pick button.on{background:var(--hl);color:inherit;border-color:var(--val)}
+.bar{height:14px;border-radius:4px;background:var(--ac);min-height:14px}
+details{margin:8px 0}summary{cursor:pointer;font-weight:600}textarea{width:100%;min-height:44px;font:inherit;background:var(--bg);color:inherit;border:1px solid var(--bd);border-radius:8px;padding:6px}
+.foot{display:flex;justify-content:space-between;margin-top:16px}ol li,ul li{margin:3px 0}
+</style></head><body>
+<header><h1>MP1 • Aula 12 • Programação Dinâmica • Bloco 1</h1>
+<p>Do Fibonacci ao problema das moedas — preparação para o Beecrowd 1034. Abra o arquivo no navegador; funciona offline. Tempo por etapa é só referência.</p></header>
+<nav id="nav"></nav>
+<main>
+
+<section id="s0"><h2>Fundamentos de PD <span class="tag">PDF p. 1–8</span></h2>
+<p class="tag">Objetivos (p. 2): entender o conceito, identificar situações de uso, analisar formas de implementação.</p>
+<div class="card"><b>Um problema grande vira subproblemas menores; alguns aparecem de novo.</b>
+<p>Problema <b>F(5)</b> → <span class="coin">F4</span><span class="coin">F3</span> → F4 pede <span class="coin">F3</span><span class="coin">F2</span> … <b>F3</b> aparece 2 vezes.</p></div>
+<div class="grid">
+<div class="card"><b>Sem tabela: recalcular</b><p>F3 calculado 2 vezes; cada vez refaz F2, F1, F0.</p></div>
+<div class="card"><b>Com tabela: consultar</b><p>F3 calculado 1 vez e guardado. A segunda vez é só leitura.</p></div></div>
+<div class="grid">
+<div class="card"><b>Estado</b><br>qual subproblema estou resolvendo?</div>
+<div class="card"><b>Caso-base</b><br>resposta conhecida diretamente.</div>
+<div class="card"><b>Recorrência</b><br>regra que liga um subproblema a menores.</div>
+<div class="card"><b>Memoização (top-down)</b><br>recursão que guarda o que já calculou.</div>
+<div class="card"><b>Tabulação (bottom-up)</b><br>preenche a tabela dos menores para os maiores.</div>
+<div class="card"><b>Custo (p. 4–5)</b><br>tempo ≈ nº de estados × trabalho por estado; memória ≈ resultados guardados.</div></div>
+<p class="adapt"><b>Adaptação didática:</b> PD não é "sempre a melhor": serve quando há subestrutura ótima e subproblemas repetidos. A questão principal é resolver na ordem correta (p. 5).</p></section>
+
+<section id="s1"><h2>Fibonacci: retrabalho, memoização, tabulação <span class="tag">PDF p. 9–14</span></h2>
+<div class="tabs" id="fT"></div>
+<div class="grid"><div class="card wrap" id="fV"></div><div class="card"><span class="tag" id="fP9"></span><div class="code" id="fC"></div></div></div>
+<div class="ctl" id="fP"></div><p id="fN"></p>
+<details><summary>Verificação opcional: o que a memoização reaproveitou?</summary><p>Na memoização de F(5), os nós <b>F(2)</b> (sob F4) e <b>F(3)</b> (sob F5) vêm do cache (verde): suas subárvores inteiras deixam de ser calculadas. Consultar <code>memo[n]</code> é O(1); o algoritmo todo é O(n).</p></details>
+<p class="tag">Conexão opcional (p. 14): Beecrowd 1033 — Quantas Chamadas Recursivas?</p></section>
+
+<section id="s2"><h2>Moedas: do guloso ao ótimo <span class="tag">PDF p. 15–19</span></h2>
+<p>Moedas são <b>valores</b>, em quantidade ilimitada. Objetivo: formar o alvo com o <b>mínimo de moedas</b>.</p>
+<div class="tabs" id="cT"></div><div id="cV"></div>
+<details><summary>Verificação opcional: válida × mínima</summary><p>Alvo 6 com {1,3,4}: <b>4+1+1</b> forma 6 (válida) com 3 moedas; <b>3+3</b> forma 6 com 2 moedas (mínima). O guloso pega a maior moeda agora, sem garantir o ótimo global.</p></details></section>
+
+<section id="s3"><h2>Construindo solve(x) <span class="tag">PDF p. 20–25</span></h2>
+<div class="grid"><div class="card"><b>Contrato:</b> <code>solve(x)</code> recebe o <span class="v">valor x</span> e devolve a <span class="q">quantidade mínima de moedas</span> para formá-lo.
+<p class="tag">solve(3) = 1 não é "3 moedas": o valor 3 se forma com 1 moeda.</p></div>
+<div class="card"><b>Tabela p. 21</b>, coins = {1,3,4} <div id="dT"></div><p class="tag">A coluna "combinação" é adaptação didática.</p></div></div>
+<div class="card"><b>Mesa de escolhas</b> — exemplo p. 22: solve(10) = 3, pois 3+3+4. Qual pode ser a primeira moeda? 1, 3 ou 4.
+<div class="tabs" id="dX"></div><div class="pick" id="dC"></div>
+<div class="ctl"><button id="dAll">Comparar todas</button><button id="dCode">Ver no código</button><button id="dHelp">Ainda não entendi</button></div>
+<div class="flow" id="dF"></div>
+<div id="dH" hidden class="adapt"><b>Explicação concreta:</b> você paga o alvo com moedas de uma gaveta sem fim. Coloque UMA moeda no balcão (essa é a <span class="q">+1 moeda</span>). Ainda <span class="v">resta</span> pagar um valor menor: a mesma pergunta, só que menor — o melhor jeito de pagar o restante (é o solve do restante). Repita para cada moeda possível e fique com o menor total. Atenção: com moeda 1 sobre o restante 6, não são seis moedas de 1 — o melhor para 6 é 3+3.</div>
+<div id="dCodeBox" hidden class="code"></div></div>
+<div class="card"><b>Fórmula (p. 24)</b><div class="code"><div class="ln">solve(x) = min(solve(x − 1) + 1,</div><div class="ln">               solve(x − 3) + 1,</div><div class="ln">               solve(x − 4) + 1)</div></div>
+<p>Caso-base (p. 25): <code>solve(0) = 0</code>. Cadeia: solve(10) = solve(7)+1 = solve(4)+2 = solve(0)+3 = 3 (moedas 3, 3 e 4; a ordem não importa).</p>
+<p class="tag">O min compara a quantidade TOTAL de moedas de cada opção, não o valor das moedas.</p></div>
+<details><summary>Verificação opcional: separar valor e quantidade</summary><p>Alvo 10, moeda inicial 3: <span class="v">ALVO 10</span> · <span class="v">MOEDA 3</span> · <span class="v">RESTA 10−3 = 7</span> · <span class="q">solve(7) = 2 moedas</span> (3+4) · <span class="q">TOTAL = 1 + 2 = 3 moedas</span>.</p></details></section>
+
+<section id="s4"><h2>Dos subproblemas ao código <span class="tag">PDF p. 26–28</span></h2>
+<div class="tabs" id="eT"></div><div class="ctl" id="eX"></div>
+<div class="grid"><div class="card wrap"><div id="eV"></div></div><div class="card"><span class="tag" id="eNote"></span><div class="code" id="eC"></div></div></div>
+<div class="ctl" id="eP"></div>
+<p class="adapt"><b>Adaptação executável:</b> a simulação roda em JavaScript equivalente, com INF = 1e9 (sentinela seguro). Não é o código literal do slide. <code>INF</code> = impossível ou ainda não encontrado; <code>x &lt; 0</code> = tentativa inválida; <code>x == 0</code> = base. <code>best = min(best, solve(x-c)+1)</code> = comparar a opção atual com a melhor conhecida. Em C++, <code>ready[]</code> começa em false.</p></section>
+
+<section id="s5"><h2>Síntese e 1034 <span class="tag">PDF p. 29</span></h2>
+<div class="card"><b>Em uma tela</b><ul>
+<li>PD guarda respostas de subproblemas para não refazer trabalho.</li>
+<li>Top-down = recursão + cache (<code>ready</code>/<code>value</code>); bottom-up = tabela dos menores para os maiores (<code>value[i]</code>).</li>
+<li><code>solve(x)</code> = mínimo de moedas para formar x; <code>solve(x-c)+1</code> = restante + a moeda escolhida; <code>min</code> escolhe a melhor opção.</li>
+<li>Caso-base: <code>solve(0)=0</code>; <code>x&lt;0</code> devolve INF.</li></ul></div>
+<div class="card"><b>Pronto para tentar o Beecrowd 1034 — Festival de Estátuas de Gelo?</b>
+<p>Primeiro interprete, depois modele, só então implemente. Leia o enunciado oficial; esta página não traz solução. Cronograma: 40 min independentes; registre tempo, ajuda H0–H5 e eventual Accepted.</p>
+<ol><li>O que significa cada estado?</li><li>Que escolhas geram subproblemas menores?</li><li>Qual resultado de subproblema será reutilizado?</li><li>Qual é o caso-base?</li><li>Que limites de entrada preciso respeitar?</li></ol>
+<details><summary>Rascunho local (opcional, não é enviado nem checado)</summary>
+<p>Objetivo do problema:<textarea></textarea></p><p>O que representa cada estado:<textarea></textarea></p><p>Caso-base:<textarea></textarea></p><p>Escolhas possíveis:<textarea></textarea></p><p>Como saber se uma escolha é inválida:<textarea></textarea></p></details></div></section>
+
+<div class="foot"><button id="bk">◀ Etapa anterior</button><button id="nx">Próxima etapa ▶</button></div>
+</main>
+<script>
+const $=s=>document.querySelector(s),INF=1e9;
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const code=(el,L,h=[])=>el.innerHTML=L.map((l,i)=>`<div class="ln${h.includes(i)?' hl':''}">${esc(l)||' '}</div>`).join('');
+const FR=['int fiboRecursivo (int n)','{','   if (n <= 1)','     return n;','   return fiboRecursivo (n-1) + fiboRecursivo (n-2);','}'];
+const FM=['int fiboMemoPD (int n)','{','   if (n <= 1) return n;','   if (memo[n] != -1)','     return memo[n];','   memo[n] = fiboMemoPD(n-1) + fiboMemoPD(n-2);','   return memo[n];','}'];
+const FT=['int fiboPD (int n)','{','   if (n <= 1) return n;','   int vet[MAX];','   vet[0] = 0; vet[1] = 1;','     for (int i=2; i<=n; i++)','       vet[i] = vet[i-1] + vet[i-2];','','     return vet[n];','}'];
+const S1=['int solve (int x)','{','   if (x < 0) return INF;','   if (x == 0) return 0;','   int best = INF;','   for (auto c : coins) {','     best = min (best, solve(x-c)+1);','   }','   return best;','}'];
+const S2=['bool ready[MAX];','int value[MAX];','','int solve (int x)','{','   if (x < 0) return INF;','   if (x == 0) return 0;','   if (ready[x]) return value[x];','   int best = INF;','   for (auto c : coins) {','     best = min (best, solve(x-c)+1);','   }','   ready[x] = true; value[x] = best;','   return best;','}'];
+const S3=['int solve (int x)','{','  value[0] = 0;','  for (int i=1; i <= x; i++) {','    value[i]=INF;','    for (auto c : coins) {','      if (i-c >= 0) {','        value[i] = min (value[i], value[i-c]+1);','      }','    }','  }','  return value[x];','}'];
+function tabs(el,L,cb,i0=0){el.innerHTML=L.map((l,i)=>`<button data-i="${i}">${l}</button>`).join('');const set=i=>{[...el.children].forEach((b,j)=>b.classList.toggle('on',i==j));cb(i)};el.onclick=e=>{if(e.target.dataset.i!=null)set(+e.target.dataset.i)};set(i0)}
+function player(b,n,draw){let k=0,t=null;b.innerHTML='<button data-a="b">◀ Voltar</button><button data-a="n">Próximo ▶</button><button data-a="p">▶ Reproduzir</button><button data-a="r">↺ Reiniciar</button><span class="cnt"></span>';
+const P=b.querySelector('[data-a=p]');
+const go=i=>{k=Math.max(0,Math.min(n(),i));draw(k);b.querySelector('.cnt').textContent=`passo ${k}/${n()}`};
+const stop=()=>{clearInterval(t);t=null;P.textContent='▶ Reproduzir'};
+b.onclick=e=>{const a=e.target.dataset.a;if(!a)return;
+if(a=='b'){stop();go(k-1)}else if(a=='n'){stop();go(k+1)}else if(a=='r'){stop();go(0)}
+else{if(t){stop();return}P.textContent='⏸ Pausar';if(k>=n())go(0);t=setInterval(()=>{if(k>=n())stop();else go(k+1)},900)}};
+return{reset:()=>{stop();go(0)}}}
+const dpf=(C,x)=>{const v=[0],p=[0];for(let i=1;i<=x;i++){v[i]=INF;p[i]=0;for(const c of C)if(i-c>=0&&v[i-c]+1<v[i]){v[i]=v[i-c]+1;p[i]=c}}return{v,p}};
+const comb=(C,x)=>{const{p}=dpf(C,x),r=[];while(x>0&&p[x]>0){r.push(p[x]);x-=p[x]}return r.sort((a,b)=>b-a)};
+const greedy=(C,x)=>{const r=[];for(const c of[...C].sort((a,b)=>b-a))while(x>=c){r.push(c);x-=c}return r};
+const coin=v=>`<span class="coin">${v}</span>`,coins=a=>a.map(coin).join('<b class="pl">+</b>')||'nenhuma';
+const tbl=(idx,vals,cur,fresh)=>`<table><tr><th>índice</th>${idx.map(i=>`<th>${i}</th>`).join('')}</tr><tr><th>conteúdo</th>${vals.map((v,i)=>`<td class="${i==cur?'cur':''}${i==fresh?' fresh':''}">${v==null?'·':v>=INF?'∞':v}</td>`).join('')}</tr></table>`;
+
+/* Navegação */
+const ST=['Fundamentos · 7 min','Fibonacci · 8 min','Moedas · 8 min','solve(x) · 12 min','Código · 10 min','1034'];let cs=0;
+function show(i){cs=Math.max(0,Math.min(5,i));document.querySelectorAll('section').forEach((s,j)=>s.classList.toggle('on',j==cs));[...$('#nav').children].forEach((b,j)=>b.classList.toggle('on',j==cs));scrollTo(0,0)}
+$('#nav').innerHTML=ST.map((s,i)=>`<button data-i="${i}">${s}</button>`).join('');$('#nav').onclick=e=>{if(e.target.dataset.i!=null)show(+e.target.dataset.i)};
+$('#bk').onclick=()=>show(cs-1);$('#nx').onclick=()=>show(cs+1);
+
+/* Fibonacci */
+const fib=n=>n<2?n:fib(n-1)+fib(n-2);
+function fibTree(mode,N){const O=[],cache={};
+function b(n,d){const nd={n,d,ch:[],hit:false,i:O.length};O.push(nd);
+if(n>1){if(mode=='memo'&&cache[n]){nd.hit=true}else{nd.ch=[b(n-1,d+1),b(n-2,d+1)];cache[n]=1}}
+nd.end=O.length;return nd}
+const root=b(N,0);let lf=0;(function lay(nd){if(!nd.ch.length)nd.x=lf++;else{nd.ch.forEach(lay);nd.x=(nd.ch[0].x+nd.ch[1].x)/2}})(root);
+return{O,lf,md:Math.max(...O.map(o=>o.d))}}
+let fm=0,ft=null,fpl;
+const FN=['Recursão simples: cada chamada com n>1 gera outras duas e muitos valores são recalculados (laranja). Cresce exponencialmente, O(2ⁿ).','Memoização: o vetor memo[] começa com -1. Ao achar memo[n] ≠ -1 a chamada não se expande (verde: cache). Tempo O(n).','Tabulação: um único laço de n−1 passadas, cada uma com operações constantes. O(n). vet[i-1] e vet[i-2] já estão preenchidos.'];
+function fibDraw(k){const V=$('#fV'),hl=[];
+if(fm==2){const F=[0,1,1,2,3,5],f=k==0?0:k==1?2:k+1;
+V.innerHTML=`<p class="tag">vet[0..5] — vet cresce da esquerda para a direita</p>`+tbl([0,1,2,3,4,5],F.map((v,i)=>i<f?v:null),k>=2?k:-1)+`<p>${k<2?(k?'vet[0] = 0; vet[1] = 1':'vazio'):`i = ${k}: vet[${k}] = vet[${k-1}] + vet[${k-2}] = ${F[k-1]} + ${F[k-2]} = ${F[k]}`}</p>`;
+code($('#fC'),FT,k==0?[]:k==1?[4]:[5,6]);return}
+const O=ft.O,vis=O.slice(0,k),cur=O[k-1];
+let s=`<svg viewBox="0 0 ${ft.lf*50+30} ${(ft.md+1)*58+20}" width="${ft.lf*50+30}" role="img" aria-label="Árvore de chamadas de F(5)">`;
+vis.forEach(nd=>nd.ch.forEach(c=>{if(c.i<k)s+=`<line class="ed" x1="${nd.x*50+25}" y1="${nd.d*58+28}" x2="${c.x*50+25}" y2="${c.d*58+28}"/>`}));
+vis.forEach(nd=>{const rep=!nd.hit&&nd.n>1&&O.slice(0,nd.i).some(m=>m.n==nd.n&&!m.hit);
+s+=`<g class="nd${rep&&fm==0?' rep':''}${nd.hit?' hit':''}${nd===cur?' cur':''}"><circle cx="${nd.x*50+25}" cy="${nd.d*58+28}" r="18"/><text x="${nd.x*50+25}" y="${nd.d*58+33}">${nd.n}</text>${nd.hit?`<text x="${nd.x*50+25}" y="${nd.d*58+56}" style="font-size:10px">cache</text>`:''}</g>`});
+s+='</svg>';
+let extra='';if(fm==1){const m=[-1,-1,-1,-1,-1,-1];vis.forEach(nd=>{if(nd.n>1&&!nd.hit&&nd.end<=k)m[nd.n]=fib(nd.n)});extra='<p class="tag">memo[0..5]</p>'+tbl([0,1,2,3,4,5],m.map(v=>v<0?'-1':v))}
+V.innerHTML=`<p class="tag">Árvore de F(5). Chamadas até aqui: ${k} de ${O.length}</p>`+s+extra;
+if(cur)hl.push(...(fm==0?(cur.n<=1?[2,3]:[4]):(cur.n<=1?[2]:cur.hit?[3,4]:[5])));
+code($('#fC'),fm?FM:FR,hl)}
+fpl=player($('#fP'),()=>fm==2?5:ft.O.length,fibDraw);
+tabs($('#fT'),['fiboRecursivo (p. 9–11)','fiboMemoPD (p. 12)','fiboPD (p. 13)'],i=>{fm=i;ft=i<2?fibTree(i?'memo':'rec',5):null;$('#fP9').textContent=['Código do slide, p. 9','Código do slide, p. 12 (trecho; memo[MAX] inicia com -1)','Código do slide, p. 13 (trecho; MAX externo)'][i];$('#fN').textContent=FN[i];fpl.reset();if(fm==2)fibDraw(0)});
+
+/* Moedas */
+tabs($('#cT'),['Exemplo p. 15–16: {1,2,5}, n=12','Contraexemplo p. 17–19: {1,3,4}, n=6'],i=>{
+const E=[{c:[1,2,5],n:12},{c:[1,3,4],n:6}][i],g=greedy(E.c,E.n),o=comb(E.c,E.n);let x=E.n;
+const tr=g.map(c=>{const t=`pega ${c} → resta ${x-c}`;x-=c;return t}).join(' · ');
+const row=(t,a,extra)=>`<div class="card"><b>${t}</b><div>${coins(a)}</div><p>Valor formado = <span class="v">${a.reduce((s,y)=>s+y,0)}</span><br>Quantidade de moedas = <span class="q">${a.length}</span></p><p class="tag">${extra}</p></div>`;
+$('#cV').innerHTML=`<p>Moedas disponíveis (valores): ${E.c.map(coin).join('')} · ALVO = <span class="v">${E.n}</span></p><div class="grid">${row('Guloso: sempre a maior que cabe',g,tr)}${row('Ótimo: menor nº de moedas',o,'melhor combinação, comparando todas')}</div><p>${i?'Mesmo valor (6), quantidades diferentes: <span class="q">3 × 2</span>. Não se trata de maximizar a primeira moeda e sim de minimizar o total. O guloso falha aqui.':'Aqui o guloso funciona (5+5+2, 3 moedas). A pergunta do slide: ele é sempre ótimo?'}</p>`});
+
+/* solve(x) */
+(()=>{const C=[1,3,4],r=dpf(C,6);$('#dT').innerHTML='<table><tr><th>x (valor)</th><th>solve(x) (moedas)</th><th>combinação</th></tr>'+r.v.map((v,x)=>`<tr><td class="v">${x}</td><td class="q">${v}</td><td>${comb(C,x).join(' + ')||'nenhuma'}</td></tr>`).join('')+'</table>'})();
+let T=6,sel=null,all=false,showCode=false;
+const flowOf=(c,tot)=>{const r=T-c;if(r<0)return`<div class="flow card"><div>ALVO <span class="v">${T}</span> · MOEDA ESCOLHIDA <span class="v">${c}</span></div><div>RESTA <span class="v">${T}−${c} = ${r}</span> → negativo: opção inválida (solve devolve INF)</div></div>`;
+const k=dpf(C,r).v[r];return`<div class="flow card"><div>QUERO FORMAR <span class="v">${T}</span> (alvo)</div><div>MOEDA ESCOLHIDA: <span class="v">${c}</span></div><div>RESTA: <span class="v">${T} − ${c} = ${r}</span></div><div>MOEDAS NO RESTANTE: solve(${r}) = <span class="q">${k}</span> (${comb(C,r).join(' + ')||'nenhuma'})</div><div>+1 MOEDA (a escolhida agora)</div><div class="tot">TOTAL: 1 + ${k} = <span class="q">${1+k} moedas</span><br><code>1 + solve(${T}-${c}) = 1 + solve(${r}) = ${1+k}</code></div></div>`};
+function mesa(){$('#dC').innerHTML=[1,3,4].map(c=>`<button data-c="${c}" class="${sel==c&&!all?'on':''}">${coin(c)}</button>`).join('');
+let h='';if(all){const t=[1,3,4].map(c=>T-c<0?INF:1+dpf(C,T-c).v[T-c]),m=Math.min(...t);h=[1,3,4].map((c,i)=>flowOf(c)+`<p>${t[i]==m?'<b>menor total ✔</b> ':''}total <span class="q">${t[i]>=INF?'INF':t[i]}</span></p>`).join('');h+=`<p><b>min</b> compara os TOTAIS: solve(${T}) = <span class="q">${m}</span></p>`}
+else h=sel?flowOf(sel):'<p class="tag">Escolha uma moeda acima (ou "Comparar todas").</p>';
+$('#dF').innerHTML=h;const bx=$('#dCodeBox');bx.hidden=!showCode;if(showCode)code(bx,S1,!sel&&!all?[]:T-(sel||1)<0&&!all?[2]:[6])}
+const C=[1,3,4];
+$('#dC').onclick=e=>{const b=e.target.closest('button');if(b){sel=+b.dataset.c;all=false;mesa()}};
+$('#dAll').onclick=()=>{all=true;mesa()};$('#dCode').onclick=()=>{showCode=!showCode;mesa()};$('#dHelp').onclick=()=>{$('#dH').hidden=!$('#dH').hidden};
+tabs($('#dX'),['Alvo 6 (contraexemplo)','Alvo 10 (p. 22)'],i=>{T=i?10:6;sel=null;all=false;mesa()});
+
+/* Código */
+const cnt=(x)=>x<=0?1:1+C.reduce((s,c)=>s+cnt(x-c),0);
+function evTab(x){const v=Array(x+1).fill(null);v[0]=0;const E=[{v:v.slice(),l:[2],t:'value[0] = 0: caso-base, 0 moedas para formar o valor 0.'}];
+for(let i=1;i<=x;i++){v[i]=INF;E.push({v:v.slice(),l:[3,4],i,t:`i = ${i}: value[${i}] = INF (ainda sem solução).`});
+for(const c of C){if(i-c<0)E.push({v:v.slice(),l:[5,6],i,t:`c = ${c}: i−c = ${i-c} < 0 → value[${i-c}] não é acessado.`});
+else{const a=v[i-c]+1,old=v[i];v[i]=Math.min(old,a);E.push({v:v.slice(),l:[5,6,7],i,t:`c = ${c}: candidato value[${i-c}]+1 = ${v[i-c]}+1 = ${a}; min(${old>=INF?'INF':old}, ${a}) → value[${i}] = ${v[i]}.`})}}}
+return E}
+function evMemo(x){const R=Array(x+1).fill(false),V=Array(x+1).fill(null),E=[];let calls=0;
+const sn=(l,t,d,i)=>E.push({r:R.slice(),v:V.slice(),l,t,d,i});
+function s(y,d){calls++;
+if(y<0){sn([5],`solve(${y}): x < 0 → INF`,d);return INF}
+if(y==0){sn([6],`solve(0): caso-base → 0`,d,0);return 0}
+if(R[y]){sn([7],`solve(${y}): ready[${y}] = true → devolve value[${y}] = ${V[y]} (cache)`,d,y);return V[y]}
+sn([8,9,10],`solve(${y}): ainda não pronto; testa moedas 1, 3, 4`,d,y);
+let b=INF;for(const c of C){b=Math.min(b,s(y-c,d+1)+1)}
+R[y]=true;V[y]=b;sn([12],`solve(${y}): ready[${y}] = true; value[${y}] = ${b}`,d,y);return b}
+s(x,0);return{E,calls}}
+let em=0,ex=6,E=[],epl;
+function eDraw(k){const el=$('#eV');
+if(em==0){const m=evMemo(ex).calls;el.innerHTML=`<p>Contador relativo de chamadas para <code>solve(${ex})</code> (sem inventar tempos):</p>`+[['Recursão simples',cnt(ex)],['Memoização',m],['Tabulação (verificações de moeda)',ex*3]].map(([n,v])=>`<p>${n}: <b>${v}</b><div class="bar" style="width:${Math.max(3,v/cnt(ex)*100)}%"></div></p>`).join('')+`<p class="tag">A recursão repete subproblemas; memoização e tabulação resolvem cada estado uma vez.</p>`;code($('#eC'),S1,[2,3,6]);return}
+const e=k?E[k-1]:null;
+if(em==2){el.innerHTML=(e?tbl([...Array(ex+1).keys()],e.v,e.i,e.i):tbl([...Array(ex+1).keys()],Array(ex+1).fill(null)))+`<p class="tag">linha de cima = índice (valor a formar); linha de baixo = value[índice] (nº mínimo de moedas)</p><p>${e?e.t:'Aperte Próximo para começar.'}</p>`;code($('#eC'),S3,e?e.l:[]);return}
+const ix=[...Array(ex+1).keys()];
+el.innerHTML=(e?`<table><tr><th>x</th>${ix.map(i=>`<th>${i}</th>`).join('')}</tr><tr><th>ready[x]</th>${e.r.map((r,i)=>`<td class="${i==e.i?'cur':''}">${r?'✔':'·'}</td>`).join('')}</tr><tr><th>value[x]</th>${e.v.map((v,i)=>`<td class="${i==e.i?'cur':''}">${v==null?'·':v}</td>`).join('')}</tr></table>`:'<p>Aperte Próximo para começar.</p>')+E.slice(Math.max(0,k-7),k).map((q,j,a)=>`<div style="padding-left:${q.d*14}px;${j==a.length-1?'font-weight:700':'opacity:.7'}">${esc(q.t)}</div>`).join('');
+code($('#eC'),S2,e?e.l:[])}
+function eSet(){E=em==1?evMemo(ex).E:em==2?evTab(ex):[];epl.reset();$('#eNote').textContent=['Código do slide, p. 26 (coins e INF externos)','Código do slide, p. 27 (ready começa false)','Código do slide, p. 28 (value, coins e INF externos)'][em];$('#eP').style.display=em?'flex':'none'}
+epl=player($('#eP'),()=>E.length,eDraw);
+tabs($('#eT'),['Recursão (p. 26)','Memoização (p. 27)','Tabulação (p. 28)'],i=>{em=i;eSet()});
+tabs($('#eX'),['solve(6)','solve(10)'],i=>{ex=i?10:6;eSet()});
+show(0);
+</script></body></html>

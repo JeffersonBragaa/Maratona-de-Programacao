@@ -9,6 +9,7 @@ Repositório de estudos da disciplina **Maratona de Programação I** — soluç
 | [00_INDICE/](00_INDICE/INDICE.md) | Índice geral do repositório |
 | `01_LISTAS/` | Listas de exercícios Beecrowd (`LISTA_01` … `LISTA_07`) |
 | `02_SIMULADOS_E_PROVAS/` | Simulados e provas (enunciados + soluções) |
+| [SIM_03/](SIM_03/README.md) | Revisão em andamento do simulado 3, organizada por dia |
 | `03_ALGORITMOS/` | Implementações e notas (BFS/DFS, Dijkstra, Tarjan, geometria) |
 | `04_VISUALIZACOES_HTML/` | Laboratórios visuais abertos no navegador |
 | `05_APOSTILAS_E_REFERENCIAS/` | Apostilas e referências |

@@ -1,6 +1,6 @@
 # Índice — MP1 (Maratona de Programação I)
 
-Organização revisada em 13/11/2026. Caminhos relativos à raiz do repositório; nomes dos PDFs e dos códigos preservados.
+Organização geral revisada em 13/11/2026; revisão do simulado 3 adicionada em 15/11/2026. Caminhos relativos à raiz do repositório; nomes dos PDFs e dos códigos preservados.
 
 ## Estrutura
 
@@ -26,11 +26,15 @@ Maratora-de-Programacao/
 ├── 04_VISUALIZACOES_HTML/
 ├── 05_APOSTILAS_E_REFERENCIAS/
 ├── 06_AULAS/
-└── 07_AVALIACOES_EM_SALA/
-    ├── SIMULADOS/
-    ├── WARMUP_AULA_05/
-    ├── WARMUP_AULA_08/
-    └── WARMUP_AULA_10/
+├── 07_AVALIACOES_EM_SALA/
+│   ├── SIMULADOS/
+│   ├── WARMUP_AULA_05/
+│   ├── WARMUP_AULA_08/
+│   └── WARMUP_AULA_10/
+└── SIM_03/
+    ├── DIA_01/
+    └── DIA_02/
+        └── VISUALIZACOES_HTML/
 ```
 
 ## Listas de exercícios
@@ -46,6 +50,10 @@ Maratora-de-Programacao/
 
 Os antigos warmups e suas soluções saíram de `02_SIMULADOS_E_PROVAS/PROVAS/` para a seção 07. O enunciado do Simulado Geral 2 foi reunido às soluções em `SIMULADO_02/`.
 
+### Revisão atual do simulado 3
+
+[SIM_03](../SIM_03/README.md) está organizada por dia e ainda em revisão. O dia 1 contém `1105.cpp`, `1548.cpp` e `2065.cpp`. O dia 2 contém `memo.cpp`, `tabu.cpp` e o [laboratório da Aula 12 sobre programação dinâmica](../SIM_03/DIA_02/VISUALIZACOES_HTML/aula_12_programacao_dinamica_bloco_1.html). O enunciado do simulado 3 ainda não está nesta pasta.
+
 ## Algoritmos
 
 | Pasta | Conteúdo |
@@ -57,7 +65,7 @@ Os antigos warmups e suas soluções saíram de `02_SIMULADOS_E_PROVAS/PROVAS/` 
 
 ## Visualizações HTML
 
-Todos os laboratórios visuais estão em [04_VISUALIZACOES_HTML](../04_VISUALIZACOES_HTML/), incluindo os que estavam junto das listas, simulados e algoritmos.
+Os laboratórios da organização anterior estão em [04_VISUALIZACOES_HTML](../04_VISUALIZACOES_HTML/). O laboratório do simulado 3 fica no próprio [dia 2](../SIM_03/DIA_02/VISUALIZACOES_HTML/aula_12_programacao_dinamica_bloco_1.html), junto dos exemplos relacionados.
 
 | Arquivo | Material relacionado |
 |---------|---------------------|
@@ -81,6 +89,6 @@ Os seis PDFs adicionados na raiz foram movidos para esta seção. Os warmups que
 
 ## Compilação e arquivos locais
 
-Os dez executáveis das Listas 06 e 07 que já estavam marcados como removidos continuam excluídos. A varredura não encontrou outros executáveis ELF nos materiais do projeto.
+Os dez executáveis das Listas 06 e 07 que já estavam marcados como removidos continuam excluídos. Os três executáveis locais do dia 1 do simulado 3 foram preservados com extensão `.out` e são ignorados pelo Git.
 
 Para novas compilações, use a extensão `.out`, conforme o [README](../README.md); esses executáveis e os artefatos comuns de compilação estão no `.gitignore`. Fontes, PDFs, visualizações e entradas de teste foram preservados.
