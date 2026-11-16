@@ -11,13 +11,9 @@ using namespace std;
 // INF marca valores que ainda não têm uma combinação conhecida.
 const int INF = 1000000000;
 
-vector<int> moedas = {1, 3, 4};
-
-int solve(int x)
+int solve(int x, const vector<int>& moedas, vector<int>& value)
 {
-    // Começa com todos os valores sem solução; formar zero usa zero moedas.
-    vector<int> value(x + 1, INF);
-
+    // Formar zero usa zero moedas.
     value[0] = 0;
 
     // Avança do menor alvo ao maior, garantindo que os restos já estejam prontos.
@@ -46,7 +42,11 @@ int main()
     int x;
     cin >> x;
 
-    cout << solve(x) << endl;
+    // Começa com todos os valores sem solução.
+    vector<int> moedas = {1, 3, 4};
+    vector<int> value(x + 1, INF);
+
+    cout << solve(x, moedas, value) << endl;
 
     return 0;
 }

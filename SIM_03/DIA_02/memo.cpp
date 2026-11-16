@@ -11,11 +11,7 @@ using namespace std;
 // INF marca uma escolha impossível; ready informa se value já foi calculado.
 const int INF = 1000000000;
 
-vector<int> moedas = {1, 3, 4};
-vector<int> ready;
-vector<int> value;
-
-int solve(int x)
+int solve(int x, const vector<int>& moedas, vector<int>& ready, vector<int>& value)
 {
     // Uma moeda maior que o restante não serve; formar zero custa zero moedas.
     if (x < 0)
@@ -35,7 +31,7 @@ int solve(int x)
     {
         int c = moedas[i];
 
-        best = min(best, solve(x - c) + 1);
+        best = min(best, solve(x - c, moedas, ready, value) + 1);
     }
 
     // Salva o resultado antes de voltar à chamada anterior.
@@ -51,10 +47,11 @@ int main()
     cin >> x;
 
     // Reserva um estado para cada valor de 0 até x; nenhum foi calculado ainda.
-    ready.assign(x + 1, false);
-    value.assign(x + 1, 0);
+    vector<int> moedas = {1, 3, 4};
+    vector<int> ready(x + 1, false);
+    vector<int> value(x + 1, 0);
 
-    cout << solve(x) << endl;
+    cout << solve(x, moedas, ready, value) << endl;
 
     return 0;
 }
