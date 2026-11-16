@@ -1,57 +1,47 @@
-// Memoização (top-down): solve(x) devolve o menor número de moedas para formar x.
-// As moedas podem ser usadas quantas vezes forem necessárias.
-// Fluxo: main lê o alvo e prepara o cache; solve desce recursivamente para
-// valores menores, guarda cada resposta e a reutiliza nas próximas chamadas.
-// Exemplo: para x = 6, a melhor resposta é 2 (moedas 3 + 3).
-// Custo: O(x * quantidade de moedas) em tempo e O(x) em memória, incluindo a pilha.
-
-#include <bits/stdc++.h>
+// solve(x) retorna a menor quantidade de moedas para formar x, ou INF se impossível.
+// A memoização resolve restos recursivamente e guarda respostas para reutilizar.
+#include <algorithm>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-// INF marca uma escolha impossível; ready informa se value já foi calculado.
-const int INF = 1000000000;
-
-int solve(int x, const vector<int>& moedas, vector<int>& ready, vector<int>& value)
+constexpr int MAX = 10001;
+constexpr int INF = 1000000000;
+int solve (int x, const vector<int>& coins, vector<int>& ready, vector<int>& value)
 {
-    // Uma moeda maior que o restante não serve; formar zero custa zero moedas.
-    if (x < 0)
-        return INF;
-
-    if (x == 0)
-        return 0;
-
-    // Se este valor já foi resolvido, devolve a resposta guardada.
-    if (ready[x])
-        return value[x];
-
-    // Testa cada moeda como primeira escolha: 1 moeda + melhor solução do restante.
-    int best = INF;
-
-    for (int i = 0; i < moedas.size(); i++)
-    {
-        int c = moedas[i];
-
-        best = min(best, solve(x - c, moedas, ready, value) + 1);
-    }
-
-    // Salva o resultado antes de voltar à chamada anterior.
-    ready[x] = true;
-    value[x] = best;
-
-    return best;
+   // Restante negativo torna a escolha impossível; INF impede que ela seja a melhor.
+   if (x < 0) return INF;
+   // Restante zero encerra este caminho: nenhuma outra moeda é necessária.
+   if (x == 0) return 0;
+   // ready[x] indica resposta pronta; value[x] guarda a quantidade de moedas.
+   // Observe: um acerto no cache retorna aqui, sem repetir o laço nem a recursão.
+   if (ready[x]) return value[x];
+   // Cada chamada tem seu próprio best; INF inicia a busca sem solução conhecida.
+   int best = INF;
+   // Cada moeda abre uma tentativa para o restante desta chamada.
+   for (auto c : coins) {
+     // solve(x-c) resolve o valor restante; +1 conta a moeda escolhida agora.
+     // Este for espera a recursão retornar; só então min compara o total com best.
+     // No debug, acompanhe o best da chamada atual: ele pode melhorar no retorno.
+     // Com coins = {1, 3, 4}, x = 6 e c = 3: o restante é 3, que exige 1 moeda.
+     // Esse 1 retornado + a moeda atual dá 2 moedas; restante 3 não é quantidade.
+     best = min (best, solve(x-c, coins, ready, value)+1);
+   }
+   // Após testar todas as moedas, marca a resposta pronta e preenche o cache.
+   // Avance esta linha no debug para ver ready[x] e value[x] receberem o resultado.
+   ready[x] = true; value[x] = best;
+   // Devolve a quantidade ao chamador, que retoma a tentativa que estava esperando.
+   return best;
 }
 
 int main()
 {
     int x;
-    cin >> x;
-
-    // Reserva um estado para cada valor de 0 até x; nenhum foi calculado ainda.
-    vector<int> moedas = {1, 3, 4};
+    if (!(cin >> x) || x < 0 || x >= MAX) return 1;
+    // No debug, selecione main na pilha para acompanhar os vetores locais.
+    const vector<int> coins = {1, 3, 4};
     vector<int> ready(x + 1, false);
     vector<int> value(x + 1, 0);
-
-    cout << solve(x, moedas, ready, value) << endl;
-
-    return 0;
+    // As referências permitem que solve atualize estes mesmos vetores.
+    cout << solve(x, coins, ready, value) << '\n';
 }
