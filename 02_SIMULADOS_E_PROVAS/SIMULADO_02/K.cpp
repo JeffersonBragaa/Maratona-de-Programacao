@@ -2,44 +2,26 @@
 using namespace std;
 
 int main() {
-	int b, z;
+    int b, z, n, m;
 
-	while (cin >> b >> z && b && z) {
-		set<int> distincts_b;
+    while (cin >> b >> z && b && z) {
+        cin >> n >> m;
 
-		int repeated = 0;
-		int n, m, x;
-		cin >> n >> m;
+        vector<int> beto(b), zeca(z);
 
-		int max_b = -1000000001, min_z = 1000000001;
+        for (int &x : beto)
+            cin >> x;
+        for (int &x : zeca)
+            cin >> x;
 
-		for (int i = 0; i < b; i++) {
-			cin >> x;
-			distincts_b.insert(x);
-			if (x > max_b)
-				max_b = x;
-		}
+        sort(beto.begin(), beto.end());
+        sort(zeca.begin(), zeca.end());
 
-		for (int i = 0; i < z; i++) {
-			cin >> x;
-			if (distincts_b.find(x) != distincts_b.end())
-				repeated++;
-			if (x < min_z)
-				min_z = x;
-		}
+        if (beto[n - 1] < zeca[z - m])
+            cout << "YES\n";
+        else
+            cout << "NO\n";
+    }
 
-		if (min_z < max_b) {
-			cout << "NO" << endl;
-			continue;
-		}
-
-		if (b - repeated < n || z - repeated < m) {
-			cout << "NO" << endl;
-			continue;
-		}
-
-		cout << "YES" << endl;
-	}
-
-	return 0;
+    return 0;
 }
