@@ -1,22 +1,15 @@
-#include <bits/stdc++.h> 
+#include <bits/stdc++.h>
 
-using namespace std; 
+using namespace std;
 
-int main (){
+int main() {
+    long long int n, soma;
 
-	
-	long long int n, soma = 2; 
-	
-	cin >> n; 
-	
-	for(int i = 1; i <= n; i++){
-		soma *= soma;
-	}
-	
-	for(int i = 1; i <= n; i++){
-		soma = soma / 2;
-	}
-	
-	cout << soma*soma << endl;
-	
+    scanf("%lld", &n);
+
+    soma = pow(2, n);
+
+    cout << soma * soma << endl;
+
+    return 0;
 }
